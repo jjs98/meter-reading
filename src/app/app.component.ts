@@ -10,6 +10,6 @@ import { ClarityModule } from '@clr/angular';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'clarity-challenge';
+  title = 'meter-reading';
   states = [{name:'germany'}, {name:'poland'}];
 }
