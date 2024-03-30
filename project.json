@@ -1,14 +1,14 @@
 {
-  "$schema": "node_modules/nx/schemas/project-schema.json",
   "name": "meter-reading",
+  "$schema": "node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
+  "sourceRoot": "src",
+  "prefix": "app",
   "generators": {
     "@schematics/angular:component": {
       "style": "scss"
     }
   },
-  "sourceRoot": "src",
-  "prefix": "app",
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
@@ -65,12 +65,21 @@
       "defaultConfiguration": "development"
     },
     "lint": {
-      "executor": "@nx/eslint:lint"
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"]
     },
-    "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{projectRoot}/dist/coverage"],
       "options": {
-        "buildTarget": "meter-reading:build"
+        "jestConfig": "jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
       }
     }
   }
