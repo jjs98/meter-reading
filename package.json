@@ -36,6 +36,7 @@
     "@nx/workspace": "18.2.1",
     "@schematics/angular": "^17.3.2",
     "nx": "18.2.1",
+    "prettier": "3.2.5",
     "typescript": "~5.4.3"
   }
 }

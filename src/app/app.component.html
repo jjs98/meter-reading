@@ -1,15 +1,13 @@
 <clr-main-container>
   <clr-header>
     <div class="branding">
-      <a routerLink="home"
-         class="nav-link">
+      <a routerLink="home" class="nav-link">
         <cds-icon shape="vm-bug"></cds-icon>
         <span cds-text="headline">JJSware</span>
       </a>
     </div>
     <div class="header-actions">
-      <a href="javascript://"
-         class="nav-link nav-icon-text">
+      <a href="javascript://" class="nav-link nav-icon-text">
         <cds-icon shape="user"></cds-icon>
         <span class="nav-text">Profil</span>
       </a>
@@ -19,32 +17,26 @@
     <div class="content-area">
       <router-outlet />
     </div>
-    <clr-vertical-nav [clr-nav-level]="1"
-                      [clrVerticalNavCollapsible]="true"
-                      class="nav-trigger--bottom">
-      <a clrVerticalNavLink
-         routerLink="home">
-        <cds-icon clrVerticalNavIcon
-                  shape="home"></cds-icon>
+    <clr-vertical-nav
+      [clr-nav-level]="1"
+      [clrVerticalNavCollapsible]="true"
+      class="nav-trigger--bottom"
+    >
+      <a clrVerticalNavLink routerLink="home">
+        <cds-icon clrVerticalNavIcon shape="home"></cds-icon>
         Home
       </a>
-      <a clrVerticalNavLink
-         routerLink="meters">
-        <cds-icon clrVerticalNavIcon
-                  shape="view-list"></cds-icon>
+      <a clrVerticalNavLink routerLink="meters">
+        <cds-icon clrVerticalNavIcon shape="view-list"></cds-icon>
         Zählerstände
       </a>
-      <a clrVerticalNavLink
-         routerLink="analytics">
-        <cds-icon clrVerticalNavIcon
-                  shape="line-chart"></cds-icon>
+      <a clrVerticalNavLink routerLink="analytics">
+        <cds-icon clrVerticalNavIcon shape="line-chart"></cds-icon>
         Analysen
       </a>
       <div class="nav-divider"></div>
-      <a clrVerticalNavLink
-         routerLink="settings">
-        <cds-icon clrVerticalNavIcon
-                  shape="cog"></cds-icon>
+      <a clrVerticalNavLink routerLink="settings">
+        <cds-icon clrVerticalNavIcon shape="cog"></cds-icon>
         Einstellungen
       </a>
     </clr-vertical-nav>

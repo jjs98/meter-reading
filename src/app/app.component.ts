@@ -7,9 +7,9 @@ import { ClarityModule } from '@clr/angular';
   standalone: true,
   imports: [RouterOutlet, RouterLink, ClarityModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'meter-reading';
-  states = [{name:'germany'}, {name:'poland'}];
+  states = [{ name: 'germany' }, { name: 'poland' }];
 }

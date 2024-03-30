@@ -9,9 +9,7 @@ import { ClarityModule } from '@clr/angular';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    importProvidersFrom(
-      BrowserModule, ClarityModule
-    ),
-    provideAnimations()
-  ]
+    importProvidersFrom(BrowserModule, ClarityModule),
+    provideAnimations(),
+  ],
 };

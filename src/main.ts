@@ -2,8 +2,25 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 
-import { ClarityIcons, loadCoreIconSet, loadChartIconSet, loadCommerceIconSet, loadEssentialIconSet, loadMediaIconSet, loadSocialIconSet, loadTechnologyIconSet, loadTextEditIconSet, loadTravelIconSet, homeIcon, sunIcon, worldIcon, cogIcon, userIcon, vmBugIcon, lineChartIcon } from '@cds/core/icon';
-
+import {
+  ClarityIcons,
+  loadCoreIconSet,
+  loadChartIconSet,
+  loadCommerceIconSet,
+  loadEssentialIconSet,
+  loadMediaIconSet,
+  loadSocialIconSet,
+  loadTechnologyIconSet,
+  loadTextEditIconSet,
+  loadTravelIconSet,
+  homeIcon,
+  sunIcon,
+  worldIcon,
+  cogIcon,
+  userIcon,
+  vmBugIcon,
+  lineChartIcon,
+} from '@cds/core/icon';
 
 ClarityIcons.addIcons(lineChartIcon, vmBugIcon);
 // loadChartIconSet();
@@ -16,5 +33,6 @@ loadEssentialIconSet();
 // loadTextEditIconSet();
 // loadTravelIconSet();
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent, appConfig).catch((err) =>
+  console.error(err),
+);
