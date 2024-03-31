@@ -2,7 +2,6 @@
   "name": "meter-reading",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
@@ -24,6 +23,7 @@
     "@cds/core": "^6.9.2",
     "@clr/angular": "^17.0.1",
     "@clr/ui": "^17.0.1",
+    "@jsverse/transloco": "^7.1.0",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.2",
     "zone.js": "~0.14.4"

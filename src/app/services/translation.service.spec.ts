@@ -1,12 +1,32 @@
+import { TranslocoHttpLoader } from './../transloco-loader';
 import { TestBed } from '@angular/core/testing';
 
 import { TranslationService } from './translation.service';
+import { TranslocoService, provideTransloco } from '@jsverse/transloco';
+
+let translocoServiceMock: {
+  getActiveLang: jest.Mock;
+  setActiveLang: jest.Mock;
+};
 
 describe('TranslationService', () => {
   let service: TranslationService;
 
+  translocoServiceMock = {
+    getActiveLang: jest.fn(),
+    setActiveLang: jest.fn()
+  };
+
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: TranslocoService,
+          useValue: translocoServiceMock
+        }
+      ]
+    });
+
     service = TestBed.inject(TranslationService);
   });
 

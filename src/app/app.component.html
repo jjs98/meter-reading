@@ -24,20 +24,20 @@
     >
       <a clrVerticalNavLink routerLink="home">
         <cds-icon clrVerticalNavIcon shape="home"></cds-icon>
-        Home
+        {{ 'nav.home' | transloco }}
       </a>
       <a clrVerticalNavLink routerLink="meters">
         <cds-icon clrVerticalNavIcon shape="view-list"></cds-icon>
-        Zählerstände
+        {{ 'nav.meters' | transloco }}
       </a>
       <a clrVerticalNavLink routerLink="analytics">
         <cds-icon clrVerticalNavIcon shape="line-chart"></cds-icon>
-        Analysen
+        {{ 'nav.analytics' | transloco }}
       </a>
       <div class="nav-divider"></div>
       <a clrVerticalNavLink routerLink="settings">
         <cds-icon clrVerticalNavIcon shape="cog"></cds-icon>
-        Einstellungen
+        {{ 'nav.settings' | transloco }}
       </a>
     </clr-vertical-nav>
   </div>

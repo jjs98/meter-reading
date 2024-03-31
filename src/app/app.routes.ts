@@ -1,8 +1,4 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { MetersComponent } from './components/meters/meters.component';
-import { SettingsComponent } from './components/settings/settings.component';
-import { AnalyticsComponent } from './components/analytics/analytics.component';
 
 export const routes: Routes = [
   {
@@ -12,19 +8,19 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    component: HomeComponent,
+    loadComponent: () => import('./components/home/home.component').then((mod) => mod.HomeComponent)
   },
   {
     path: 'meters',
-    component: MetersComponent,
+    loadComponent: () => import('./components/meters/meters.component').then((mod) => mod.MetersComponent)
   },
   {
     path: 'analytics',
-    component: AnalyticsComponent,
+    loadComponent: () => import('./components/analytics/analytics.component').then((mod) => mod.AnalyticsComponent)
   },
   {
     path: 'settings',
-    component: SettingsComponent,
+    loadComponent: () => import('./components/settings/settings.component').then((mod) => mod.SettingsComponent)
   },
   {
     path: '**',
