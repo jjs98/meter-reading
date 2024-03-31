@@ -1,8 +1,7 @@
-import { TranslocoHttpLoader } from './../transloco-loader';
 import { TestBed } from '@angular/core/testing';
 
 import { TranslationService } from './translation.service';
-import { TranslocoService, provideTransloco } from '@jsverse/transloco';
+import { TranslocoService } from '@jsverse/transloco';
 
 let translocoServiceMock: {
   getActiveLang: jest.Mock;
