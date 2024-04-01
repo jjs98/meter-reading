@@ -1,0 +1,26 @@
+<span>{{ 'meterList.meters' | transloco }}</span>
+<clr-datagrid>
+  <clr-dg-column clrDgField="id">{{
+    'meterList.meter-id' | transloco
+  }}</clr-dg-column>
+  <clr-dg-column clrDgField="name">{{
+    'meterList.meter-name' | transloco
+  }}</clr-dg-column>
+  <clr-dg-column clrDgField="value">{{
+    'meterList.meter-reading' | transloco
+  }}</clr-dg-column>
+  <clr-dg-column clrDgField="lastUpdate">{{
+    'meterList.meter-reading-date' | transloco
+  }}</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let meter of meters">
+    <clr-dg-cell>{{ meter.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ meter.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ meter.value }}</clr-dg-cell>
+    <clr-dg-cell>{{ meter.lastUpdate | localizedDate }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer
+    >{{ meters.length }} {{ 'meterList.meters' | transloco }}</clr-dg-footer
+  >
+</clr-datagrid>

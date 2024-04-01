@@ -2,6 +2,12 @@ import { Injectable } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { getLocalStorage, setLocalStorage } from '../utils/local-storage.utils';
 
+import translocoConfig from '../../../transloco.config';
+
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+import localeDeExtra from '@angular/common/locales/extra/de';
+
 const langLocalStorageKey = 'lang';
 
 @Injectable({
@@ -12,6 +18,7 @@ export class TranslationService {
     this.translocoService.getAvailableLangs() as string[];
 
   constructor(private translocoService: TranslocoService) {
+    registerLocaleData(localeDe, 'de-DE', localeDeExtra);
     let lang = getLocalStorage(langLocalStorageKey);
 
     if (!lang || !this.availableLangs.includes(lang)) {
@@ -24,6 +31,25 @@ export class TranslationService {
     }
 
     this.setActiveLang(lang);
+  }
+
+  public getActiveLang() {
+    return this.translocoService.getActiveLang();
+  }
+
+  public getActiveFullLang() {
+    return this.getFullLang(this.translocoService.getActiveLang());
+  }
+
+  public getFullLang(lang: string) {
+    return translocoConfig.fullLangs.find((fullLang) => fullLang.startsWith(lang)) ?? translocoConfig.defaultFullLang;
+  }
+
+  public getTranslation(key: string | undefined) {
+    if (!key) {
+      return key;
+    }
+    return this.translocoService.translate(key);
   }
 
   public setActiveLang(lang: string) {

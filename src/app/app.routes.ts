@@ -16,12 +16,12 @@ export const routes: Routes = [
     providers: [provideTranslocoScope('home')],
   },
   {
-    path: 'meters',
+    path: 'meter-list',
     loadComponent: () =>
-      import('./components/meters/meters.component').then(
-        (mod) => mod.MetersComponent,
+      import('./components/meter-list/meter-list.component').then(
+        (mod) => mod.MeterListComponent,
       ),
-    providers: [provideTranslocoScope('meters')],
+    providers: [provideTranslocoScope('meterList')],
   },
   {
     path: 'analytics',
@@ -42,5 +42,6 @@ export const routes: Routes = [
   {
     path: '**',
     redirectTo: 'home',
+    // add not found component
   },
 ];

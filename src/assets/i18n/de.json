@@ -2,7 +2,7 @@
   "nav": {
     "analytics": "Analysen",
     "home": "Home",
-    "meters": "Zähler",
+    "meter-list": "Zähler",
     "settings": "Einstellungen"
   },
   "language": "Sprache",

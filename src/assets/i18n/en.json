@@ -2,7 +2,7 @@
   "nav": {
     "analytics": "Analytics",
     "home": "Home",
-    "meters": "Meters",
+    "meter-list": "Meters",
     "settings": "Settings"
   },
   "language": "Language",
