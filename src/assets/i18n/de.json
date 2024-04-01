@@ -4,5 +4,9 @@
     "home": "Home",
     "meters": "Zähler",
     "settings": "Einstellungen"
+  },
+  "lang": {
+    "de": "Deutsch",
+    "en": "English"
   }
 }
