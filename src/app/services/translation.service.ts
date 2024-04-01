@@ -5,10 +5,11 @@ import { getLocalStorage, setLocalStorage } from '../utils/local-storage.utils';
 const langLocalStorageKey = 'lang';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TranslationService {
-  public readonly availableLangs = (this.translocoService.getAvailableLangs() as string[]);
+  public readonly availableLangs =
+    this.translocoService.getAvailableLangs() as string[];
 
   constructor(private translocoService: TranslocoService) {
     let lang = getLocalStorage(langLocalStorageKey);

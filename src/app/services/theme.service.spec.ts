@@ -11,7 +11,7 @@ describe('ThemeService', () => {
 
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
-      value: jest.fn().mockImplementation(query => ({
+      value: jest.fn().mockImplementation((query) => ({
         matches: false,
         media: query,
         onchange: null,
@@ -29,7 +29,10 @@ describe('ThemeService', () => {
     jest.resetAllMocks();
   });
 
-  function setThemeAndCheckInitial(theme: string, expectedInitialTheme: string) {
+  function setThemeAndCheckInitial(
+    theme: string,
+    expectedInitialTheme: string,
+  ) {
     localStorage.setItem(themeLocalStorageKey, theme);
     service = TestBed.inject(ThemeService);
     expect(getBodyTheme()).toBe(expectedInitialTheme);
@@ -56,6 +59,7 @@ describe('ThemeService', () => {
     service.setTheme('dark');
     expect(getBodyTheme()).toBe('dark');
   });
+
   it('should not switch theme when invalid', () => {
     setThemeAndCheckInitial('light', 'light');
     service.setTheme('invalid');

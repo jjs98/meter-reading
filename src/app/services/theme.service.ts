@@ -4,7 +4,7 @@ import { getLocalStorage, setLocalStorage } from '../utils/local-storage.utils';
 const themeLocalStorageKey = 'theme';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ThemeService {
   public readonly themes = ['light', 'dark'];
@@ -13,7 +13,9 @@ export class ThemeService {
     let theme = getLocalStorage(themeLocalStorageKey);
 
     if (!theme || !this.themes.includes(theme)) {
-      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
     }
 
     this.setTheme(theme);

@@ -10,9 +10,9 @@ describe('TranslationService', () => {
   let service: TranslationService;
 
   let translocoServiceMock: {
-    getDefaultLang: jest.Mock,
-    getActiveLang: jest.Mock,
-    getAvailableLangs: jest.Mock,
+    getDefaultLang: jest.Mock;
+    getActiveLang: jest.Mock;
+    getAvailableLangs: jest.Mock;
     setActiveLang: jest.Mock;
   };
 
@@ -30,9 +30,9 @@ describe('TranslationService', () => {
       providers: [
         {
           provide: TranslocoService,
-          useValue: translocoServiceMock
-        }
-      ]
+          useValue: translocoServiceMock,
+        },
+      ],
     });
   });
 
@@ -49,7 +49,9 @@ describe('TranslationService', () => {
 
   it('should call setActiveLang with navigator.language', () => {
     service = TestBed.inject(TranslationService);
-    expect(translocoServiceMock.setActiveLang).toHaveBeenLastCalledWith(defaultLang);
+    expect(translocoServiceMock.setActiveLang).toHaveBeenLastCalledWith(
+      defaultLang,
+    );
   });
 
   it('should call setActiveLang for valid lang', () => {
@@ -63,17 +65,19 @@ describe('TranslationService', () => {
     service = TestBed.inject(TranslationService);
     const lang = 'es';
     service.setActiveLang(lang);
-    expect(translocoServiceMock.setActiveLang).not.toHaveBeenLastCalledWith(lang);
+    expect(translocoServiceMock.setActiveLang).not.toHaveBeenLastCalledWith(
+      lang,
+    );
   });
 
   it('should call setActiveLang with browser languages', () => {
     Object.defineProperty(navigator, 'language', {
       value: null,
-      writable: true
+      writable: true,
     });
     Object.defineProperty(navigator, 'languages', {
       value: ['de-DE'],
-      writable: true
+      writable: true,
     });
     service = TestBed.inject(TranslationService);
     expect(translocoServiceMock.setActiveLang).toHaveBeenLastCalledWith('de');
@@ -82,7 +86,7 @@ describe('TranslationService', () => {
   it('should call setActiveLang with browser language', () => {
     Object.defineProperty(navigator, 'language', {
       value: 'de-DE',
-      writable: true
+      writable: true,
     });
     service = TestBed.inject(TranslationService);
     expect(translocoServiceMock.setActiveLang).toHaveBeenLastCalledWith('de');

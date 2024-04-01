@@ -9,31 +9,35 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    loadComponent: () => import('./components/home/home.component').then((mod) => mod.HomeComponent),
-    providers: [
-      provideTranslocoScope('home'),
-    ],
+    loadComponent: () =>
+      import('./components/home/home.component').then(
+        (mod) => mod.HomeComponent,
+      ),
+    providers: [provideTranslocoScope('home')],
   },
   {
     path: 'meters',
-    loadComponent: () => import('./components/meters/meters.component').then((mod) => mod.MetersComponent),
-    providers: [
-      provideTranslocoScope('meters'),
-    ],
+    loadComponent: () =>
+      import('./components/meters/meters.component').then(
+        (mod) => mod.MetersComponent,
+      ),
+    providers: [provideTranslocoScope('meters')],
   },
   {
     path: 'analytics',
-    loadComponent: () => import('./components/analytics/analytics.component').then((mod) => mod.AnalyticsComponent),
-    providers: [
-      provideTranslocoScope('analytics'),
-    ],
+    loadComponent: () =>
+      import('./components/analytics/analytics.component').then(
+        (mod) => mod.AnalyticsComponent,
+      ),
+    providers: [provideTranslocoScope('analytics')],
   },
   {
     path: 'settings',
-    loadComponent: () => import('./components/settings/settings.component').then((mod) => mod.SettingsComponent),
-    providers: [
-      provideTranslocoScope('settings'),
-    ],
+    loadComponent: () =>
+      import('./components/settings/settings.component').then(
+        (mod) => mod.SettingsComponent,
+      ),
+    providers: [provideTranslocoScope('settings')],
   },
   {
     path: '**',

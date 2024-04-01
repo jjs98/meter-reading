@@ -16,7 +16,10 @@ export class AppComponent {
   public readonly languages = this.translationService.availableLangs;
   public readonly themes = this.themeService.themes;
 
-  constructor(private translationService: TranslationService, private themeService: ThemeService) { }
+  constructor(
+    private translationService: TranslationService,
+    private themeService: ThemeService,
+  ) {}
 
   public setActiveLang(lang: string) {
     this.translationService.setActiveLang(lang);
