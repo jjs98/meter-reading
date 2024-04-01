@@ -8,7 +8,7 @@ import { TranslationService } from '../services/translation.service';
   pure: false,
 })
 export class LocalizedDatePipe implements PipeTransform {
-  constructor(private translationService: TranslationService) { }
+  constructor(private translationService: TranslationService) {}
 
   transform(value: Date | string | undefined, format = 'd MMMM, y') {
     const datePipe = new DatePipe(this.translationService.getActiveFullLang());

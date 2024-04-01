@@ -42,7 +42,10 @@ export class TranslationService {
   }
 
   public getFullLang(lang: string) {
-    return translocoConfig.fullLangs.find((fullLang) => fullLang.startsWith(lang)) ?? translocoConfig.defaultFullLang;
+    return (
+      translocoConfig.fullLangs.find((fullLang) => fullLang.startsWith(lang)) ??
+      translocoConfig.defaultFullLang
+    );
   }
 
   public getTranslation(key: string | undefined) {

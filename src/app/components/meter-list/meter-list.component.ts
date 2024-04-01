@@ -21,7 +21,12 @@ interface Meter {
 })
 export class MeterListComponent {
   public meters: Meter[] = [
-    { id: 1, name: 'Wasser - Keller', value: 25.93, lastUpdate: new Date(2024, 3, 23) },
+    {
+      id: 1,
+      name: 'Wasser - Keller',
+      value: 25.93,
+      lastUpdate: new Date(2024, 3, 23),
+    },
     { id: 2, name: 'Wasser', value: 21.93, lastUpdate: new Date(2024, 4, 1) },
     { id: 3, name: 'Strom', value: 30.93, lastUpdate: new Date(2024, 2, 12) },
   ];
@@ -34,7 +39,11 @@ export class MeterListComponent {
   constructor(private translationService: TranslationService) {
     // add 1000 items to meters
     for (let i = 4; i < 1004; i++) {
-      this.meters.push({ id: i, name: `Meter ${i}`, value: Math.random() * 100 });
+      this.meters.push({
+        id: i,
+        name: `Meter ${i}`,
+        value: Math.random() * 100,
+      });
     }
   }
 }
