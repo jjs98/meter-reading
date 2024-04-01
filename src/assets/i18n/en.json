@@ -5,8 +5,15 @@
     "meters": "Meters",
     "settings": "Settings"
   },
-  "lang": {
+  "language": "Language",
+  "languages": {
     "de": "Deutsch",
     "en": "English"
+  },
+  "profile": "Profile",
+  "theme": "Theme",
+  "themes": {
+    "dark": "Dark",
+    "light": "Light"
   }
 }

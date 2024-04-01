@@ -5,18 +5,19 @@ import { TranslocoService } from '@jsverse/transloco';
 import { setLocalStorage } from '../utils/local-storage.utils';
 
 const defaultLang = 'en';
-let service: TranslationService;
-
-let translocoServiceMock: {
-  getDefaultLang: jest.Mock,
-  getActiveLang: jest.Mock,
-  getAvailableLangs: jest.Mock,
-  setActiveLang: jest.Mock;
-};
 
 describe('TranslationService', () => {
+  let service: TranslationService;
+
+  let translocoServiceMock: {
+    getDefaultLang: jest.Mock,
+    getActiveLang: jest.Mock,
+    getAvailableLangs: jest.Mock,
+    setActiveLang: jest.Mock;
+  };
+
   beforeEach(() => {
-    setLocalStorage('lang', null);
+    localStorage.clear();
 
     translocoServiceMock = {
       getDefaultLang: jest.fn().mockReturnValue(defaultLang),

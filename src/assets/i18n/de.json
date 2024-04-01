@@ -5,8 +5,15 @@
     "meters": "Zähler",
     "settings": "Einstellungen"
   },
-  "lang": {
+  "language": "Sprache",
+  "languages": {
     "de": "Deutsch",
     "en": "English"
+  },
+  "profile": "Profil",
+  "theme": "Thema",
+  "themes": {
+    "dark": "Dunkel",
+    "light": "Hell"
   }
 }
