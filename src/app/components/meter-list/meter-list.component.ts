@@ -31,5 +31,10 @@ export class MeterListComponent {
     return datePipe.transform(date, 'd MMM, y');
   }
 
-  constructor(private translationService: TranslationService) { }
+  constructor(private translationService: TranslationService) {
+    // add 1000 items to meters
+    for (let i = 4; i < 1004; i++) {
+      this.meters.push({ id: i, name: `Meter ${i}`, value: Math.random() * 100 });
+    }
+  }
 }
