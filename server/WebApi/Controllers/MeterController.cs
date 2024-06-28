@@ -18,12 +18,15 @@ public class MeterController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(Meter[]), StatusCodes.Status200OK)]
     public IActionResult GetAll()
     {
         return Ok(meters);
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(Meter), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetAll(int id)
     {
         var meter = meters.FirstOrDefault(m => m.Id == id);
@@ -35,15 +38,19 @@ public class MeterController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public IActionResult Create(Meter meter)
     {
         meter.Id = counter;
         counter++;
+        meter.ChangeDate = DateTime.UtcNow;
         meters = meters.Append(meter);
         return CreatedAtAction(nameof(GetAll), meter);
     }
 
     [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public IActionResult Update(int id, Meter meter)
     {
         var existingMeter = meters.FirstOrDefault(m => m.Id == id);
@@ -57,6 +64,8 @@ public class MeterController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public IActionResult Delete(int id)
     {
         var existingMeter = meters.FirstOrDefault(m => m.Id == id);

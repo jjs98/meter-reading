@@ -1,0 +1,11 @@
+<p>meter works!</p>
+<button (click)="addMeter()">Add Meter</button>
+<div>
+  @for (meter of meters(); track meter){
+  <span>{{ meter.id }}</span>
+  <span>{{ meter.name }}</span>
+  <span>{{ meter.description }}</span>
+  <span>{{ meter.location }}</span>
+  <span>{{ meter.changeDate | date : 'dd MMMM yyyy, HH:mm:ss' }}</span>
+  }
+</div>

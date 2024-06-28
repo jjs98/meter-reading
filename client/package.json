@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve client",
+    "api": "node tools/openapi-gen.js",
     "build": "nx build client",
     "test": "nx test client",
-    "e2e": "nx e2e e2e"
+    "e2e": "nx e2e e2e",
+    "start": "nx serve client"
   },
   "private": true,
   "dependencies": {
@@ -33,6 +34,8 @@
     "@angular/cli": "~18.0.0",
     "@angular/compiler-cli": "~18.0.0",
     "@angular/language-service": "~18.0.0",
+    "@goast/core": "^0.2.2",
+    "@goast/typescript": "^0.2.18",
     "@nx/devkit": "19.3.2",
     "@nx/eslint": "19.3.2",
     "@nx/eslint-plugin": "19.3.2",
