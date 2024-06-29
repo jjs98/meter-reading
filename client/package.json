@@ -4,11 +4,11 @@
   "license": "MIT",
   "scripts": {
     "api": "node tools/openapi-gen.js",
-    "build": "nx build client",
-    "test": "nx test client",
     "prettier": "npx prettier --write .",
     "lint": "nx lint client && nx lint e2e",
+    "test": "nx test client",
     "e2e": "nx e2e e2e",
+    "build": "nx build client",
     "start": "nx serve client"
   },
   "private": true,

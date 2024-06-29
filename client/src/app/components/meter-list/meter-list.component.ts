@@ -7,8 +7,8 @@ import { MeterClient } from '../../api/clients';
   selector: 'app-meter',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './meter.component.html',
-  styleUrl: './meter.component.scss',
+  templateUrl: './meter-list.component.html',
+  styleUrl: './meter-list.component.scss',
 })
 export class MeterComponent implements OnInit {
   private meterClient = inject(MeterClient);

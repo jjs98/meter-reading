@@ -2,12 +2,12 @@ import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
   {
-    path: 'meter',
+    path: 'meters',
     loadComponent: () =>
-      import('./components/meter/meter.component').then(
+      import('./components/meter-list/meter-list.component').then(
         (m) => m.MeterComponent
       ),
   },
-  { path: '', redirectTo: 'meter', pathMatch: 'full' },
-  { path: '**', redirectTo: 'meter' },
+  { path: '', redirectTo: 'meters', pathMatch: 'full' },
+  { path: '**', redirectTo: 'meters' },
 ];
