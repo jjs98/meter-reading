@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "api": "node tools/openapi-gen.js",
+    "api": "ts-node tools/openapi-gen.ts",
     "prettier": "npx prettier --write .",
     "lint": "nx lint client && nx lint e2e",
     "test": "nx test client",
