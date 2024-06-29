@@ -1,0 +1,7 @@
+{
+  "prettier.configPath": "./client/.prettierrc",
+  "prettier.ignorePath": "./client/.prettierignore",
+  "prettier.prettierPath": "./client/node_modules/prettier",
+  "prettier.requireConfig": true,
+  "vs-code-prettier-eslint.prettierLast": true
+}

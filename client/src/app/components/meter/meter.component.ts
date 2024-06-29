@@ -19,13 +19,15 @@ export class MeterComponent implements OnInit {
   }
 
   addMeter() {
-    this.meterClient.postMeter({ name: 'New Meter', description: 'test', location: 'home' }).then(() => {
-      this.refreshMeters();
-    });
+    this.meterClient
+      .postMeter({ name: 'New Meter', description: 'test', location: 'home' })
+      .then(() => {
+        this.refreshMeters();
+      });
   }
 
   refreshMeters() {
-    this.meterClient.getMeter().then(meter => {
+    this.meterClient.getMeter().then((meter) => {
       meter.json().then((meter: ApiMeter[]) => {
         this.meters.set(meter);
       });

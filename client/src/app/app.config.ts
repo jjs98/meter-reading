@@ -21,11 +21,11 @@ export const appConfig: ApplicationConfig = {
         headers: {
           'Content-Type': 'application/json',
         },
-      }
+      },
     },
     {
       provide: MeterClient,
       deps: [METER_CLIENT_DEFAULT_OPTIONS],
-    }
+    },
   ],
 };
