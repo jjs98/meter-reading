@@ -1,4 +1,6 @@
-using Core.Models;
+using Application.DTOs;
+using Application.Interfaces;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -7,73 +9,95 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class MeterController : ControllerBase
 {
-    private static IEnumerable<Meter> meters = [];
-    private static int counter = 1;
-
     private readonly ILogger<MeterController> _logger;
+    private readonly IMeterService _meterService;
 
-    public MeterController(ILogger<MeterController> logger)
+    public MeterController(ILogger<MeterController> logger, IMeterService meterService)
     {
         _logger = logger;
+        _meterService = meterService;
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(Meter[]), StatusCodes.Status200OK)]
-    public IActionResult GetAll()
+    [ProducesResponseType(typeof(MeterDto[]), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAll()
     {
+        var meters = await _meterService.GetAll();
         return Ok(meters);
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(Meter), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(MeterDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetAll(int id)
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Get(int id)
     {
-        var meter = meters.FirstOrDefault(m => m.Id == id);
-        if (meter == null)
+        try
         {
-            return NotFound();
+            var meter = await _meterService.GetById(id);
+            return Ok(meter);
         }
-        return Ok(meter);
+        catch (Exception ex)
+        {
+            if (ex is EntityNotFoundException)
+                return NotFound();
+
+            _logger.LogError(ex, $"An error occurred while getting meter by id for id {id}");
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    public IActionResult Create(Meter meter)
+    [ProducesResponseType(typeof(MeterDto), StatusCodes.Status201Created)]
+    public async Task<IActionResult> Create([FromBody] MeterDto meter)
     {
-        meter.Id = counter;
-        counter++;
-        meter.ChangeDate = DateTime.UtcNow;
-        meters = meters.Append(meter);
-        return CreatedAtAction(nameof(GetAll), meter);
+        var createdMeter = await _meterService.Create(meter);
+        return CreatedAtAction(nameof(Create), new { id = createdMeter.Id }, createdMeter);
     }
 
     [HttpPut("{id}")]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult Update(int id, Meter meter)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Update(int id, [FromBody] MeterDto meter)
     {
-        var existingMeter = meters.FirstOrDefault(m => m.Id == id);
-        if (existingMeter == null)
+        if (id != meter.Id)
+            return BadRequest("Meter ID mismatch");
+
+        try
         {
-            return NotFound();
+            await _meterService.Update(meter);
+            return NoContent();
         }
-        meter.ChangeDate = DateTime.UtcNow;
-        meters = meters.Select(m => m.Id == id ? meter : m);
-        return NoContent();
+        catch (Exception ex)
+        {
+            if (ex is EntityNotFoundException)
+                return NotFound();
+
+            _logger.LogError(ex, $"An error occurred while updating meter by id for id {meter.Id}");
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 
     [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult Delete(int id)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Delete(int id)
     {
-        var existingMeter = meters.FirstOrDefault(m => m.Id == id);
-        if (existingMeter == null)
+        try
         {
-            return NotFound();
+            await _meterService.Delete(id);
+            return NoContent();
         }
-        meters = meters.Where(m => m.Id != id);
-        return NoContent();
+        catch (Exception ex)
+        {
+            if (ex is EntityNotFoundException)
+                return NotFound();
+
+            _logger.LogError(ex, $"An error occurred while deleting meter by id for id {id}");
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 }
