@@ -1,7 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ApiMeter } from '../../api/models';
+import { MeterDto } from '../../api/models';
 import { MeterClient } from '../../api/clients';
+import { MeterType } from '../../models/MeterType.enum';
 
 @Component({
   selector: 'app-meter',
@@ -12,7 +13,7 @@ import { MeterClient } from '../../api/clients';
 })
 export class MeterComponent implements OnInit {
   private meterClient = inject(MeterClient);
-  meters = signal<ApiMeter[]>([]);
+  meters = signal<MeterDto[]>([]);
 
   ngOnInit() {
     this.refreshMeters();
@@ -20,7 +21,7 @@ export class MeterComponent implements OnInit {
 
   addMeter() {
     this.meterClient
-      .postMeter({ name: 'New Meter', description: 'test', location: 'home' })
+      .postMeter({ owner: 'Jens', meterNumber: '1234', location: 'OG', type: MeterType.Water})
       .then(() => {
         this.refreshMeters();
       });
@@ -28,7 +29,7 @@ export class MeterComponent implements OnInit {
 
   refreshMeters() {
     this.meterClient.getMeter().then((meter) => {
-      meter.json().then((meter: ApiMeter[]) => {
+      meter.json().then((meter: MeterDto[]) => {
         this.meters.set(meter);
       });
     });

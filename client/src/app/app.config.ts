@@ -5,13 +5,15 @@ import { provideApi } from './api/services';
 import { MeterClient } from './api/clients';
 import { METER_CLIENT_DEFAULT_OPTIONS } from './api/clients/meter-client';
 import { environment } from '../environments/environment';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
+    provideHttpClient(),
     provideApi({
-      rootUrl: '/',
+      rootUrl: '/'
     }),
     {
       provide: METER_CLIENT_DEFAULT_OPTIONS,
@@ -26,6 +28,6 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MeterClient,
       deps: [METER_CLIENT_DEFAULT_OPTIONS],
-    },
+    }
   ],
 };

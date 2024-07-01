@@ -3,9 +3,10 @@
 <div>
   @for (meter of meters(); track meter){
   <span>{{ meter.id }}</span>
-  <span>{{ meter.name }}</span>
-  <span>{{ meter.description }}</span>
+  <span>{{ meter.owner }}</span>
   <span>{{ meter.location }}</span>
-  <span>{{ meter.changeDate | date : 'dd MMMM yyyy, HH:mm:ss' }}</span>
+  <span>{{ meter.meterNumber }}</span>
+  <span>{{ meter.type }}</span>
+  <span>{{ meter.comment }}</span>
   }
 </div>
