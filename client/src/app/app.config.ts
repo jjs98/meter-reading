@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     provideHttpClient(),
     provideApi({
-      rootUrl: '/'
+      rootUrl: '/',
     }),
     {
       provide: METER_CLIENT_DEFAULT_OPTIONS,
@@ -28,6 +28,6 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MeterClient,
       deps: [METER_CLIENT_DEFAULT_OPTIONS],
-    }
+    },
   ],
 };

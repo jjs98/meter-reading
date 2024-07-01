@@ -21,7 +21,12 @@ export class MeterComponent implements OnInit {
 
   addMeter() {
     this.meterClient
-      .postMeter({ owner: 'Jens', meterNumber: '1234', location: 'OG', type: MeterType.Water})
+      .postMeter({
+        owner: 'Jens',
+        meterNumber: '1234',
+        location: 'OG',
+        type: MeterType.Water,
+      })
       .then(() => {
         this.refreshMeters();
       });
