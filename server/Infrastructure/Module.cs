@@ -14,15 +14,34 @@ public static class Module
         IConfiguration configuration
     )
     {
-        services.AddDbContext<AppDbContext>(
-            options => options.UseNpgsql(configuration.GetConnectionString(nameof(AppDbContext))),
-            ServiceLifetime.Singleton
-        );
+        AddDbContextPool<AppDbContext>(services, configuration, nameof(AppDbContext));
 
         services.AddHostedService<MigrationService>();
 
         services.AddScoped<IMeterRepository, MeterRepository>();
 
         return services;
+    }
+
+    private static void AddDbContextPool<TDbContext>(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        string connectionStringName
+    )
+        where TDbContext : DbContext
+    {
+        services.AddPooledDbContextFactory<TDbContext>(options =>
+        {
+            var connectionString = configuration.GetConnectionString(connectionStringName);
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new InvalidOperationException(
+                    $"Connection string '{connectionStringName}' not found."
+                );
+            }
+
+            options.UseNpgsql(connectionString);
+        });
     }
 }

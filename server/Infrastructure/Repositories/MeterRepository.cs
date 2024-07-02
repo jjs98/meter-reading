@@ -7,21 +7,23 @@ namespace Infrastructure.Repositories;
 
 public class MeterRepository : IMeterRepository
 {
-    private readonly AppDbContext _context;
+    private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
-    public MeterRepository(AppDbContext context)
+    public MeterRepository(IDbContextFactory<AppDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<IEnumerable<Meter>> GetAll()
     {
-        return await _context.Meters.AsNoTracking().ToListAsync();
+        var context = _contextFactory.CreateDbContext();
+        return await context.Meters.AsNoTracking().ToListAsync();
     }
 
     public async Task<Meter> GetById(int id)
     {
-        var meter = await _context.Meters.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        var context = _contextFactory.CreateDbContext();
+        var meter = await context.Meters.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         if (meter is null)
             throw new EntityNotFoundException($"Meter for id {id} not found");
 
@@ -30,19 +32,21 @@ public class MeterRepository : IMeterRepository
 
     public async Task<Meter> Create(Meter meter)
     {
-        var result = await _context.Meters.AddAsync(meter);
-        await _context.SaveChangesAsync();
+        var context = _contextFactory.CreateDbContext();
+        var result = await context.Meters.AddAsync(meter);
+        await context.SaveChangesAsync();
         return result.Entity;
     }
 
     public async Task Update(Meter meter)
     {
+        var context = _contextFactory.CreateDbContext();
         var existingMeter = await GetByIdWithTracking(meter.Id);
 
-        await _context
+        await context
             .Meters.Where(x => x.Id == meter.Id)
             .ExecuteUpdateAsync(x =>
-                x.SetProperty(m => m.Owner, meter.Owner)
+                x.SetProperty(m => m.UserId, meter.UserId)
                     .SetProperty(m => m.Location, meter.Location)
                     .SetProperty(m => m.Type, meter.Type)
                     .SetProperty(m => m.MeterNumber, meter.MeterNumber)
@@ -50,20 +54,22 @@ public class MeterRepository : IMeterRepository
                     .SetProperty(m => m.UpdateDate, DateTime.UtcNow)
             );
 
-        _context.ChangeTracker.Clear();
+        context.ChangeTracker.Clear();
     }
 
     public async Task Delete(int id)
     {
+        var context = _contextFactory.CreateDbContext();
         var existingMeter = await GetByIdWithTracking(id);
 
-        _context.Meters.Remove(existingMeter);
-        await _context.SaveChangesAsync();
+        context.Meters.Remove(existingMeter);
+        await context.SaveChangesAsync();
     }
 
     private async Task<Meter> GetByIdWithTracking(int id)
     {
-        var meter = await _context.Meters.FindAsync(id);
+        var context = _contextFactory.CreateDbContext();
+        var meter = await context.Meters.FindAsync(id);
         if (meter is null)
             throw new EntityNotFoundException($"Meter for id {id} not found");
 

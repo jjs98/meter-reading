@@ -5,16 +5,17 @@ namespace Infrastructure.Services;
 
 public class MigrationService : IHostedService
 {
-    private readonly AppDbContext _appDbContext;
+    private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
-    public MigrationService(AppDbContext appDbContext)
+    public MigrationService(IDbContextFactory<AppDbContext> contextFactory)
     {
-        _appDbContext = appDbContext;
+        _contextFactory = contextFactory;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        await _appDbContext.Database.MigrateAsync(cancellationToken);
+        var context = _contextFactory.CreateDbContext();
+        await context.Database.MigrateAsync(cancellationToken);
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

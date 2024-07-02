@@ -10,7 +10,7 @@ public static class Mapper
         return new Meter
         {
             Id = meterDto.Id,
-            Owner = meterDto.Owner,
+            UserId = -1,
             Location = meterDto.Location,
             MeterNumber = meterDto.MeterNumber,
             Type = meterDto.Type,
@@ -25,7 +25,6 @@ public static class Mapper
         return new MeterDto
         {
             Id = meter.Id,
-            Owner = meter.Owner,
             Location = meter.Location,
             MeterNumber = meter.MeterNumber,
             Type = meter.Type,
