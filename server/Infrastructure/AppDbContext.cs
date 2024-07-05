@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     public DbSet<Reading> Readings { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<UserRole> UserRoles { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options) { }
@@ -17,9 +18,10 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .ApplyConfiguration(new MeterConfig())
-            .ApplyConfiguration(new ReadingConfig())
-            .ApplyConfiguration(new RoleConfig())
-            .ApplyConfiguration(new UserConfig());
+            .ApplyConfiguration(new MetersConfig())
+            .ApplyConfiguration(new ReadingsConfig())
+            .ApplyConfiguration(new RolesConfig())
+            .ApplyConfiguration(new UsersConfig())
+            .ApplyConfiguration(new UserRolesConfig());
     }
 }

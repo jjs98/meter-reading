@@ -9,11 +9,22 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.RegisterWebApiModule();
+        builder.Services.RegisterWebApiModule(builder.Configuration);
         builder.Services.RegisterInfrastructureModule(builder.Configuration);
         builder.Services.RegisterApplicationModule();
 
         var app = builder.Build();
+
+        app.UseCors(app => app.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+        app.UseHttpsRedirection();
+
+        app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.MapControllers();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -21,14 +32,6 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
-        app.UseCors(app => app.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
-        app.UseHttpsRedirection();
-
-        app.UseAuthorization();
-
-        app.MapControllers();
 
         app.Run();
     }

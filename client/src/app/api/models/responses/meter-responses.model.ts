@@ -1,18 +1,18 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
-import { MeterDto } from '../meter-dto';
+import { Meter } from '../meter';
 import { ProblemDetails } from '../problem-details';
 
-type GetMeterStatusCodes =
+type GetApiMeterStatusCodes =
   | (200)
   | (401)
   | (403)
   | (500);
 /**
- * Response model for operation getMeter
+ * Response model for operation getApiMeter
  */
-export type GetMeterApiResponse<TStatus extends GetMeterStatusCodes = GetMeterStatusCodes> = (
-    | ((HttpResponse<(MeterDto)[]>) & ({
+export type GetApiMeterApiResponse<TStatus extends GetApiMeterStatusCodes = GetApiMeterStatusCodes> = (
+    | ((HttpResponse<(Meter)[]>) & ({
           status: 200;
           ok: true;
         }))
@@ -34,16 +34,16 @@ export type GetMeterApiResponse<TStatus extends GetMeterStatusCodes = GetMeterSt
       status: TStatus;
     });
 
-type PostMeterStatusCodes =
+type PostApiMeterStatusCodes =
   | (201)
   | (401)
   | (403)
   | (500);
 /**
- * Response model for operation postMeter
+ * Response model for operation postApiMeter
  */
-export type PostMeterApiResponse<TStatus extends PostMeterStatusCodes = PostMeterStatusCodes> = (
-    | ((HttpResponse<never>) & ({
+export type PostApiMeterApiResponse<TStatus extends PostApiMeterStatusCodes = PostApiMeterStatusCodes> = (
+    | ((HttpResponse<Meter>) & ({
           status: 201;
           ok: true;
         }))
@@ -65,17 +65,17 @@ export type PostMeterApiResponse<TStatus extends PostMeterStatusCodes = PostMete
       status: TStatus;
     });
 
-type GetMeterIdStatusCodes =
+type GetApiMeterIdStatusCodes =
   | (200)
   | (401)
   | (403)
   | (404)
   | (500);
 /**
- * Response model for operation getMeterId
+ * Response model for operation getApiMeterId
  */
-export type GetMeterIdApiResponse<TStatus extends GetMeterIdStatusCodes = GetMeterIdStatusCodes> = (
-    | ((HttpResponse<MeterDto>) & ({
+export type GetApiMeterIdApiResponse<TStatus extends GetApiMeterIdStatusCodes = GetApiMeterIdStatusCodes> = (
+    | ((HttpResponse<Meter>) & ({
           status: 200;
           ok: true;
         }))
@@ -102,19 +102,25 @@ export type GetMeterIdApiResponse<TStatus extends GetMeterIdStatusCodes = GetMet
       status: TStatus;
     });
 
-type PutMeterIdStatusCodes =
+type PutApiMeterIdStatusCodes =
   | (204)
+  | (400)
   | (401)
   | (403)
   | (404)
   | (500);
 /**
- * Response model for operation putMeterId
+ * Response model for operation putApiMeterId
  */
-export type PutMeterIdApiResponse<TStatus extends PutMeterIdStatusCodes = PutMeterIdStatusCodes> = (
+export type PutApiMeterIdApiResponse<TStatus extends PutApiMeterIdStatusCodes = PutApiMeterIdStatusCodes> = (
     | ((HttpResponse<never>) & ({
           status: 204;
           ok: true;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (ProblemDetails) | (null);
+          status: 400;
+          ok: false;
         }))
     | ((HttpErrorResponse) & ({
           error: (never) | (null);
@@ -139,16 +145,16 @@ export type PutMeterIdApiResponse<TStatus extends PutMeterIdStatusCodes = PutMet
       status: TStatus;
     });
 
-type DeleteMeterIdStatusCodes =
+type DeleteApiMeterIdStatusCodes =
   | (204)
   | (401)
   | (403)
   | (404)
   | (500);
 /**
- * Response model for operation deleteMeterId
+ * Response model for operation deleteApiMeterId
  */
-export type DeleteMeterIdApiResponse<TStatus extends DeleteMeterIdStatusCodes = DeleteMeterIdStatusCodes> = (
+export type DeleteApiMeterIdApiResponse<TStatus extends DeleteApiMeterIdStatusCodes = DeleteApiMeterIdStatusCodes> = (
     | ((HttpResponse<never>) & ({
           status: 204;
           ok: true;

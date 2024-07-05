@@ -1,5 +1,5 @@
 import { IMeterClient } from './interfaces/meter-client';
-import { MeterDto } from '../models/meter-dto';
+import { Meter } from '../models/meter';
 import { FetchClientOptions, TypedResponse, UrlBuilder } from '../utils/fetch-client.utils';
 
 export const METER_CLIENT_DEFAULT_OPTIONS: FetchClientOptions = {};
@@ -14,42 +14,42 @@ export class MeterClient implements IMeterClient {
     this.options = { ...METER_CLIENT_DEFAULT_OPTIONS, ...options };
   }
 
-  public getMeter(): Promise<TypedResponse<(MeterDto)[]>> {
+  public getApiMeter(): Promise<TypedResponse<(Meter)[]>> {
     const url = new UrlBuilder(this.options.baseUrl)
-      .withPath('/Meter')
+      .withPath('/api/Meter')
       .build();
     const response = (this.options.fetch ?? fetch)(url, {
       method: 'GET',
       headers: this.options.headers,
     });
     Object.defineProperty(response, 'isVoidResponse', { value: false });
-    return response as unknown as Promise<TypedResponse<(MeterDto)[]>>;
+    return response as unknown as Promise<TypedResponse<(Meter)[]>>;
   }
 
   /**
    * @param body Body for the endpoint.
    */
-  public postMeter(body: MeterDto): Promise<TypedResponse<void>> {
+  public postApiMeter(body: Meter): Promise<TypedResponse<Meter>> {
     const url = new UrlBuilder(this.options.baseUrl)
-      .withPath('/Meter')
+      .withPath('/api/Meter')
       .build();
     const response = (this.options.fetch ?? fetch)(url, {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(body),
     });
-    Object.defineProperty(response, 'isVoidResponse', { value: true });
-    return response as unknown as Promise<TypedResponse<void>>;
+    Object.defineProperty(response, 'isVoidResponse', { value: false });
+    return response as unknown as Promise<TypedResponse<Meter>>;
   }
 
   /**
    * @param params Parameters for the endpoint.
    */
-  public getMeterId(params: {
+  public getApiMeterId(params: {
       id: number;
-    }): Promise<TypedResponse<MeterDto>> {
+    }): Promise<TypedResponse<Meter>> {
     const url = new UrlBuilder(this.options.baseUrl)
-      .withPath('/Meter/{id}')
+      .withPath('/api/Meter/{id}')
       .withPathParam('id', params.id)
       .build();
     const response = (this.options.fetch ?? fetch)(url, {
@@ -57,18 +57,18 @@ export class MeterClient implements IMeterClient {
       headers: this.options.headers,
     });
     Object.defineProperty(response, 'isVoidResponse', { value: false });
-    return response as unknown as Promise<TypedResponse<MeterDto>>;
+    return response as unknown as Promise<TypedResponse<Meter>>;
   }
 
   /**
    * @param params Parameters for the endpoint.
    * @param body Body for the endpoint.
    */
-  public putMeterId(params: {
+  public putApiMeterId(params: {
       id: number;
-    }, body: MeterDto): Promise<TypedResponse<void>> {
+    }, body: Meter): Promise<TypedResponse<void>> {
     const url = new UrlBuilder(this.options.baseUrl)
-      .withPath('/Meter/{id}')
+      .withPath('/api/Meter/{id}')
       .withPathParam('id', params.id)
       .build();
     const response = (this.options.fetch ?? fetch)(url, {
@@ -83,11 +83,11 @@ export class MeterClient implements IMeterClient {
   /**
    * @param params Parameters for the endpoint.
    */
-  public deleteMeterId(params: {
+  public deleteApiMeterId(params: {
       id: number;
     }): Promise<TypedResponse<void>> {
     const url = new UrlBuilder(this.options.baseUrl)
-      .withPath('/Meter/{id}')
+      .withPath('/api/Meter/{id}')
       .withPathParam('id', params.id)
       .build();
     const response = (this.options.fetch ?? fetch)(url, {

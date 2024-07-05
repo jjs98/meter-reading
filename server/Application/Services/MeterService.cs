@@ -1,6 +1,6 @@
-﻿using Application.DTOs;
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Domain.Interfaces;
+using Domain.Models;
 
 namespace Application.Services;
 
@@ -13,31 +13,33 @@ public class MeterService : IMeterService
         _meterRepository = meterRepository;
     }
 
-    public async Task<IEnumerable<MeterDto>> GetAll()
+    public async Task<IEnumerable<Meter>> GetAll()
     {
-        var meters = await _meterRepository.GetAll();
-
-        return meters.Select(Mapper.MapMeterToMeterDto);
+        return await _meterRepository.GetAll();
     }
 
-    public async Task<MeterDto> GetById(int id)
+    public async Task<Meter> GetById(int id)
     {
-        var meter = await _meterRepository.GetById(id);
-        return Mapper.MapMeterToMeterDto(meter);
+        return await _meterRepository.GetById(id);
     }
 
-    public async Task<MeterDto> Create(MeterDto meterDto)
+    public async Task<IEnumerable<Meter>> GetByUserId(int userId)
     {
-        var meter = Mapper.MapMeterDtoToMeter(meterDto);
-        meter.CreateDate = DateTime.UtcNow;
-        meter.UpdateDate = null;
-        var createdMeter = await _meterRepository.Create(meter);
-        return Mapper.MapMeterToMeterDto(createdMeter);
+        return await _meterRepository.GetByUserId(userId);
     }
 
-    public async Task Update(MeterDto meterDto)
+    public async Task<Meter> GetBy(int userId, int meterId)
     {
-        var meter = Mapper.MapMeterDtoToMeter(meterDto);
+        return await _meterRepository.GetBy(userId, meterId);
+    }
+
+    public async Task<Meter> Create(Meter meter)
+    {
+        return await _meterRepository.Create(meter);
+    }
+
+    public async Task Update(Meter meter)
+    {
         await _meterRepository.Update(meter);
     }
 

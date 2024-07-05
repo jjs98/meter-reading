@@ -1,29 +1,29 @@
-import { MeterDto } from '../../models/meter-dto';
+import { Meter } from '../../models/meter';
 import { TypedResponse } from '../../utils/fetch-client.utils';
 
 export interface IMeterClient {
-  getMeter(): Promise<TypedResponse<(MeterDto)[]>>;
+  getApiMeter(): Promise<TypedResponse<(Meter)[]>>;
   /**
    * @param body Body for the endpoint.
    */
-  postMeter(body: MeterDto): Promise<TypedResponse<void>>;
+  postApiMeter(body: Meter): Promise<TypedResponse<Meter>>;
   /**
    * @param params Parameters for the endpoint.
    */
-  getMeterId(params: {
+  getApiMeterId(params: {
       id: number;
-    }): Promise<TypedResponse<MeterDto>>;
+    }): Promise<TypedResponse<Meter>>;
   /**
    * @param params Parameters for the endpoint.
    * @param body Body for the endpoint.
    */
-  putMeterId(params: {
+  putApiMeterId(params: {
       id: number;
-    }, body: MeterDto): Promise<TypedResponse<void>>;
+    }, body: Meter): Promise<TypedResponse<void>>;
   /**
    * @param params Parameters for the endpoint.
    */
-  deleteMeterId(params: {
+  deleteApiMeterId(params: {
       id: number;
     }): Promise<TypedResponse<void>>;
 }

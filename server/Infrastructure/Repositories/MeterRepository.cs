@@ -30,9 +30,37 @@ public class MeterRepository : IMeterRepository
         return meter;
     }
 
+    public async Task<IEnumerable<Meter>> GetByUserId(int userId)
+    {
+        var context = _contextFactory.CreateDbContext();
+        var meter = await context
+            .Meters.AsNoTracking()
+            .Where(x => x.UserId == userId)
+            .ToListAsync();
+
+        return meter;
+    }
+
+    public async Task<Meter> GetBy(int userId, int meterId)
+    {
+        var context = _contextFactory.CreateDbContext();
+        var meter = await context
+            .Meters.AsNoTracking()
+            .Where(x => x.UserId == userId)
+            .FirstOrDefaultAsync(x => x.Id == meterId);
+        if (meter is null)
+            throw new EntityNotFoundException(
+                $"Meter for user id {userId} and meter id {meterId} not found"
+            );
+
+        return meter;
+    }
+
     public async Task<Meter> Create(Meter meter)
     {
         var context = _contextFactory.CreateDbContext();
+        meter.UpdateDate = null;
+        meter.CreateDate = DateTime.UtcNow;
         var result = await context.Meters.AddAsync(meter);
         await context.SaveChangesAsync();
         return result.Entity;
@@ -46,8 +74,7 @@ public class MeterRepository : IMeterRepository
         await context
             .Meters.Where(x => x.Id == meter.Id)
             .ExecuteUpdateAsync(x =>
-                x.SetProperty(m => m.UserId, meter.UserId)
-                    .SetProperty(m => m.Location, meter.Location)
+                x.SetProperty(m => m.Location, meter.Location)
                     .SetProperty(m => m.Type, meter.Type)
                     .SetProperty(m => m.MeterNumber, meter.MeterNumber)
                     .SetProperty(m => m.Comment, meter.Comment)

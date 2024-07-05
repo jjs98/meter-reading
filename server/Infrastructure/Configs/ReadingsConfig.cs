@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configs;
 
-public class ReadingConfig : IEntityTypeConfiguration<Reading>
+public class ReadingsConfig : IEntityTypeConfiguration<Reading>
 {
     public void Configure(EntityTypeBuilder<Reading> builder)
     {

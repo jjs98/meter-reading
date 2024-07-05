@@ -1,53 +1,53 @@
 import { HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { MeterDto } from '../models/meter-dto';
-import { DeleteMeterIdApiResponse, GetMeterApiResponse, GetMeterIdApiResponse, PostMeterApiResponse, PutMeterIdApiResponse } from '../models/responses/meter-responses.model';
+import { Meter } from '../models/meter';
+import { DeleteApiMeterIdApiResponse, GetApiMeterApiResponse, GetApiMeterIdApiResponse, PostApiMeterApiResponse, PutApiMeterIdApiResponse } from '../models/responses/meter-responses.model';
 import { AbortablePromise, waitForResponse } from '../utils/angular-service.utils';
 import { ApiBaseService } from '../utils/api-base-service';
 import { RequestBuilder } from '../utils/request-builder';
 
 /**
- * Parameters for operation postMeter
+ * Parameters for operation postApiMeter
  */
-type PostMeterParams = {
-    body?: MeterDto;
+type PostApiMeterParams = {
+    body?: Meter;
   };
 
 /**
- * Parameters for operation getMeterId
+ * Parameters for operation getApiMeterId
  */
-type GetMeterIdParams = {
+type GetApiMeterIdParams = {
     id: number;
   };
 
 /**
- * Parameters for operation putMeterId
+ * Parameters for operation putApiMeterId
  */
-type PutMeterIdParams = {
+type PutApiMeterIdParams = {
     id: number;
-    body?: MeterDto;
+    body?: Meter;
   };
 
 /**
- * Parameters for operation deleteMeterId
+ * Parameters for operation deleteApiMeterId
  */
-type DeleteMeterIdParams = {
+type DeleteApiMeterIdParams = {
     id: number;
   };
 
 @Injectable()
 export class MeterService extends ApiBaseService {
-  private static readonly GET_METER_PATH = '/Meter';
-  private static readonly POST_METER_PATH = '/Meter';
-  private static readonly GET_METER_ID_PATH = '/Meter/{id}';
-  private static readonly PUT_METER_ID_PATH = '/Meter/{id}';
-  private static readonly DELETE_METER_ID_PATH = '/Meter/{id}';
+  private static readonly GET_API_METER_PATH = '/api/Meter';
+  private static readonly POST_API_METER_PATH = '/api/Meter';
+  private static readonly GET_API_METER_ID_PATH = '/api/Meter/{id}';
+  private static readonly PUT_API_METER_ID_PATH = '/api/Meter/{id}';
+  private static readonly DELETE_API_METER_ID_PATH = '/api/Meter/{id}';
 
-  public getMeter(context?: HttpContext): AbortablePromise<GetMeterApiResponse> {
-    const rb = new RequestBuilder(this.rootUrl, MeterService.GET_METER_PATH, 'get');
+  public getApiMeter(context?: HttpContext): AbortablePromise<GetApiMeterApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, MeterService.GET_API_METER_PATH, 'get');
 
-    return waitForResponse<GetMeterApiResponse>(
+    return waitForResponse<GetApiMeterApiResponse>(
       this.http.request(rb.build({
         responseType: 'text',
         accept: 'text/plain',
@@ -63,16 +63,16 @@ export class MeterService extends ApiBaseService {
     )
   }
 
-  public postMeter(params?: PostMeterParams, context?: HttpContext): AbortablePromise<PostMeterApiResponse> {
-    const rb = new RequestBuilder(this.rootUrl, MeterService.POST_METER_PATH, 'post');
+  public postApiMeter(params?: PostApiMeterParams, context?: HttpContext): AbortablePromise<PostApiMeterApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, MeterService.POST_API_METER_PATH, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
     }
 
-    return waitForResponse<PostMeterApiResponse>(
+    return waitForResponse<PostApiMeterApiResponse>(
       this.http.request(rb.build({
         responseType: 'text',
-        accept: '*/*',
+        accept: 'text/plain',
         context,
       })),
       {
@@ -85,11 +85,11 @@ export class MeterService extends ApiBaseService {
     )
   }
 
-  public getMeterId(params: GetMeterIdParams, context?: HttpContext): AbortablePromise<GetMeterIdApiResponse> {
-    const rb = new RequestBuilder(this.rootUrl, MeterService.GET_METER_ID_PATH, 'get');
+  public getApiMeterId(params: GetApiMeterIdParams, context?: HttpContext): AbortablePromise<GetApiMeterIdApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, MeterService.GET_API_METER_ID_PATH, 'get');
     rb.path('id', params.id, {});
 
-    return waitForResponse<GetMeterIdApiResponse>(
+    return waitForResponse<GetApiMeterIdApiResponse>(
       this.http.request(rb.build({
         responseType: 'text',
         accept: 'text/plain',
@@ -106,12 +106,12 @@ export class MeterService extends ApiBaseService {
     )
   }
 
-  public putMeterId(params: PutMeterIdParams, context?: HttpContext): AbortablePromise<PutMeterIdApiResponse> {
-    const rb = new RequestBuilder(this.rootUrl, MeterService.PUT_METER_ID_PATH, 'put');
+  public putApiMeterId(params: PutApiMeterIdParams, context?: HttpContext): AbortablePromise<PutApiMeterIdApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, MeterService.PUT_API_METER_ID_PATH, 'put');
     rb.path('id', params.id, {});
     rb.body(params.body, 'application/json');
 
-    return waitForResponse<PutMeterIdApiResponse>(
+    return waitForResponse<PutApiMeterIdApiResponse>(
       this.http.request(rb.build({
         responseType: 'text',
         accept: '*/*',
@@ -119,6 +119,7 @@ export class MeterService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
+          400: 'text',
           401: 'text',
           403: 'text',
           404: 'text',
@@ -128,11 +129,11 @@ export class MeterService extends ApiBaseService {
     )
   }
 
-  public deleteMeterId(params: DeleteMeterIdParams, context?: HttpContext): AbortablePromise<DeleteMeterIdApiResponse> {
-    const rb = new RequestBuilder(this.rootUrl, MeterService.DELETE_METER_ID_PATH, 'delete');
+  public deleteApiMeterId(params: DeleteApiMeterIdParams, context?: HttpContext): AbortablePromise<DeleteApiMeterIdApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, MeterService.DELETE_API_METER_ID_PATH, 'delete');
     rb.path('id', params.id, {});
 
-    return waitForResponse<DeleteMeterIdApiResponse>(
+    return waitForResponse<DeleteApiMeterIdApiResponse>(
       this.http.request(rb.build({
         responseType: 'text',
         accept: '*/*',

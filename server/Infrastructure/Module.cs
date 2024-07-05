@@ -19,6 +19,10 @@ public static class Module
         services.AddHostedService<MigrationService>();
 
         services.AddScoped<IMeterRepository, MeterRepository>();
+        services.AddScoped<IReadingRepository, ReadingRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 
         return services;
     }

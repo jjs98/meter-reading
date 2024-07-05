@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configs;
 
-public class MeterConfig : IEntityTypeConfiguration<Meter>
+public class MetersConfig : IEntityTypeConfiguration<Meter>
 {
     public void Configure(EntityTypeBuilder<Meter> builder)
     {

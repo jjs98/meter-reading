@@ -1,38 +1,39 @@
-import { MeterDto } from '../models/meter-dto';
+import { Meter } from '../models/meter';
 import { ProblemDetails } from '../models/problem-details';
 import { EasyNetworkStubBase, StrictRouteResponseCallback, StubRequestInfo, getStubResponder } from '../utils/easy-network-stub.utils';
 
-const getMeterResponder = getStubResponder<{
-    200: (MeterDto)[];
+const getApiMeterResponder = getStubResponder<{
+    200: (Meter)[];
     401: never;
     403: never;
     500: never;
   }>();
 
-const postMeterResponder = getStubResponder<{
-    201: never;
+const postApiMeterResponder = getStubResponder<{
+    201: Meter;
     401: never;
     403: never;
     500: never;
   }>();
 
-const getMeterIdResponder = getStubResponder<{
-    200: MeterDto;
+const getApiMeterIdResponder = getStubResponder<{
+    200: Meter;
     401: never;
     403: never;
     404: ProblemDetails;
     500: never;
   }>();
 
-const putMeterIdResponder = getStubResponder<{
+const putApiMeterIdResponder = getStubResponder<{
     204: never;
+    400: ProblemDetails;
     401: never;
     403: never;
     404: ProblemDetails;
     500: never;
   }>();
 
-const deleteMeterIdResponder = getStubResponder<{
+const deleteApiMeterIdResponder = getStubResponder<{
     204: never;
     401: never;
     403: never;
@@ -41,130 +42,130 @@ const deleteMeterIdResponder = getStubResponder<{
   }>();
 
 export class MeterStubs extends EasyNetworkStubBase {
-  private static readonly GET_METER_PATH = 'Meter' as const;
-  private static readonly POST_METER_PATH = 'Meter' as const;
-  private static readonly GET_METER_ID_PATH = 'Meter/{id:number}' as const;
-  private static readonly PUT_METER_ID_PATH = 'Meter/{id:number}' as const;
-  private static readonly DELETE_METER_ID_PATH = 'Meter/{id:number}' as const;
+  private static readonly GET_API_METER_PATH = 'api/Meter' as const;
+  private static readonly POST_API_METER_PATH = 'api/Meter' as const;
+  private static readonly GET_API_METER_ID_PATH = 'api/Meter/{id:number}' as const;
+  private static readonly PUT_API_METER_ID_PATH = 'api/Meter/{id:number}' as const;
+  private static readonly DELETE_API_METER_ID_PATH = 'api/Meter/{id:number}' as const;
 
-  private readonly _getMeterRequests: (StubRequestInfo<typeof MeterStubs.GET_METER_PATH, unknown>)[] = [];
-  private readonly _postMeterRequests: (StubRequestInfo<typeof MeterStubs.POST_METER_PATH, MeterDto>)[] = [];
-  private readonly _getMeterIdRequests: (StubRequestInfo<typeof MeterStubs.GET_METER_ID_PATH, unknown>)[] = [];
-  private readonly _putMeterIdRequests: (StubRequestInfo<typeof MeterStubs.PUT_METER_ID_PATH, MeterDto>)[] = [];
-  private readonly _deleteMeterIdRequests: (StubRequestInfo<typeof MeterStubs.DELETE_METER_ID_PATH, unknown>)[] = [];
+  private readonly _getApiMeterRequests: (StubRequestInfo<typeof MeterStubs.GET_API_METER_PATH, unknown>)[] = [];
+  private readonly _postApiMeterRequests: (StubRequestInfo<typeof MeterStubs.POST_API_METER_PATH, Meter>)[] = [];
+  private readonly _getApiMeterIdRequests: (StubRequestInfo<typeof MeterStubs.GET_API_METER_ID_PATH, unknown>)[] = [];
+  private readonly _putApiMeterIdRequests: (StubRequestInfo<typeof MeterStubs.PUT_API_METER_ID_PATH, Meter>)[] = [];
+  private readonly _deleteApiMeterIdRequests: (StubRequestInfo<typeof MeterStubs.DELETE_API_METER_ID_PATH, unknown>)[] = [];
 
-  public get getMeterRequests(): readonly (StubRequestInfo<typeof MeterStubs.GET_METER_PATH, unknown>)[] {
-    return this._getMeterRequests;
+  public get getApiMeterRequests(): readonly (StubRequestInfo<typeof MeterStubs.GET_API_METER_PATH, unknown>)[] {
+    return this._getApiMeterRequests;
   }
-  public get postMeterRequests(): readonly (StubRequestInfo<typeof MeterStubs.POST_METER_PATH, MeterDto>)[] {
-    return this._postMeterRequests;
+  public get postApiMeterRequests(): readonly (StubRequestInfo<typeof MeterStubs.POST_API_METER_PATH, Meter>)[] {
+    return this._postApiMeterRequests;
   }
-  public get getMeterIdRequests(): readonly (StubRequestInfo<typeof MeterStubs.GET_METER_ID_PATH, unknown>)[] {
-    return this._getMeterIdRequests;
+  public get getApiMeterIdRequests(): readonly (StubRequestInfo<typeof MeterStubs.GET_API_METER_ID_PATH, unknown>)[] {
+    return this._getApiMeterIdRequests;
   }
-  public get putMeterIdRequests(): readonly (StubRequestInfo<typeof MeterStubs.PUT_METER_ID_PATH, MeterDto>)[] {
-    return this._putMeterIdRequests;
+  public get putApiMeterIdRequests(): readonly (StubRequestInfo<typeof MeterStubs.PUT_API_METER_ID_PATH, Meter>)[] {
+    return this._putApiMeterIdRequests;
   }
-  public get deleteMeterIdRequests(): readonly (StubRequestInfo<typeof MeterStubs.DELETE_METER_ID_PATH, unknown>)[] {
-    return this._deleteMeterIdRequests;
+  public get deleteApiMeterIdRequests(): readonly (StubRequestInfo<typeof MeterStubs.DELETE_API_METER_ID_PATH, unknown>)[] {
+    return this._deleteApiMeterIdRequests;
   }
 
-  public stubGetMeter(response: StrictRouteResponseCallback<
+  public stubGetApiMeter(response: StrictRouteResponseCallback<
       unknown,
-      typeof MeterStubs.GET_METER_PATH,
-      typeof getMeterResponder
+      typeof MeterStubs.GET_API_METER_PATH,
+      typeof getApiMeterResponder
     >): this {
     this.stubWrapper.stub2<unknown>()(
       'GET',
-      MeterStubs.GET_METER_PATH,
+      MeterStubs.GET_API_METER_PATH,
       async (request) => {
         if (this.stubWrapper.options.rememberRequests) {
-          this._getMeterRequests.push(request);
+          this._getApiMeterRequests.push(request);
         }
-        throw await response(getMeterResponder, request);
+        throw await response(getApiMeterResponder, request);
       }
     );
     return this;
   }
 
-  public stubPostMeter(response: StrictRouteResponseCallback<
-      MeterDto,
-      typeof MeterStubs.POST_METER_PATH,
-      typeof postMeterResponder
+  public stubPostApiMeter(response: StrictRouteResponseCallback<
+      Meter,
+      typeof MeterStubs.POST_API_METER_PATH,
+      typeof postApiMeterResponder
     >): this {
-    this.stubWrapper.stub2<MeterDto>()(
+    this.stubWrapper.stub2<Meter>()(
       'POST',
-      MeterStubs.POST_METER_PATH,
+      MeterStubs.POST_API_METER_PATH,
       async (request) => {
         if (this.stubWrapper.options.rememberRequests) {
-          this._postMeterRequests.push(request);
+          this._postApiMeterRequests.push(request);
         }
-        throw await response(postMeterResponder, request);
+        throw await response(postApiMeterResponder, request);
       }
     );
     return this;
   }
 
-  public stubGetMeterId(response: StrictRouteResponseCallback<
+  public stubGetApiMeterId(response: StrictRouteResponseCallback<
       unknown,
-      typeof MeterStubs.GET_METER_ID_PATH,
-      typeof getMeterIdResponder
+      typeof MeterStubs.GET_API_METER_ID_PATH,
+      typeof getApiMeterIdResponder
     >): this {
     this.stubWrapper.stub2<unknown>()(
       'GET',
-      MeterStubs.GET_METER_ID_PATH,
+      MeterStubs.GET_API_METER_ID_PATH,
       async (request) => {
         if (this.stubWrapper.options.rememberRequests) {
-          this._getMeterIdRequests.push(request);
+          this._getApiMeterIdRequests.push(request);
         }
-        throw await response(getMeterIdResponder, request);
+        throw await response(getApiMeterIdResponder, request);
       }
     );
     return this;
   }
 
-  public stubPutMeterId(response: StrictRouteResponseCallback<
-      MeterDto,
-      typeof MeterStubs.PUT_METER_ID_PATH,
-      typeof putMeterIdResponder
+  public stubPutApiMeterId(response: StrictRouteResponseCallback<
+      Meter,
+      typeof MeterStubs.PUT_API_METER_ID_PATH,
+      typeof putApiMeterIdResponder
     >): this {
-    this.stubWrapper.stub2<MeterDto>()(
+    this.stubWrapper.stub2<Meter>()(
       'PUT',
-      MeterStubs.PUT_METER_ID_PATH,
+      MeterStubs.PUT_API_METER_ID_PATH,
       async (request) => {
         if (this.stubWrapper.options.rememberRequests) {
-          this._putMeterIdRequests.push(request);
+          this._putApiMeterIdRequests.push(request);
         }
-        throw await response(putMeterIdResponder, request);
+        throw await response(putApiMeterIdResponder, request);
       }
     );
     return this;
   }
 
-  public stubDeleteMeterId(response: StrictRouteResponseCallback<
+  public stubDeleteApiMeterId(response: StrictRouteResponseCallback<
       unknown,
-      typeof MeterStubs.DELETE_METER_ID_PATH,
-      typeof deleteMeterIdResponder
+      typeof MeterStubs.DELETE_API_METER_ID_PATH,
+      typeof deleteApiMeterIdResponder
     >): this {
     this.stubWrapper.stub2<unknown>()(
       'DELETE',
-      MeterStubs.DELETE_METER_ID_PATH,
+      MeterStubs.DELETE_API_METER_ID_PATH,
       async (request) => {
         if (this.stubWrapper.options.rememberRequests) {
-          this._deleteMeterIdRequests.push(request);
+          this._deleteApiMeterIdRequests.push(request);
         }
-        throw await response(deleteMeterIdResponder, request);
+        throw await response(deleteApiMeterIdResponder, request);
       }
     );
     return this;
   }
 
   public override reset(): void {
-    this._getMeterRequests.length = 0;
-    this._postMeterRequests.length = 0;
-    this._getMeterIdRequests.length = 0;
-    this._putMeterIdRequests.length = 0;
-    this._deleteMeterIdRequests.length = 0;
+    this._getApiMeterRequests.length = 0;
+    this._postApiMeterRequests.length = 0;
+    this._getApiMeterIdRequests.length = 0;
+    this._putApiMeterIdRequests.length = 0;
+    this._deleteApiMeterIdRequests.length = 0;
     super.reset();
   }
 }

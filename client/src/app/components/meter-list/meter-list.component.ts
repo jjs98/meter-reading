@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MeterDto } from '../../api/models';
+import { Meter } from '../../api/models';
 import { MeterClient } from '../../api/clients';
 import { MeterType } from '../../models/MeterType.enum';
 
@@ -13,16 +13,25 @@ import { MeterType } from '../../models/MeterType.enum';
 })
 export class MeterComponent implements OnInit {
   private meterClient = inject(MeterClient);
-  meters = signal<MeterDto[]>([]);
+  meters = signal<Meter[]>([]);
 
   ngOnInit() {
     this.refreshMeters();
   }
 
   addMeter() {
+    // This is temp
+    this.meterClient.options = {
+      ...this.meterClient.options,
+      headers: {
+        ...this.meterClient.options.headers,
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+      }
+    };
+
     this.meterClient
-      .postMeter({
-        owner: 'Jens',
+      .postApiMeter({
+        userId: 1,
         meterNumber: '1234',
         location: 'OG',
         type: MeterType.Water,
@@ -33,8 +42,8 @@ export class MeterComponent implements OnInit {
   }
 
   refreshMeters() {
-    this.meterClient.getMeter().then((meter) => {
-      meter.json().then((meter: MeterDto[]) => {
+    this.meterClient.getApiMeter().then((meter) => {
+      meter.json().then((meter: Meter[]) => {
         this.meters.set(meter);
       });
     });
