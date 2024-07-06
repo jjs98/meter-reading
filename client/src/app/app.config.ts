@@ -1,33 +1,33 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideApi } from './api/services';
-import { MeterClient } from './api/clients';
-import { METER_CLIENT_DEFAULT_OPTIONS } from './api/clients/meter-client';
 import { environment } from '../environments/environment';
-import { provideHttpClient } from '@angular/common/http';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimationsAsync(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
     provideApi({
-      rootUrl: '/',
+      rootUrl: environment.api.baseUrl,
     }),
     {
-      provide: METER_CLIENT_DEFAULT_OPTIONS,
-      useValue: {
-        baseUrl: environment.api.baseUrl,
-        fetch: fetch,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    },
-    {
-      provide: MeterClient,
-      deps: [METER_CLIENT_DEFAULT_OPTIONS],
+      provide: MessageService,
     },
   ],
 };

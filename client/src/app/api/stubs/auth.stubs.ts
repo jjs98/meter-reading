@@ -1,17 +1,17 @@
 import { ProblemDetails } from '../models/problem-details';
+import { TokenDto } from '../models/token-dto';
 import { UserLoginDto } from '../models/user-login-dto';
 import { EasyNetworkStubBase, StrictRouteResponseCallback, StubRequestInfo, getStubResponder } from '../utils/easy-network-stub.utils';
 
 const postApiAuthLoginResponder = getStubResponder<{
-    200: string;
-    400: ProblemDetails;
-    401: never;
+    200: TokenDto;
+    401: ProblemDetails;
     403: never;
     500: never;
   }>();
 
 const postApiAuthRefreshResponder = getStubResponder<{
-    200: string;
+    200: TokenDto;
     400: ProblemDetails;
     401: never;
     403: never;

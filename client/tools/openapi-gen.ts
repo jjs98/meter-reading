@@ -1,10 +1,9 @@
 import path from 'path';
 import { OpenApiGenerator } from '@goast/core';
 import {
-  TypeScriptAngularServicesGenerator,
   TypeScriptEasyNetworkStubsGenerator,
+  TypeScriptAngularServicesGenerator,
   TypeScriptModelsGenerator,
-  TypeScriptClientsGenerator,
 } from '@goast/typescript';
 
 export async function main(): Promise<void> {
@@ -17,9 +16,6 @@ export async function main(): Promise<void> {
     })
     .useType(TypeScriptAngularServicesGenerator, { provideKind: 'provide-fn' })
     .useType(TypeScriptEasyNetworkStubsGenerator)
-    .useType(TypeScriptClientsGenerator, {
-      clientFileKind: 'class-and-interface',
-    })
     .parseAndGenerate(path.join(__dirname, '../../server/WebApi/WebApi.json'));
 }
 

@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -51,7 +52,10 @@ public static class Module
                 };
             });
 
-        services.AddControllers();
+        services.AddControllers(options =>
+        {
+            options.OutputFormatters.RemoveType<StringOutputFormatter>();
+        });
 
         services.AddEndpointsApiExplorer();
         services.AddHttpContextAccessor();

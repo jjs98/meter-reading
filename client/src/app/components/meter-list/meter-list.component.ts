@@ -1,18 +1,21 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Meter } from '../../api/models';
-import { MeterClient } from '../../api/clients';
 import { MeterType } from '../../models/MeterType.enum';
+import { MeterService } from '../../api/services';
+import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-meter',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonModule, TableModule, DropdownModule],
   templateUrl: './meter-list.component.html',
   styleUrl: './meter-list.component.scss',
 })
 export class MeterComponent implements OnInit {
-  private meterClient = inject(MeterClient);
+  private meterService = inject(MeterService);
   meters = signal<Meter[]>([]);
 
   ngOnInit() {
@@ -20,21 +23,14 @@ export class MeterComponent implements OnInit {
   }
 
   addMeter() {
-    // This is temp
-    this.meterClient.options = {
-      ...this.meterClient.options,
-      headers: {
-        ...this.meterClient.options.headers,
-        'Authorization': 'Bearer ' + localStorage.getItem('token'),
-      }
-    };
-
-    this.meterClient
+    this.meterService
       .postApiMeter({
-        userId: 1,
-        meterNumber: '1234',
-        location: 'OG',
-        type: MeterType.Water,
+        body: {
+          userId: 1,
+          meterNumber: '1234',
+          location: 'OG',
+          type: MeterType.Electricity,
+        },
       })
       .then(() => {
         this.refreshMeters();
@@ -42,10 +38,11 @@ export class MeterComponent implements OnInit {
   }
 
   refreshMeters() {
-    this.meterClient.getApiMeter().then((meter) => {
-      meter.json().then((meter: Meter[]) => {
+    this.meterService.getApiMeter().then((resonse) => {
+      if (resonse.status === 200) {
+        const meter = resonse.body as Meter[];
         this.meters.set(meter);
-      });
+      }
     });
   }
 }

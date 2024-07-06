@@ -59,15 +59,15 @@ export class ReadingService extends ApiBaseService {
 
     return waitForResponse<GetApiReadingApiResponse>(
       this.http.request(rb.build({
-        responseType: 'text',
-        accept: 'text/plain',
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {
         errorResponseTypes: {
           401: 'text',
           403: 'text',
-          404: 'text',
+          404: 'json',
           500: 'text',
         }
       }
@@ -82,8 +82,8 @@ export class ReadingService extends ApiBaseService {
 
     return waitForResponse<PostApiReadingApiResponse>(
       this.http.request(rb.build({
-        responseType: 'text',
-        accept: 'text/plain',
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {
@@ -102,15 +102,15 @@ export class ReadingService extends ApiBaseService {
 
     return waitForResponse<GetApiReadingIdApiResponse>(
       this.http.request(rb.build({
-        responseType: 'text',
-        accept: 'text/plain',
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {
         errorResponseTypes: {
           401: 'text',
           403: 'text',
-          404: 'text',
+          404: 'json',
           500: 'text',
         }
       }
@@ -130,10 +130,10 @@ export class ReadingService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
-          400: 'text',
+          400: 'json',
           401: 'text',
           403: 'text',
-          404: 'text',
+          404: 'json',
           500: 'text',
         }
       }
@@ -154,7 +154,7 @@ export class ReadingService extends ApiBaseService {
         errorResponseTypes: {
           401: 'text',
           403: 'text',
-          404: 'text',
+          404: 'json',
           500: 'text',
         }
       }

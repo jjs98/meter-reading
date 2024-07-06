@@ -49,8 +49,8 @@ export class MeterService extends ApiBaseService {
 
     return waitForResponse<GetApiMeterApiResponse>(
       this.http.request(rb.build({
-        responseType: 'text',
-        accept: 'text/plain',
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {
@@ -71,8 +71,8 @@ export class MeterService extends ApiBaseService {
 
     return waitForResponse<PostApiMeterApiResponse>(
       this.http.request(rb.build({
-        responseType: 'text',
-        accept: 'text/plain',
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {
@@ -91,15 +91,15 @@ export class MeterService extends ApiBaseService {
 
     return waitForResponse<GetApiMeterIdApiResponse>(
       this.http.request(rb.build({
-        responseType: 'text',
-        accept: 'text/plain',
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {
         errorResponseTypes: {
           401: 'text',
           403: 'text',
-          404: 'text',
+          404: 'json',
           500: 'text',
         }
       }
@@ -119,10 +119,10 @@ export class MeterService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
-          400: 'text',
+          400: 'json',
           401: 'text',
           403: 'text',
-          404: 'text',
+          404: 'json',
           500: 'text',
         }
       }
@@ -143,7 +143,7 @@ export class MeterService extends ApiBaseService {
         errorResponseTypes: {
           401: 'text',
           403: 'text',
-          404: 'text',
+          404: 'json',
           500: 'text',
         }
       }

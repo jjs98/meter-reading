@@ -1,1 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
+@layer base, tailwind-base, primeng, tailwind-utilities, components;
+
+@mixin classStartsWith($prefixes...) {
+  $selector: '';
+  @for $i from 1 through length($prefixes) {
+    @if $i > 1 {
+      $selector: $selector + ', ';
+    }
+    $prefix: nth($prefixes, $i);
+    $selector: $selector + "[class^='#{$prefix}'], [class*='#{$prefix}']";
+  }
+  @at-root #{$selector} {
+    @content;
+  }
+}
+
+@layer components {
+  @include classStartsWith('i-[') {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    min-width: 1em;
+    min-height: 1em;
+    vertical-align: -0.125em;
+  }
+
+  @include classStartsWith('i-[mdi--') {
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+  }
+
+  @include classStartsWith('i-[flag--') {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+}
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+}

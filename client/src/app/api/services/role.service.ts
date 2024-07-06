@@ -49,8 +49,8 @@ export class RoleService extends ApiBaseService {
 
     return waitForResponse<GetApiRoleApiResponse>(
       this.http.request(rb.build({
-        responseType: 'text',
-        accept: 'text/plain',
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {
@@ -71,8 +71,8 @@ export class RoleService extends ApiBaseService {
 
     return waitForResponse<PostApiRoleApiResponse>(
       this.http.request(rb.build({
-        responseType: 'text',
-        accept: 'text/plain',
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {
@@ -91,15 +91,15 @@ export class RoleService extends ApiBaseService {
 
     return waitForResponse<GetApiRoleIdApiResponse>(
       this.http.request(rb.build({
-        responseType: 'text',
-        accept: 'text/plain',
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {
         errorResponseTypes: {
           401: 'text',
           403: 'text',
-          404: 'text',
+          404: 'json',
           500: 'text',
         }
       }
@@ -119,10 +119,10 @@ export class RoleService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
-          400: 'text',
+          400: 'json',
           401: 'text',
           403: 'text',
-          404: 'text',
+          404: 'json',
           500: 'text',
         }
       }
@@ -143,7 +143,7 @@ export class RoleService extends ApiBaseService {
         errorResponseTypes: {
           401: 'text',
           403: 'text',
-          404: 'text',
+          404: 'json',
           500: 'text',
         }
       }

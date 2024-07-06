@@ -27,14 +27,13 @@ export class AuthService extends ApiBaseService {
 
     return waitForResponse<PostApiAuthLoginApiResponse>(
       this.http.request(rb.build({
-        responseType: 'text',
-        accept: 'text/plain',
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {
         errorResponseTypes: {
-          400: 'text',
-          401: 'text',
+          401: 'json',
           403: 'text',
           500: 'text',
         }
@@ -47,13 +46,13 @@ export class AuthService extends ApiBaseService {
 
     return waitForResponse<PostApiAuthRefreshApiResponse>(
       this.http.request(rb.build({
-        responseType: 'text',
-        accept: 'text/plain',
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {
         errorResponseTypes: {
-          400: 'text',
+          400: 'json',
           401: 'text',
           403: 'text',
           500: 'text',

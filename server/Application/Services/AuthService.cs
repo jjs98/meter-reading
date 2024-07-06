@@ -30,10 +30,15 @@ public class AuthService : IAuthService
         _configuration = configuration;
     }
 
-    public async Task<string> Login(UserLoginDto userLoginDto)
+    public string HashPassword(string password)
+    {
+        return BCrypt.Net.BCrypt.HashPassword(password);
+    }
+
+    public async Task<TokenDto> Login(UserLoginDto userLoginDto)
     {
         var user = await _userService.GetByUsername(userLoginDto.Username);
-        if (user == null || userLoginDto.Password != user.Password)
+        if (user == null || !BCrypt.Net.BCrypt.Verify(userLoginDto.Password, user.Password))
         {
             throw new UnauthorizedAccessException("Invalid credentials");
         }
@@ -41,12 +46,12 @@ public class AuthService : IAuthService
         return await GenerateJwtToken(user);
     }
 
-    public async Task<string> Refresh(User user)
+    public async Task<TokenDto> Refresh(User user)
     {
         return await GenerateJwtToken(user);
     }
 
-    private async Task<string> GenerateJwtToken(User user)
+    private async Task<TokenDto> GenerateJwtToken(User user)
     {
         var jwtKey = _configuration["Jwt:Key"];
         if (string.IsNullOrEmpty(jwtKey))
@@ -70,14 +75,16 @@ public class AuthService : IAuthService
             new SymmetricSecurityKey(key),
             SecurityAlgorithms.HmacSha256Signature
         );
-        var token = new JwtSecurityToken(
-            _configuration["Jwt:Issuer"],
-            _configuration["Jwt:Audience"],
-            claims,
-            expires: DateTime.Now.AddMinutes(30),
-            signingCredentials: credentials
-        );
+        var tokenDescriptor = new SecurityTokenDescriptor()
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.Now.AddMinutes(15),
+            SigningCredentials = credentials,
+            Issuer = _configuration["Jwt:Issuer"],
+            Audience = _configuration["Jwt:Audience"]
+        };
         var tokenHandler = new JwtSecurityTokenHandler();
-        return tokenHandler.WriteToken(token);
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return new TokenDto { Token = tokenHandler.WriteToken(token), Refresh = "" };
     }
 }

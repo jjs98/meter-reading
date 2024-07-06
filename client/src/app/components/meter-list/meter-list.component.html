@@ -1,12 +1,40 @@
-<p>meter-list works!</p>
-<button (click)="addMeter()">Add Meter</button>
-<div>
-  @for (meter of meters(); track meter){
-  <span>{{ meter.id }}</span>
-  <span>{{ meter.userId }}</span>
-  <span>{{ meter.location }}</span>
-  <span>{{ meter.meterNumber }}</span>
-  <span>{{ meter.type }}</span>
-  <span>{{ meter.comment }}</span>
-  }
-</div>
+<p-table [value]="meters()" [tableStyle]="{ 'min-width': '100%' }">
+  <ng-template pTemplate="caption">
+    <div class="flex items-center justify-between">
+      Meters
+      <p-button icon="i-[mdi--plus]" [rounded]="true" (click)="addMeter()" />
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Type</th>
+      <th>Number</th>
+      <th>Location</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-meter>
+    <tr>
+      <td>
+        <span
+          class="{{
+            meter.type === 0
+              ? 'i-[mdi--lightning-bolt]'
+              : meter.type === 1
+              ? 'i-[mdi--water]'
+              : 'i-[mdi--meter-gas]'
+          }}"></span>
+      </td>
+      <td>
+        <span>{{ meter.meterNumber }}</span>
+      </td>
+      <td>
+        <span>{{ meter.location }}</span>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary">
+    <div class="flex items-center justify-between">
+      In total there are {{ meters() ? meters().length : 0 }} meters.
+    </div>
+  </ng-template>
+</p-table>
