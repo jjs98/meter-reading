@@ -1,7 +1,13 @@
 import { TokenService } from './../../services/token.service';
 import { NavigationService } from './../../services/navigation.service';
 import { AuthService } from './../../api/services/auth.service';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -31,6 +37,7 @@ import { DialogModule } from 'primeng/dialog';
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
   private navigationService = inject(NavigationService);

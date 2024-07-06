@@ -1,6 +1,11 @@
 import { TokenService } from './services/token.service';
 import { NavigationService } from './services/navigation.service';
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 import { MenubarModule } from 'primeng/menubar';
@@ -24,6 +29,7 @@ import { MenuItem } from 'primeng/api';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
   private navigationService = inject(NavigationService);

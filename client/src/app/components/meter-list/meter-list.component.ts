@@ -1,4 +1,11 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  computed,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Meter } from '../../api/models';
 import { MeterType } from '../../models/MeterType.enum';
@@ -13,6 +20,7 @@ import { DropdownModule } from 'primeng/dropdown';
   imports: [CommonModule, ButtonModule, TableModule, DropdownModule],
   templateUrl: './meter-list.component.html',
   styleUrl: './meter-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeterComponent implements OnInit {
   private meterService = inject(MeterService);
