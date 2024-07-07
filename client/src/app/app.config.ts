@@ -1,19 +1,13 @@
-import {
-  ApplicationConfig,
-  provideExperimentalZonelessChangeDetection,
-} from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { appRoutes } from './app.routes';
-import {
-  HTTP_INTERCEPTORS,
-  provideHttpClient,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideApi } from './api/services';
-import { environment } from '../environments/environment';
-import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { provideRouter } from '@angular/router';
 import { MessageService } from 'primeng/api';
+
+import { provideApi } from './api/services';
+import { appRoutes } from './app.routes';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -1,55 +1,50 @@
-import { TokenService } from './../../services/token.service';
-import { NavigationService } from './../../services/navigation.service';
-import { AuthService } from './../../api/services/auth.service';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
-import { TokenDto } from '../../api/models';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
+import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { PasswordModule } from 'primeng/password';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { MessageService } from 'primeng/api';
-import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+
+import { AuthService } from './../../api/services/auth.service';
+import { NavigationService } from './../../services/navigation.service';
+import { TokenService } from './../../services/token.service';
+import { TokenDto } from '../../api/models';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
     ButtonModule,
-    InputTextModule,
+    CommonModule,
+    DialogModule,
     FloatLabelModule,
-    PasswordModule,
+    FormsModule,
     IconFieldModule,
     InputIconModule,
-    DialogModule,
+    InputTextModule,
+    PasswordModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
-  private navigationService = inject(NavigationService);
-  private authService = inject(AuthService);
-  private tokenService = inject(TokenService);
-  private messageService = inject(MessageService);
-  public username = '';
-  public password = '';
+  private readonly navigationService = inject(NavigationService);
+  private readonly authService = inject(AuthService);
+  private readonly tokenService = inject(TokenService);
+  private readonly messageService = inject(MessageService);
 
-  public visible = signal(false);
+  protected username = '';
+  protected password = '';
 
-  ngOnInit(): void {
+  protected visible = signal(false);
+
+  public ngOnInit(): void {
     if (this.tokenService.isTokenValid()) {
       this.navigationService.navigateToHome();
       return;
@@ -57,7 +52,7 @@ export class LoginComponent implements OnInit {
     this.visible.set(true);
   }
 
-  async login() {
+  protected async login() {
     const response = await this.authService.postApiAuthLogin({
       body: {
         username: this.username,
@@ -67,11 +62,7 @@ export class LoginComponent implements OnInit {
 
     if (response.status === 200) {
       const token = response.body as TokenDto;
-      if (
-        token.token !== undefined ||
-        token.token !== '' ||
-        token.token !== null
-      ) {
+      if (token.token !== undefined || token.token !== '' || token.token !== null) {
         this.tokenService.setToken(token.token ?? undefined);
         const returnUrl = this.navigationService.getReturnUrl();
 
@@ -93,7 +84,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  async onKeyPress(event: KeyboardEvent) {
+  protected async onKeyPress(event: KeyboardEvent) {
     if (event.key === 'Enter' && this.username !== '' && this.password !== '') {
       await this.login();
     }

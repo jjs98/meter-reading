@@ -5,8 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   providedIn: 'root',
 })
 export class NavigationService {
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
 
   public navigateToLogin(returnUrl: string | undefined = undefined): void {
     if (returnUrl) {

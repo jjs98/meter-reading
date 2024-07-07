@@ -1,10 +1,5 @@
-import {
-  patchState,
-  signalState,
-  signalStoreFeature,
-  withMethods,
-  withState,
-} from '@ngrx/signals';
+import { patchState, signalState, signalStoreFeature, withMethods, withState } from '@ngrx/signals';
+
 import { Token } from '../../models/Token.type';
 
 type TokenState = { token: Token | undefined };
@@ -16,7 +11,7 @@ const tokenState = signalState<TokenState>({
 export function withToken() {
   return signalStoreFeature(
     withState(tokenState),
-    withMethods((store) => ({
+    withMethods(store => ({
       setToken(token: Token | undefined) {
         patchState(store, { token });
       },

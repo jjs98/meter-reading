@@ -13,19 +13,13 @@
           >
           <i
             *ngIf="item.items"
-            [ngClass]="[
-              'pi',
-              root ? 'pi-angle-down ml-2' : 'pi-angle-right ml-auto'
-            ]"></i>
+            [ngClass]="['pi', root ? 'pi-angle-down ml-2' : 'pi-angle-right ml-auto']"
+          ></i>
         </a>
       </ng-template>
     </ng-template>
     <ng-template pTemplate="end">
-      <p-button
-        icon="i-[mdi--logout]"
-        class="mr-4"
-        [rounded]="true"
-        (click)="logOff()" />
+      <p-button icon="i-[mdi--logout]" class="mr-4" [rounded]="true" (click)="logOff()" />
     </ng-template>
   </p-menubar>
   <div class="router-content m-4 overflow-auto">

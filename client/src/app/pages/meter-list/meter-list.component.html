@@ -1,8 +1,9 @@
 <p-table
-  [value]="meters()"
+  [value]="dataStore.meters()"
   selectionMode="single"
   (onRowSelect)="onRowSelect($event)"
-  [tableStyle]="{ 'min-width': '100%' }">
+  [tableStyle]="{ 'min-width': '100%' }"
+>
   <ng-template pTemplate="caption">
     <div class="flex items-center justify-between">
       Meters
@@ -24,9 +25,10 @@
             meter.type === 0
               ? 'i-[mdi--lightning-bolt]'
               : meter.type === 1
-              ? 'i-[mdi--water]'
-              : 'i-[mdi--meter-gas]'
-          }}"></span>
+                ? 'i-[mdi--water]'
+                : 'i-[mdi--meter-gas]'
+          }}"
+        ></span>
       </td>
       <td>
         <span>{{ meter.meterNumber }}</span>
@@ -35,10 +37,5 @@
         <span>{{ meter.location }}</span>
       </td>
     </tr>
-  </ng-template>
-  <ng-template pTemplate="summary">
-    <div class="flex items-center justify-between">
-      In total there are {{ meters() ? meters().length : 0 }} meters.
-    </div>
   </ng-template>
 </p-table>

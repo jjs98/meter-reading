@@ -4,7 +4,8 @@
   [(visible)]="visible"
   [closable]="false"
   [draggable]="false"
-  [style]="{ width: '' }">
+  [style]="{ width: '' }"
+>
   <div class="flex items-center gap-3 mb-8 mt-8">
     <span class="i-[mdi--account]"></span>
     <p-floatLabel>
@@ -14,7 +15,8 @@
         class="flex-auto"
         [(ngModel)]="username"
         autocomplete="off"
-        (keypress)="onKeyPress($event)" />
+        (keypress)="onKeyPress($event)"
+      />
       <label for="username" class="font-semibold w-6rem">Username</label>
     </p-floatLabel>
   </div>
@@ -27,14 +29,12 @@
         class="flex-auto"
         [(ngModel)]="password"
         [feedback]="false"
-        (keypress)="onKeyPress($event)" />
+        (keypress)="onKeyPress($event)"
+      />
       <label for="password" class="font-semibold w-6rem">Password</label>
     </p-floatLabel>
   </div>
   <div class="flex justify-content-end gap-2">
-    <p-button
-      label="Login"
-      (onClick)="login()"
-      [disabled]="!username || !password" />
+    <p-button label="Login" (onClick)="login()" [disabled]="!username || !password" />
   </div>
 </p-dialog>

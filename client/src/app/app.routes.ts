@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
-import { LoginComponent } from './pages/login/login.component';
+
 import { AuthGuard } from './guards/auth.guard';
+import { LoginComponent } from './pages/login/login.component';
 
 export const appRoutes: Route[] = [
   {
@@ -11,15 +12,13 @@ export const appRoutes: Route[] = [
       {
         path: '',
         loadComponent: () =>
-          import('./pages/meter-list/meter-list.component').then(
-            (m) => m.MeterComponent
-          ),
+          import('./pages/meter-list/meter-list.component').then(m => m.MeterComponent),
       },
       {
         path: ':id',
         loadComponent: () =>
           import('./pages/meter-details/meter-details.component').then(
-            (m) => m.MeterDetailsComponent
+            m => m.MeterDetailsComponent
           ),
       },
     ],

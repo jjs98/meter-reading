@@ -1,47 +1,31 @@
-import { DataStore } from './../store/data.store';
 import { inject, Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
   CanActivateChild,
-  CanDeactivate,
   RouterStateSnapshot,
 } from '@angular/router';
-import { TokenService } from '../services/token.service';
+
+import { DataStore } from './../store/data.store';
 import { NavigationService } from '../services/navigation.service';
+import { TokenService } from '../services/token.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard
-  implements CanActivate, CanActivateChild, CanDeactivate<unknown>
-{
+export class AuthGuard implements CanActivate, CanActivateChild {
   private readonly dataStore = inject(DataStore);
-  private tokenService = inject(TokenService);
-  private navigationService = inject(NavigationService);
+  private readonly tokenService = inject(TokenService);
+  private readonly navigationService = inject(NavigationService);
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
+  public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.checkUserLogin(next, state.url);
   }
-  canActivateChild(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
+  public canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.canActivate(next, state);
   }
-  canDeactivate(
-    component: unknown,
-    currentRoute: ActivatedRouteSnapshot,
-    currentState: RouterStateSnapshot,
-    nextState?: RouterStateSnapshot
-  ): boolean {
-    return true;
-  }
 
-  checkUserLogin(route: ActivatedRouteSnapshot, url: string): boolean {
+  public checkUserLogin(route: ActivatedRouteSnapshot, url: string): boolean {
     if (this.tokenService.isTokenValid()) {
       const userRoles = this.dataStore.token()?.role ?? [];
       if (route.data['role'] && userRoles.indexOf(route.data['role']) === -1) {

@@ -1,7 +1,30 @@
 {
-  "prettier.configPath": "./client/.prettierrc",
-  "prettier.ignorePath": "./client/.prettierignore",
-  "prettier.prettierPath": "./client/node_modules/prettier",
-  "prettier.requireConfig": true,
-  "vs-code-prettier-eslint.prettierLast": true
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "project.json": "package.json, .prettier*, .eslint*, .npm*, jest*, nx.json, pnpm-lock.yaml, tsconfig*, angular.json, ng-package.json, playwright*",
+    "package.json": ".prettier*, .eslint*, .npm*, jest*, nx.json, pnpm-lock.yaml, tsconfig*, angular.json, ng-package.json, playwright*",
+    "*.ts": "$(capture).spec.ts, $(capture).test.ts, $(capture).d.ts, $(capture).js, $(capture).js.map, $(capture).ts.map",
+    "*.js": "$(capture).d.ts, $(capture).js.map",
+    "*.css": "$(capture).css.map"
+  },
+
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/.cache": true,
+    "**/dist": true,
+    "**/coverage": true,
+    "pnpm-lock.yaml": true
+  },
+
+  "typescript.preferences.importModuleSpecifier": "shortest",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

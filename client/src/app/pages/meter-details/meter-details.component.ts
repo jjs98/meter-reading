@@ -1,7 +1,7 @@
-import { NavigationService } from './../../services/navigation.service';
-import { NavbarComponent } from './../../components/navbar/navbar.component';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+
+import { NavigationService } from './../../services/navigation.service';
 
 @Component({
   selector: 'app-meter-details',
@@ -12,9 +12,9 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeterDetailsComponent {
-  private navigationService = inject(NavigationService);
+  private readonly navigationService = inject(NavigationService);
 
-  navigateBack(): void {
+  protected navigateBack(): void {
     this.navigationService.navigateBack();
   }
 }

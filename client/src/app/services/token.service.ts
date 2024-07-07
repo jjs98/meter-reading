@@ -1,29 +1,28 @@
-import { DataStore } from './../store/data.store';
-import { AuthService } from './../api/services/auth.service';
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
-import { Token } from '../models/Token.type';
 import { mergeMap, timer } from 'rxjs';
+
+import { AuthService } from './../api/services/auth.service';
+import { DataStore } from './../store/data.store';
 import { TokenDto } from '../api/models';
+import { Token } from '../models/Token.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TokenService {
   private readonly dataStore = inject(DataStore);
-  private authService = inject(AuthService);
-  public isTokenValid = computed(
-    () => !this.isTokenExpired(this.dataStore.token())
-  );
+  private readonly authService = inject(AuthService);
+  public isTokenValid = computed(() => !this.isTokenExpired(this.dataStore.token()));
 
   constructor() {
     timer(0, 10 * 1000 * 60)
       .pipe(
-        mergeMap((_) => {
+        mergeMap(_ => {
           if (!this.isTokenValid()) {
             return Promise.resolve();
           }
-          return this.authService.postApiAuthRefresh().then((response) => {
+          return this.authService.postApiAuthRefresh().then(response => {
             if (response.status === 200) {
               const token = response.body as TokenDto;
               this.setToken(token.token ?? undefined);

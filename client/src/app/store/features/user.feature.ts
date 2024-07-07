@@ -6,6 +6,7 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
+
 import { Meter, Reading, User } from '../../api/models';
 
 type UserState = { user: User };
@@ -20,24 +21,24 @@ const userState = signalState<UserState>({
 export function withUser() {
   return signalStoreFeature(
     withState(userState),
-    withMethods((store) => ({
+    withMethods(store => ({
       setUser(user: User) {
         patchState(store, { user });
       },
       setMeters(meters: Meter[]) {
-        patchState(store, (state) => ({
+        patchState(store, state => ({
           user: { ...state.user, meters: meters },
         }));
       },
       setMeterReading(meterId: number, reading: Reading[]) {
         const state = getState(store);
-        const meters = state.user?.meters?.map((m) =>
+        const meters = state.user?.meters?.map(m =>
           m.id === meterId ? { ...m, readings: reading } : m
         );
         if (!meters) {
           return;
         }
-        patchState(store, (state) => ({
+        patchState(store, state => ({
           user: { ...state.user, meters: meters },
         }));
       },

@@ -1,30 +1,26 @@
-import { TokenService } from './services/token.service';
-import { NavigationService } from './services/navigation.service';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ToastModule } from 'primeng/toast';
-import { MenubarModule } from 'primeng/menubar';
+import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputIconModule } from 'primeng/inputicon';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { MenuItem } from 'primeng/api';
+import { MenubarModule } from 'primeng/menubar';
+import { ToastModule } from 'primeng/toast';
+
+import { NavigationService } from './services/navigation.service';
+import { TokenService } from './services/token.service';
 
 @Component({
   standalone: true,
   imports: [
+    ButtonModule,
     CommonModule,
+    FormsModule,
+    InputIconModule,
+    MenubarModule,
     RouterModule,
     ToastModule,
-    MenubarModule,
-    ButtonModule,
-    InputIconModule,
-    FormsModule,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -32,8 +28,8 @@ import { MenuItem } from 'primeng/api';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  private navigationService = inject(NavigationService);
-  private tokenService = inject(TokenService);
+  private readonly navigationService = inject(NavigationService);
+  private readonly tokenService = inject(TokenService);
 
   public items: MenuItem[] = [
     {
@@ -48,11 +44,11 @@ export class AppComponent implements OnInit {
     },
   ];
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.tokenService.loadToken();
   }
 
-  logOff() {
+  protected logOff() {
     this.tokenService.deleteToken();
     this.navigationService.navigateToLogin();
   }
