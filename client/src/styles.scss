@@ -1,4 +1,4 @@
-@layer base, tailwind-base, primeng, tailwind-utilities, components;
+@layer base, tailwind-base, primeng, adjustmments, tailwind-utilities, components;
 
 @mixin classStartsWith($prefixes...) {
   $selector: '';
@@ -57,5 +57,15 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
+  }
+}
+
+@layer adjustments {
+  .p-card-body {
+    @apply flex flex-col h-full gap-5;
+  }
+
+  .p-card-content {
+    @apply p-0 grow min-h-0;
   }
 }

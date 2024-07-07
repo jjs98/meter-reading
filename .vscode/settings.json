@@ -26,5 +26,14 @@
   },
 
   "typescript.preferences.importModuleSpecifier": "shortest",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "ngClass",
+    ".*[sS]tyleClass"
+  ],
+
+  "css.customData": [".vscode/tailwind.json"]
 }

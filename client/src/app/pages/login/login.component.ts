@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
     this.visible.set(true);
   }
 
-  protected async login() {
+  protected async login(): Promise<void> {
     const response = await this.authService.postApiAuthLogin({
       body: {
         username: this.username,
@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  protected async onKeyPress(event: KeyboardEvent) {
+  protected async onKeyPress(event: KeyboardEvent): Promise<void> {
     if (event.key === 'Enter' && this.username !== '' && this.password !== '') {
       await this.login();
     }

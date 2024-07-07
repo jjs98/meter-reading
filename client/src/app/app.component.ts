@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
     this.tokenService.loadToken();
   }
 
-  protected logOff() {
+  protected logOff(): void {
     this.tokenService.deleteToken();
     this.navigationService.navigateToLogin();
   }

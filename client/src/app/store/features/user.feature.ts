@@ -18,19 +18,20 @@ const userState = signalState<UserState>({
   },
 });
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function withUser() {
   return signalStoreFeature(
     withState(userState),
     withMethods(store => ({
-      setUser(user: User) {
+      setUser(user: User): void {
         patchState(store, { user });
       },
-      setMeters(meters: Meter[]) {
+      setMeters(meters: Meter[]): void {
         patchState(store, state => ({
           user: { ...state.user, meters: meters },
         }));
       },
-      setMeterReading(meterId: number, reading: Reading[]) {
+      setMeterReading(meterId: number, reading: Reading[]): void {
         const state = getState(store);
         const meters = state.user?.meters?.map(m =>
           m.id === meterId ? { ...m, readings: reading } : m

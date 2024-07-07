@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { signalState, signalStoreFeature, withMethods, withState } from '@ngrx/signals';
+import { MessageService } from 'primeng/api';
 
 import { MeterService } from './../../api/services/meter.service';
 import { Meter, Reading } from '../../api/models';
@@ -11,36 +12,46 @@ const metersState = signalState<MetersState>({
   meters: [],
 });
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function withMeters() {
   return signalStoreFeature(
     withState(metersState),
-    withMethods((store, meterService = inject(MeterService)) => ({
-      setMeters(meters: Meter[]) {
-        patch(store, draft => {
-          draft.meters = meters;
-        });
-      },
-      setMeterReading(meterId: number, reading: Reading[]) {
-        patch(store, draft => {
-          const meter = draft.meters.find(x => x.id === meterId);
-          if (meter) {
-            meter.readings = reading;
+    withMethods(
+      (store, meterService = inject(MeterService), messageService = inject(MessageService)) => ({
+        setMeters(meters: Meter[]): void {
+          patch(store, draft => {
+            draft.meters = meters;
+          });
+        },
+        setMeterReading(meterId: number, reading: Reading[]): void {
+          patch(store, draft => {
+            const meter = draft.meters.find(x => x.id === meterId);
+            if (meter) {
+              meter.readings = reading;
+            }
+          });
+        },
+        async refreshMeters(): Promise<void> {
+          const resonse = await meterService.getApiMeter();
+          if (resonse.status === 200) {
+            const meters = resonse.body as Meter[];
+            this.setMeters(meters);
           }
-        });
-      },
-      async refreshMeters() {
-        const resonse = await meterService.getApiMeter();
-        if (resonse.status === 200) {
-          const meters = resonse.body as Meter[];
-          this.setMeters(meters);
-        }
-      },
-      async addMeter(meter: Meter) {
-        const resonse = await meterService.postApiMeter({ body: meter });
-        if (resonse.status === 201) {
-          await this.refreshMeters();
-        }
-      },
-    }))
+        },
+        async addMeter(meter: Meter): Promise<boolean> {
+          const resonse = await meterService.postApiMeter({ body: meter });
+          if (resonse.status === 201) {
+            await this.refreshMeters();
+            return true;
+          }
+          messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to add meter',
+          });
+          return false;
+        },
+      })
+    )
   );
 }
