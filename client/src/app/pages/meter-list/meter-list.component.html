@@ -1,8 +1,12 @@
-<p-table [value]="meters()" [tableStyle]="{ 'min-width': '100%' }">
+<p-table
+  [value]="meters()"
+  selectionMode="single"
+  (onRowSelect)="onRowSelect($event)"
+  [tableStyle]="{ 'min-width': '100%' }">
   <ng-template pTemplate="caption">
     <div class="flex items-center justify-between">
       Meters
-      <p-button icon="i-[mdi--plus]" [rounded]="true" (click)="addMeter()" />
+      <p-button icon="i-[mdi--plus]" [rounded]="true" (onClick)="addMeter()" />
     </div>
   </ng-template>
   <ng-template pTemplate="header">
@@ -13,7 +17,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-meter>
-    <tr>
+    <tr [pSelectableRow]="meter">
       <td>
         <span
           class="{{

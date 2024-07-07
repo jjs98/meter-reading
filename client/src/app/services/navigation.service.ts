@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class NavigationService {
   private router = inject(Router);
-  private activatedroute = inject(ActivatedRoute);
+  private activatedRoute = inject(ActivatedRoute);
 
   public navigateToLogin(returnUrl: string | undefined = undefined): void {
     if (returnUrl) {
@@ -28,9 +28,16 @@ export class NavigationService {
     this.router.navigate([url]);
   }
 
+  public navigateBack(): void {
+    this.router.navigate(['..'], { relativeTo: this.activatedRoute });
+  }
+
   public getReturnUrl(): string | undefined {
-    const returlUrl =
-      this.activatedroute.snapshot.queryParamMap.get('returnUrl');
-    return returlUrl ?? undefined;
+    return this.getRouteParam('returnUrl');
+  }
+
+  public getRouteParam(key: string): string | undefined {
+    const param = this.activatedRoute.snapshot.paramMap.get(key);
+    return param ?? undefined;
   }
 }

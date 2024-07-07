@@ -35,6 +35,9 @@ importers:
       '@iconify/tailwind':
         specifier: ^1.1.1
         version: 1.1.1
+      '@ngrx/signals':
+        specifier: 18.0.0-rc.2
+        version: 18.0.0-rc.2(@angular/core@18.0.5(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1)
       '@nx/angular':
         specifier: 19.3.2
         version: 19.3.2(s3vkltx7ewyl2vehvdqmlpzute)
@@ -1592,6 +1595,15 @@ packages:
     resolution: {integrity: sha512-x0fWaQtYp4E6sktbsdAqnehxDgEc/VwM7uLsRCYWaiGu0ykYdZPiS8zCWdnjHwyiumousxfBm4SO31eXqwEZhQ==}
     cpu: [x64]
     os: [win32]
+
+  '@ngrx/signals@18.0.0-rc.2':
+    resolution: {integrity: sha512-KFj0I5seMVVqqXaoBqeQiR/+dKho4n+Ry/RmaAfa3f0rgYhfaxNTo7U39B7udIYjJf8Z+eYPmBFJEU3HGQU0mA==}
+    peerDependencies:
+      '@angular/core': ^18.0.0
+      rxjs: ^6.5.3 || ^7.4.0
+    peerDependenciesMeta:
+      rxjs:
+        optional: true
 
   '@ngtools/webpack@18.0.6':
     resolution: {integrity: sha512-chSRbPpnqTThURQqUvWAgEGkLcn5TQnUQPD1HBf4WcoO/OkaK4Q1Sa8FrEllkC6/Dlyj7myi8rskQz+V8K7GSg==}
@@ -8555,6 +8567,13 @@ snapshots:
 
   '@msgpackr-extract/msgpackr-extract-win32-x64@3.0.3':
     optional: true
+
+  '@ngrx/signals@18.0.0-rc.2(@angular/core@18.0.5(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1)':
+    dependencies:
+      '@angular/core': 18.0.5(rxjs@7.8.1)(zone.js@0.14.7)
+      tslib: 2.6.3
+    optionalDependencies:
+      rxjs: 7.8.1
 
   '@ngtools/webpack@18.0.6(@angular/compiler-cli@18.0.5(@angular/compiler@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)(zone.js@0.14.7)))(typescript@5.4.5))(typescript@5.4.5)(webpack@5.91.0(@swc/core@1.5.29(@swc/helpers@0.5.11))(esbuild@0.21.3))':
     dependencies:

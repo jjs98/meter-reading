@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { DataStore } from './../store/data.store';
+import { inject, Injectable } from '@angular/core';
 import {
   HttpInterceptor,
   HttpRequest,
@@ -9,22 +10,21 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  private readonly dataStore = inject(DataStore);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // Get the JWT token from wherever you have stored it
-    const token = localStorage.getItem('token');
+    const token = this.dataStore.token()?.tokenString;
 
-    // Clone the request and add the JWT token to the headers
     const authRequest = request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    // Pass the modified request to the next interceptor or the backend
     return next.handle(authRequest);
   }
 }

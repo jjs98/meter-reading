@@ -10,4 +10,5 @@ export type Token = {
   iat: number;
   iss: string;
   aud: string;
+  tokenString: string;
 };

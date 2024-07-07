@@ -7,10 +7,22 @@ export const appRoutes: Route[] = [
     path: 'meters',
     canActivate: [AuthGuard],
     data: { role: 'User' },
-    loadComponent: () =>
-      import('./components/meter-list/meter-list.component').then(
-        (m) => m.MeterComponent
-      ),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/meter-list/meter-list.component').then(
+            (m) => m.MeterComponent
+          ),
+      },
+      {
+        path: ':id',
+        loadComponent: () =>
+          import('./pages/meter-details/meter-details.component').then(
+            (m) => m.MeterDetailsComponent
+          ),
+      },
+    ],
   },
   {
     path: 'login',

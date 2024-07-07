@@ -1,9 +1,9 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   Component,
   inject,
   OnInit,
   signal,
-  computed,
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,7 @@ import { Meter } from '../../api/models';
 import { MeterType } from '../../models/MeterType.enum';
 import { MeterService } from '../../api/services';
 import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
+import { TableModule, TableRowSelectEvent } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
@@ -24,6 +24,9 @@ import { DropdownModule } from 'primeng/dropdown';
 })
 export class MeterComponent implements OnInit {
   private meterService = inject(MeterService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+
   meters = signal<Meter[]>([]);
 
   ngOnInit() {
@@ -51,6 +54,16 @@ export class MeterComponent implements OnInit {
         const meter = resonse.body as Meter[];
         this.meters.set(meter);
       }
+    });
+  }
+
+  onRowSelect($event: TableRowSelectEvent): void {
+    const selectedMeter = $event.data as Meter;
+    if (!selectedMeter.id) {
+      return;
+    }
+    this.router.navigate([`${selectedMeter.id}`], {
+      relativeTo: this.activatedRoute,
     });
   }
 }

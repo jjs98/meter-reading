@@ -1,14 +1,11 @@
+import { DataStore } from './../store/data.store';
 import { inject, Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
   CanActivateChild,
   CanDeactivate,
-  CanLoad,
-  Route,
-  Router,
   RouterStateSnapshot,
-  UrlSegment,
 } from '@angular/router';
 import { TokenService } from '../services/token.service';
 import { NavigationService } from '../services/navigation.service';
@@ -17,11 +14,11 @@ import { NavigationService } from '../services/navigation.service';
   providedIn: 'root',
 })
 export class AuthGuard
-  implements CanActivate, CanActivateChild, CanDeactivate<unknown>, CanLoad
+  implements CanActivate, CanActivateChild, CanDeactivate<unknown>
 {
+  private readonly dataStore = inject(DataStore);
   private tokenService = inject(TokenService);
   private navigationService = inject(NavigationService);
-  private router = inject(Router);
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -43,13 +40,10 @@ export class AuthGuard
   ): boolean {
     return true;
   }
-  canLoad(route: Route, segments: UrlSegment[]): boolean {
-    return true;
-  }
 
   checkUserLogin(route: ActivatedRouteSnapshot, url: string): boolean {
     if (this.tokenService.isTokenValid()) {
-      const userRoles = this.tokenService.token()?.role ?? [];
+      const userRoles = this.dataStore.token()?.role ?? [];
       if (route.data['role'] && userRoles.indexOf(route.data['role']) === -1) {
         this.navigationService.navigateToHome();
         return false;
