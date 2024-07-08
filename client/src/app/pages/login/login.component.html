@@ -33,7 +33,18 @@
       <label for="password" class="font-semibold w-6rem">Password</label>
     </p-floatLabel>
   </div>
-  <div class="flex justify-content-end gap-2">
-    <p-button label="Login" (onClick)="login()" [disabled]="!username || !password" />
+  <div class="flex justify-end gap-4">
+    <button
+      pButton
+      class="w-24 justify-center"
+      (click)="login()"
+      [disabled]="!username || !password || loading()"
+    >
+      @if (loading()) {
+        <span class="animate-spin i-[mdi--loading]"></span>
+      } @else {
+        Login
+      }
+    </button>
   </div>
 </p-dialog>

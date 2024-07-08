@@ -9,6 +9,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { AuthService } from './../../api/services/auth.service';
 import { NavigationService } from './../../services/navigation.service';
@@ -28,6 +29,7 @@ import { TokenDto } from '../../api/models';
     InputIconModule,
     InputTextModule,
     PasswordModule,
+    ProgressSpinnerModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -43,6 +45,7 @@ export class LoginComponent implements OnInit {
   protected password = '';
 
   protected visible = signal(false);
+  protected loading = signal(false);
 
   public ngOnInit(): void {
     if (this.tokenService.isTokenValid()) {
@@ -53,6 +56,7 @@ export class LoginComponent implements OnInit {
   }
 
   protected async login(): Promise<void> {
+    this.loading.set(true);
     const response = await this.authService.postApiAuthLogin({
       body: {
         username: this.username,
@@ -69,14 +73,17 @@ export class LoginComponent implements OnInit {
         if (returnUrl) {
           this.navigationService.navigateTo(returnUrl);
           this.visible.set(false);
+          this.loading.set(false);
           return;
         }
 
         this.navigationService.navigateToHome();
         this.visible.set(false);
+        this.loading.set(false);
         return;
       }
     }
+    this.loading.set(false);
     this.messageService.add({
       severity: 'error',
       summary: 'Login Failed',
