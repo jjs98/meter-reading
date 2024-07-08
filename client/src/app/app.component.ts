@@ -1,21 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputIconModule } from 'primeng/inputicon';
 import { MenubarModule } from 'primeng/menubar';
 import { ToastModule } from 'primeng/toast';
 
 import { NavigationService } from './services/navigation.service';
-import { TokenService } from './services/token.service';
+import { DataStore } from './store/data.store';
 
 @Component({
   standalone: true,
   imports: [
     ButtonModule,
+    CardModule,
     CommonModule,
+    ConfirmDialogModule,
     FormsModule,
     InputIconModule,
     MenubarModule,
@@ -27,9 +31,9 @@ import { TokenService } from './services/token.service';
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
+  private readonly dataStore = inject(DataStore);
   private readonly navigationService = inject(NavigationService);
-  private readonly tokenService = inject(TokenService);
 
   public items: MenuItem[] = [
     {
@@ -44,12 +48,8 @@ export class AppComponent implements OnInit {
     },
   ];
 
-  public ngOnInit(): void {
-    this.tokenService.loadToken();
-  }
-
   protected logOff(): void {
-    this.tokenService.deleteToken();
+    this.dataStore.deleteToken();
     this.navigationService.navigateToLogin();
   }
 }

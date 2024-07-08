@@ -14,19 +14,19 @@ namespace Application.Services;
 public class AuthService : IAuthService
 {
     private readonly IUserRoleRepository _userRoleRepository;
-    private readonly IUserService _userService;
+    private readonly IUserRepository _userRepository;
     private readonly IRoleService _roleService;
     private readonly IConfiguration _configuration;
 
     public AuthService(
         IUserRoleRepository userRoleRepository,
-        IUserService userService,
+        IUserRepository userRepository,
         IRoleService roleService,
         IConfiguration configuration
     )
     {
         _userRoleRepository = userRoleRepository;
-        _userService = userService;
+        _userRepository = userRepository;
         _roleService = roleService;
         _configuration = configuration;
     }
@@ -38,7 +38,7 @@ public class AuthService : IAuthService
 
     public async Task<TokenDto> Login(UserLoginDto userLoginDto)
     {
-        var user = await _userService.GetByUsername(userLoginDto.Username);
+        var user = await _userRepository.GetByUsername(userLoginDto.Username);
         if (user == null || !BCrypt.Net.BCrypt.Verify(userLoginDto.Password, user.Password))
         {
             throw new UnauthorizedAccessException("Invalid credentials");

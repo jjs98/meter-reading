@@ -84,6 +84,15 @@ public class MeterRepository : IMeterRepository
         context.ChangeTracker.Clear();
     }
 
+    public async Task DeleteByUserId(int userId)
+    {
+        var context = _contextFactory.CreateDbContext();
+        var meter = await context.Meters.Where(x => x.UserId == userId).ToArrayAsync();
+
+        context.Meters.RemoveRange(meter);
+        await context.SaveChangesAsync();
+    }
+
     public async Task Delete(int id)
     {
         var context = _contextFactory.CreateDbContext();

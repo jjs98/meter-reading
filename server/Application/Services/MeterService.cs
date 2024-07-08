@@ -8,10 +8,12 @@ namespace Application.Services;
 public class MeterService : IMeterService
 {
     private readonly IMeterRepository _meterRepository;
+    private readonly IReadingService _readingService;
 
-    public MeterService(IMeterRepository meterRepository)
+    public MeterService(IMeterRepository meterRepository, IReadingService readingService)
     {
         _meterRepository = meterRepository;
+        _readingService = readingService;
     }
 
     public async Task<IEnumerable<Meter>> GetAll()
@@ -46,6 +48,7 @@ public class MeterService : IMeterService
 
     public async Task Delete(int id)
     {
+        await _readingService.DeleteByMeterId(id);
         await _meterRepository.Delete(id);
     }
 }

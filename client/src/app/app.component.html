@@ -1,5 +1,5 @@
-<div class="h-screen flex flex-col overflow-hidden">
-  <p-menubar [model]="items">
+<div class="h-full flex flex-col overflow-hidden">
+  <p-menubar [model]="items" styleClass="ml-2 mr-2 mt-2">
     <ng-template pTemplate="start">
       <span class="ml-4 mr-4"> MeterReading </span>
       <ng-template pTemplate="item" let-item let-root="root">
@@ -19,12 +19,32 @@
       </ng-template>
     </ng-template>
     <ng-template pTemplate="end">
-      <p-button icon="i-[mdi--logout]" class="mr-4" [rounded]="true" (click)="logOff()" />
+      <p-button icon="i-[mdi--logout]" styleClass="mr-4" [rounded]="true" (click)="logOff()" />
     </ng-template>
   </p-menubar>
-  <div class="router-content m-4 overflow-auto">
+  <div class="router-content m-2 overflow-auto">
     <router-outlet></router-outlet>
   </div>
 </div>
 
 <p-toast />
+<p-confirmDialog #cd>
+  <ng-template pTemplate="headless" let-message>
+    <p-card header="{{ message.header }}">
+      <div class="flex flex-row gap-3 m-4">
+        <span class="i-[mdi--alert-circle]"></span>
+        <p class="mb-0">{{ message.message }}</p>
+      </div>
+      <div class="flex justify-end gap-4">
+        <button pButton label="Cancel" (click)="cd.reject()" class="justify-center w-8rem"></button>
+        <button
+          pButton
+          label="Delete"
+          severity="danger"
+          (click)="cd.accept()"
+          class="justify-center w-8rem"
+        ></button>
+      </div>
+    </p-card>
+  </ng-template>
+</p-confirmDialog>

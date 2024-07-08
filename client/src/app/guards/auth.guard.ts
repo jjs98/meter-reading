@@ -8,14 +8,12 @@ import {
 
 import { DataStore } from './../store/data.store';
 import { NavigationService } from '../services/navigation.service';
-import { TokenService } from '../services/token.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
   private readonly dataStore = inject(DataStore);
-  private readonly tokenService = inject(TokenService);
   private readonly navigationService = inject(NavigationService);
 
   public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -26,7 +24,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   public checkUserLogin(route: ActivatedRouteSnapshot, url: string): boolean {
-    if (this.tokenService.isTokenValid()) {
+    if (this.dataStore.isTokenValid()) {
       const userRoles = this.dataStore.token()?.role ?? [];
       if (route.data['role'] && userRoles.indexOf(route.data['role']) === -1) {
         this.navigationService.navigateToHome();

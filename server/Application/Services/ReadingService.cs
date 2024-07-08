@@ -8,12 +8,10 @@ namespace Application.Services;
 public class ReadingService : IReadingService
 {
     private readonly IReadingRepository _readingRepository;
-    private readonly IMeterService _meterService;
 
-    public ReadingService(IReadingRepository readingRepository, IMeterService meterService)
+    public ReadingService(IReadingRepository readingRepository)
     {
         _readingRepository = readingRepository;
-        _meterService = meterService;
     }
 
     public async Task<IEnumerable<Reading>> GetAll()
@@ -26,10 +24,9 @@ public class ReadingService : IReadingService
         return await _readingRepository.GetById(id);
     }
 
-    public async Task<IEnumerable<Reading>> GetBy(int userId, int meterId)
+    public async Task<IEnumerable<Reading>> GetByMeterId(int meterId)
     {
-        var meter = await _meterService.GetBy(userId, meterId);
-        return await _readingRepository.GetAllByMeterId(meter.Id);
+        return await _readingRepository.GetAllByMeterId(meterId);
     }
 
     public async Task<Reading> Create(Reading reading)
@@ -40,6 +37,11 @@ public class ReadingService : IReadingService
     public async Task Update(Reading reading)
     {
         await _readingRepository.Update(reading);
+    }
+
+    public async Task DeleteByMeterId(int meterId)
+    {
+        await _readingRepository.DeleteByMeterId(meterId);
     }
 
     public async Task Delete(int id)

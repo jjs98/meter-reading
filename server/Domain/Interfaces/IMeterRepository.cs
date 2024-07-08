@@ -10,5 +10,6 @@ public interface IMeterRepository
     Task<Meter> GetBy(int userId, int meterId);
     Task<Meter> Create(Meter meter);
     Task Update(Meter meter);
+    Task DeleteByUserId(int userId);
     Task Delete(int id);
 }

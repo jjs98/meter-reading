@@ -1,18 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TableModule, TableRowSelectEvent } from 'primeng/table';
 
 import { DataStore } from './../../store/data.store';
 import { Meter } from '../../api/models';
-import { MeterType } from '../../models/MeterType.enum';
+import { NewMeterDialogComponent } from '../../components/new-meter-dialog/new-meter-dialog.component';
 
 @Component({
   selector: 'app-meter',
@@ -22,9 +29,10 @@ import { MeterType } from '../../models/MeterType.enum';
     CardModule,
     CommonModule,
     DialogModule,
-    DropdownModule,
     FloatLabelModule,
     FormsModule,
+    InputTextModule,
+    NewMeterDialogComponent,
     RadioButtonModule,
     TableModule,
   ],
@@ -37,20 +45,15 @@ export class MeterComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
 
-  protected location: string | undefined = undefined;
-  protected meterNumber: string | undefined = undefined;
-  protected comment: string | undefined = undefined;
-  protected type: MeterType | undefined = undefined;
-
   protected dialogVisible = signal(false);
-  // private dialog = viewChild.required<DialogComponent>()
+  private readonly dialog = viewChild.required(NewMeterDialogComponent);
 
   public async ngOnInit(): Promise<void> {
     await this.dataStore.refreshMeters();
   }
 
   protected showDialog(): void {
-    this.dialogVisible.set(true);
+    this.dialog().showDialog();
   }
 
   protected onRowSelect($event: TableRowSelectEvent): void {
@@ -61,40 +64,5 @@ export class MeterComponent implements OnInit {
     this.router.navigate([`${selectedMeter.id}`], {
       relativeTo: this.activatedRoute,
     });
-  }
-
-  protected onCancel(): void {
-    this.resetDialog();
-  }
-
-  protected async onSave(): Promise<void> {
-    const successfulAdded = await this.dataStore.addMeter({
-      userId: 1,
-      meterNumber: '1234',
-      location: 'OG',
-      type: MeterType.Electricity,
-    });
-    if (successfulAdded) {
-      this.resetDialog();
-    }
-  }
-
-  protected async onKeyPress(event: KeyboardEvent): Promise<void> {
-    if (
-      event.key === 'Enter' &&
-      this.location !== '' &&
-      this.meterNumber !== '' &&
-      this.type !== undefined
-    ) {
-      await this.onSave();
-    }
-  }
-
-  private resetDialog(): void {
-    this.dialogVisible.set(false);
-    this.location = undefined;
-    this.meterNumber = undefined;
-    this.comment = undefined;
-    this.type = undefined;
   }
 }

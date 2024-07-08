@@ -9,5 +9,6 @@ public interface IReadingRepository
     Task<IEnumerable<Reading>> GetAllByMeterId(int meterId);
     Task<Reading> Create(Reading reading);
     Task Update(Reading reading);
+    Task DeleteByMeterId(int meterId);
     Task Delete(int id);
 }

@@ -1,15 +1,9 @@
-import {
-  getState,
-  patchState,
-  signalState,
-  signalStoreFeature,
-  withMethods,
-  withState,
-} from '@ngrx/signals';
+import { signalState, signalStoreFeature, withMethods, withState } from '@ngrx/signals';
 
-import { Meter, Reading, User } from '../../api/models';
+import { User } from '../../api/models';
+import { patch } from '../../utils/data-store.utils';
 
-type UserState = { user: User };
+type UserState = { user: User | undefined };
 
 const userState = signalState<UserState>({
   user: {
@@ -23,25 +17,10 @@ export function withUser() {
   return signalStoreFeature(
     withState(userState),
     withMethods(store => ({
-      setUser(user: User): void {
-        patchState(store, { user });
-      },
-      setMeters(meters: Meter[]): void {
-        patchState(store, state => ({
-          user: { ...state.user, meters: meters },
-        }));
-      },
-      setMeterReading(meterId: number, reading: Reading[]): void {
-        const state = getState(store);
-        const meters = state.user?.meters?.map(m =>
-          m.id === meterId ? { ...m, readings: reading } : m
-        );
-        if (!meters) {
-          return;
-        }
-        patchState(store, state => ({
-          user: { ...state.user, meters: meters },
-        }));
+      setUser(user: User | undefined): void {
+        patch(store, draft => {
+          draft.user = user;
+        });
       },
     }))
   );

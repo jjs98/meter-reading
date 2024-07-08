@@ -2,7 +2,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { provideApi } from './api/services';
 import { appRoutes } from './app.routes';
@@ -20,11 +20,8 @@ export const appConfig: ApplicationConfig = {
       useClass: AuthInterceptor,
       multi: true,
     },
-    provideApi({
-      rootUrl: environment.api.baseUrl,
-    }),
-    {
-      provide: MessageService,
-    },
+    provideApi({ rootUrl: environment.api.baseUrl }),
+    { provide: MessageService },
+    { provide: ConfirmationService },
   ],
 };

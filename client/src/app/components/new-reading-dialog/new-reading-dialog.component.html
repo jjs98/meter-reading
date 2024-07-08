@@ -1,0 +1,43 @@
+<p-dialog
+  header="New Reading"
+  [modal]="true"
+  [(visible)]="dialogVisible"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="w-[25rem]"
+>
+  <div class="flex items-center gap-3 mb-8">
+    <span class="i-[mdi--counter]"></span>
+    <p-floatLabel>
+      <p-inputNumber
+        pInputNumber
+        inputId="number"
+        class="flex-auto"
+        [(ngModel)]="number"
+        autocomplete="off"
+        (keypress)="onKeyPress($event)"
+        locale="de-de"
+        [minFractionDigits]="0"
+        [maxFractionDigits]="3"
+      />
+      <label for="number" class="font-semibold w-6rem">Reading</label>
+    </p-floatLabel>
+  </div>
+  <div class="flex items-center gap-3 mb-8">
+    <span class="i-[mdi--calendar]"></span>
+    <p-floatLabel>
+      <p-calendar
+        id="readingDate"
+        [(ngModel)]="readingDate"
+        [touchUI]="true"
+        [maxDate]="currentDate"
+        dateFormat="dd.mm.yy"
+      />
+      <label for="readingDate" class="font-semibold w-6rem">Reading date</label>
+    </p-floatLabel>
+  </div>
+  <div class="flex justify-end gap-4">
+    <p-button label="Cancel" severity="secondary" (onClick)="onCancel()" />
+    <p-button label="Save" (onClick)="onSave()" [disabled]="!number || !readingDate" />
+  </div>
+</p-dialog>

@@ -5,15 +5,13 @@ import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { AuthService } from './../../api/services/auth.service';
 import { NavigationService } from './../../services/navigation.service';
-import { TokenService } from './../../services/token.service';
+import { DataStore } from './../../store/data.store';
 import { TokenDto } from '../../api/models';
 
 @Component({
@@ -25,8 +23,6 @@ import { TokenDto } from '../../api/models';
     DialogModule,
     FloatLabelModule,
     FormsModule,
-    IconFieldModule,
-    InputIconModule,
     InputTextModule,
     PasswordModule,
     ProgressSpinnerModule,
@@ -36,9 +32,9 @@ import { TokenDto } from '../../api/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
+  private readonly dataStore = inject(DataStore);
   private readonly navigationService = inject(NavigationService);
   private readonly authService = inject(AuthService);
-  private readonly tokenService = inject(TokenService);
   private readonly messageService = inject(MessageService);
 
   protected username = '';
@@ -48,7 +44,7 @@ export class LoginComponent implements OnInit {
   protected loading = signal(false);
 
   public ngOnInit(): void {
-    if (this.tokenService.isTokenValid()) {
+    if (this.dataStore.isTokenValid()) {
       this.navigationService.navigateToHome();
       return;
     }
@@ -67,7 +63,7 @@ export class LoginComponent implements OnInit {
     if (response.status === 200) {
       const token = response.body as TokenDto;
       if (token.token !== undefined || token.token !== '' || token.token !== null) {
-        this.tokenService.setToken(token.token ?? undefined);
+        this.dataStore.setTokenString(token.token ?? undefined);
         const returnUrl = this.navigationService.getReturnUrl();
 
         if (returnUrl) {

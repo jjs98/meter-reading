@@ -63,6 +63,14 @@ public class ReadingRepository : IReadingRepository
         context.ChangeTracker.Clear();
     }
 
+    public async Task DeleteByMeterId(int meterId)
+    {
+        var context = _contextFactory.CreateDbContext();
+        var readings = await context.Readings.Where(x => x.MeterId == meterId).ToArrayAsync();
+        context.Readings.RemoveRange(readings);
+        await context.SaveChangesAsync();
+    }
+
     public async Task Delete(int id)
     {
         var context = _contextFactory.CreateDbContext();

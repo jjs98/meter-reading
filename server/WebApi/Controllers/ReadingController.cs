@@ -39,7 +39,7 @@ public class ReadingController : ControllerBase
             if (userId == -1)
                 return Unauthorized();
 
-            var readings = await _readingService.GetBy(userId, meterId);
+            var readings = await _readingService.GetByMeterId(meterId);
             return Ok(readings);
         }
         catch (Exception ex)

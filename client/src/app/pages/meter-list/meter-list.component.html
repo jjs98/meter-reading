@@ -3,6 +3,7 @@
     [value]="dataStore.meters()"
     selectionMode="single"
     (onRowSelect)="onRowSelect($event)"
+    class="h-full"
     [scrollable]="true"
     scrollHeight="flex"
   >
@@ -28,7 +29,7 @@
                 ? 'i-[mdi--lightning-bolt]'
                 : meter.type === 1
                   ? 'i-[mdi--water]'
-                  : 'i-[mdi--meter-gas]'
+                  : 'i-[mdi--gas-cylinder]'
             }}"
           ></span>
         </td>
@@ -40,76 +41,12 @@
         </td>
       </tr>
     </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="3">No meters found.</td>
+      </tr>
+    </ng-template>
   </p-table>
 </p-card>
 
-<p-dialog
-  header="New Meter"
-  [modal]="true"
-  [(visible)]="dialogVisible"
-  [draggable]="false"
-  [style]="{ width: '25rem' }"
->
-  <div class="flex items-center gap-3 mb-8 mt-8">
-    <span class="i-[mdi--home-map-marker]"></span>
-    <p-floatLabel>
-      <input
-        pInputText
-        id="location"
-        class="flex-auto"
-        [(ngModel)]="location"
-        autocomplete="off"
-        (keypress)="onKeyPress($event)"
-      />
-      <label for="location" class="font-semibold w-6rem">Location</label>
-    </p-floatLabel>
-  </div>
-  <div class="flex items-center gap-3 mb-8">
-    <span class="i-[mdi--barcode-scan]"></span>
-    <p-floatLabel>
-      <input
-        pInputText
-        id="meterNumber"
-        class="flex-auto"
-        [(ngModel)]="meterNumber"
-        autocomplete="off"
-        (keypress)="onKeyPress($event)"
-      />
-      <label for="meterNumber" class="font-semibold w-6rem">Meter number</label>
-    </p-floatLabel>
-  </div>
-  <div class="flex items-center gap-3 mb-8">
-    <span class="i-[mdi--comment]"></span>
-    <p-floatLabel>
-      <input
-        pInputText
-        id="comment"
-        class="flex-auto"
-        [(ngModel)]="comment"
-        autocomplete="off"
-        (keypress)="onKeyPress($event)"
-      />
-      <label for="comment" class="font-semibold w-6rem">Comment</label>
-    </p-floatLabel>
-  </div>
-  <div class="flex items-center gap-3 mb-8">
-    <div class="flex items-center">
-      <p-radioButton name="type" value="0" [(ngModel)]="type" inputId="electricity" />
-      <label for="electricity" class="ml-2"> Elctricity </label>
-    </div>
-
-    <div class="flex items-center">
-      <p-radioButton name="type" value="1" [(ngModel)]="type" inputId="water" />
-      <label for="water" class="ml-2"> Water </label>
-    </div>
-
-    <div class="flex items-center">
-      <p-radioButton name="type" value="2" [(ngModel)]="type" inputId="gas" />
-      <label for="gas" class="ml-2"> Gas </label>
-    </div>
-  </div>
-  <div class="flex justify-end gap-3">
-    <p-button label="Cancel" severity="secondary" (onClick)="onCancel()" />
-    <p-button label="Save" (onClick)="onSave()" />
-  </div>
-</p-dialog>
+<app-new-meter-dialog></app-new-meter-dialog>

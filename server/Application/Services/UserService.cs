@@ -8,10 +8,12 @@ namespace Application.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IMeterService _meterService;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, IMeterService meterService)
     {
         _userRepository = userRepository;
+        _meterService = meterService;
     }
 
     public async Task<IEnumerable<User>> GetAll()
@@ -41,6 +43,11 @@ public class UserService : IUserService
 
     public async Task Delete(int id)
     {
+        var meters = await _meterService.GetByUserId(id);
+        foreach (var meter in meters)
+        {
+            await _meterService.Delete(meter.Id);
+        }
         await _userRepository.Delete(id);
     }
 }
