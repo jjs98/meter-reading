@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Services;
 using Domain.Exceptions;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;

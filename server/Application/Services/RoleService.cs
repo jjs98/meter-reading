@@ -1,9 +1,10 @@
-﻿using Application.Interfaces;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 using Domain.Models;
+using InterfaceGenerator;
 
 namespace Application.Services;
 
+[GenerateAutoInterface]
 public class RoleService : IRoleService
 {
     private readonly IRoleRepository _roleRepository;

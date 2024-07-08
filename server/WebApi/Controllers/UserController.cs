@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using Application.Interfaces;
+using Application.Services;
 using Domain.Exceptions;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;

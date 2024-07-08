@@ -1,9 +1,10 @@
-﻿using Application.Interfaces;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 using Domain.Models;
+using InterfaceGenerator;
 
 namespace Application.Services;
 
+[GenerateAutoInterface]
 public class ReadingService : IReadingService
 {
     private readonly IReadingRepository _readingRepository;

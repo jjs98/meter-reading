@@ -2,14 +2,15 @@
 using System.Security.Claims;
 using System.Text;
 using Application.DTOs;
-using Application.Interfaces;
 using Domain.Interfaces;
 using Domain.Models;
+using InterfaceGenerator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Services;
 
+[GenerateAutoInterface]
 public class AuthService : IAuthService
 {
     private readonly IUserRoleRepository _userRoleRepository;
