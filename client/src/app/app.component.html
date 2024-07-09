@@ -1,27 +1,29 @@
 <div class="h-full flex flex-col overflow-hidden">
-  <p-menubar [model]="items" styleClass="ml-2 mr-2 mt-2">
-    <ng-template pTemplate="start">
-      <span class="ml-4 mr-4"> MeterReading </span>
-      <ng-template pTemplate="item" let-item let-root="root">
-        <a pRipple class="flex align-items-center p-menuitem-link">
-          <span [class]="item.icon"></span>
-          <span class="ml-2">{{ item.label }}</span>
-          <span
-            *ngIf="item.shortcut"
-            class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1"
-            >{{ item.shortcut }}</span
-          >
-          <i
-            *ngIf="item.items"
-            [ngClass]="['pi', root ? 'pi-angle-down ml-2' : 'pi-angle-right ml-auto']"
-          ></i>
-        </a>
+  @if (dataStore.isTokenValid()) {
+    <p-menubar [model]="items" styleClass="ml-2 mr-2 mt-2 p-4">
+      <ng-template pTemplate="start">
+        <span class="ml-4 mr-4"> MeterReading </span>
+        <ng-template pTemplate="item" let-item let-root="root">
+          <a pRipple class="flex align-items-center p-menuitem-link">
+            <span [class]="item.icon"></span>
+            <span class="ml-2">{{ item.label }}</span>
+            <span
+              *ngIf="item.shortcut"
+              class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1"
+              >{{ item.shortcut }}</span
+            >
+            <i
+              *ngIf="item.items"
+              [ngClass]="['pi', root ? 'pi-angle-down ml-2' : 'pi-angle-right ml-auto']"
+            ></i>
+          </a>
+        </ng-template>
       </ng-template>
-    </ng-template>
-    <ng-template pTemplate="end">
-      <p-button icon="i-[mdi--logout]" styleClass="mr-4" [rounded]="true" (click)="logOff()" />
-    </ng-template>
-  </p-menubar>
+      <ng-template pTemplate="end">
+        <p-button icon="i-[mdi--logout]" styleClass="mr-4" [rounded]="true" (click)="logOff()" />
+      </ng-template>
+    </p-menubar>
+  }
   <div class="router-content m-2 overflow-auto">
     <router-outlet></router-outlet>
   </div>

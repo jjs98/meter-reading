@@ -31,7 +31,7 @@
             <span>{{ reading.number }}</span>
           </td>
           <td>
-            <span>{{ reading.readingDate | date: 'dd-MM-yyyy' }}</span>
+            <span>{{ reading.readingDate | date: 'dd.MM.yyyy' }}</span>
           </td>
         </tr>
       </ng-template>
@@ -52,4 +52,4 @@
   />
 </div>
 
-<app-new-reading-dialog [meterId]="meterId()"></app-new-reading-dialog>
+<app-reading-dialog [meterId]="meterId()"></app-reading-dialog>

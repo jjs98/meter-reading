@@ -19,7 +19,7 @@ import { TableModule, TableRowSelectEvent } from 'primeng/table';
 
 import { DataStore } from './../../store/data.store';
 import { Meter } from '../../api/models';
-import { NewMeterDialogComponent } from '../../components/new-meter-dialog/new-meter-dialog.component';
+import { MeterDialogComponent } from '../../components/meter-dialog/meter-dialog.component';
 
 @Component({
   selector: 'app-meter',
@@ -32,7 +32,7 @@ import { NewMeterDialogComponent } from '../../components/new-meter-dialog/new-m
     FloatLabelModule,
     FormsModule,
     InputTextModule,
-    NewMeterDialogComponent,
+    MeterDialogComponent,
     RadioButtonModule,
     TableModule,
   ],
@@ -46,14 +46,19 @@ export class MeterComponent implements OnInit {
   private readonly activatedRoute = inject(ActivatedRoute);
 
   protected dialogVisible = signal(false);
-  private readonly dialog = viewChild.required(NewMeterDialogComponent);
+  private readonly newDialog = viewChild.required(MeterDialogComponent);
+  private readonly editDialog = viewChild.required(MeterDialogComponent);
 
   public async ngOnInit(): Promise<void> {
     await this.dataStore.refreshMeters();
   }
 
-  protected showDialog(): void {
-    this.dialog().showDialog();
+  protected showNewDialog(): void {
+    this.newDialog().showDialog();
+  }
+
+  protected showEditDialog(meter: Meter): void {
+    this.editDialog().showDialog(meter);
   }
 
   protected onRowSelect($event: TableRowSelectEvent): void {

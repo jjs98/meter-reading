@@ -35,5 +35,8 @@
     ".*[sS]tyleClass"
   ],
 
-  "css.customData": [".vscode/tailwind.json"]
+  "css.customData": [
+    ".vscode/tailwind.json"
+  ],
+  "tailwindCSS.rootFontSize": 14
 }

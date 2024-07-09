@@ -66,6 +66,10 @@
   </div>
   <div class="flex justify-end gap-4">
     <p-button label="Cancel" severity="secondary" (onClick)="onCancel()" />
-    <p-button label="Save" (onClick)="onSave()" [disabled]="!location || !meterNumber || !type" />
+    <p-button
+      label="Save"
+      (onClick)="onSave()"
+      [disabled]="!location || !meterNumber || type === undefined || !hasMeterChanged()"
+    />
   </div>
 </p-dialog>

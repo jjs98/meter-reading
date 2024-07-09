@@ -10,14 +10,15 @@
     <ng-template pTemplate="caption">
       <div class="flex items-center justify-between">
         Meters
-        <p-button icon="i-[mdi--plus]" [rounded]="true" (onClick)="showDialog()" />
+        <p-button icon="i-[mdi--plus]" [rounded]="true" (onClick)="showNewDialog()" />
       </div>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th>Type</th>
-        <th>Number</th>
-        <th>Location</th>
+        <th style="max-width: 25%">Type</th>
+        <th style="max-width: 40%">Number</th>
+        <th style="max-width: 25%">Location</th>
+        <th style="width: 10%"></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-meter>
@@ -39,6 +40,13 @@
         <td>
           <span>{{ meter.location }}</span>
         </td>
+        <td>
+          <p-button
+            icon="i-[mdi--pencil]"
+            [rounded]="true"
+            (onClick)="showEditDialog(meter)"
+          ></p-button>
+        </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
@@ -49,4 +57,4 @@
   </p-table>
 </p-card>
 
-<app-new-meter-dialog></app-new-meter-dialog>
+<app-meter-dialog></app-meter-dialog>

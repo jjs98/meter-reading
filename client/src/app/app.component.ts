@@ -32,10 +32,10 @@ import { DataStore } from './store/data.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  private readonly dataStore = inject(DataStore);
+  protected readonly dataStore = inject(DataStore);
   private readonly navigationService = inject(NavigationService);
 
-  public items: MenuItem[] = [
+  protected items: MenuItem[] = [
     {
       label: 'Meters',
       icon: 'i-[mdi--counter]',

@@ -12,5 +12,10 @@ module.exports = {
       prefix: 'i',
       overrideOnly: true,
     }),
+    plugin(function ({ addBase }) {
+      addBase({
+        html: { fontSize: '14px' },
+      });
+    }),
   ],
 };

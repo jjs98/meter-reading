@@ -42,6 +42,11 @@ export function withMeters() {
           const resonse = await meterService.postApiMeter({ body: meter });
           if (resonse.status === 201) {
             await this.refreshMeters();
+            messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Meter added',
+            });
             return true;
           }
           messageService.add({
@@ -55,12 +60,43 @@ export function withMeters() {
           const resonse = await meterService.deleteApiMeterId({ id: meterId });
           if (resonse.status === 204) {
             await this.refreshMeters();
+            messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Meter deleted',
+            });
             return true;
           }
           messageService.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Failed to delete meter',
+          });
+          return false;
+        },
+        async updateMeter(meter: Meter): Promise<boolean> {
+          if (!meter.id) {
+            messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Meter ID is missing',
+            });
+            return false;
+          }
+          const resonse = await meterService.putApiMeterId({ id: meter.id, body: meter });
+          if (resonse.status === 204) {
+            await this.refreshMeters();
+            messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Meter updated',
+            });
+            return true;
+          }
+          messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to update meter',
           });
           return false;
         },

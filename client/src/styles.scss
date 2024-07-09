@@ -57,12 +57,16 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
+    font-size: 14px;
+    @supports (font: -apple-system-body) {
+      font: -apple-system-body;
+    }
   }
 }
 
 @layer adjustments {
   .p-card-body {
-    @apply flex flex-col h-full gap-5;
+    @apply flex flex-col h-full gap-5 p-4;
   }
 
   .p-card-content {

@@ -40,7 +40,7 @@ export function withToken() {
         this.setTokenString(token ?? undefined);
       },
       deleteToken(): void {
-        this.setToken(undefined);
+        this.setTokenString(undefined);
       },
       isTokenValid(): boolean {
         const token = store.token();

@@ -1,43 +1,44 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 
-import { TranslationService } from './../../services/translation.service';
-import { MeterType } from '../../api/models';
 import { DataStore } from '../../store/data.store';
 
 @Component({
-  selector: 'app-new-meter-dialog',
+  selector: 'app-reading-dialog',
   standalone: true,
   imports: [
     ButtonModule,
+    CalendarModule,
     CommonModule,
     DialogModule,
     FloatLabelModule,
     FormsModule,
+    InputNumberModule,
     InputTextModule,
     RadioButtonModule,
   ],
-  templateUrl: './new-meter-dialog.component.html',
-  styleUrl: './new-meter-dialog.component.scss',
+  templateUrl: './reading-dialog.component.html',
+  styleUrl: './reading-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewMeterDialogComponent {
+export class ReadingDialogComponent {
   protected readonly dataStore = inject(DataStore);
   private readonly messageService = inject(MessageService);
 
-  protected readonly translations = inject(TranslationService).translations;
+  public readonly meterId = input<number>();
+  public readonly currentDate = new Date();
 
-  protected location: string | undefined = undefined;
-  protected meterNumber: string | undefined = undefined;
-  protected comment: string | undefined = undefined;
-  protected type: MeterType | undefined = undefined;
+  protected number: number | undefined = undefined;
+  protected readingDate: Date | undefined = undefined;
 
   protected dialogVisible = signal(false);
 
@@ -58,16 +59,16 @@ export class NewMeterDialogComponent {
   }
 
   protected async onSave(): Promise<void> {
-    const userId = this.dataStore.user()?.id;
-    if (!userId) {
+    const meterId = this.meterId();
+    if (!meterId) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: 'Could not determine User',
+        detail: 'Could not determine Meter',
       });
       return;
     }
-    if (!this.location || !this.meterNumber || !this.type) {
+    if (!this.number || !this.readingDate) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -76,12 +77,10 @@ export class NewMeterDialogComponent {
       return;
     }
 
-    const successfulAdded = await this.dataStore.addMeter({
-      userId: userId,
-      meterNumber: this.meterNumber,
-      location: this.location,
-      type: this.type,
-      comment: this.comment,
+    const successfulAdded = await this.dataStore.addReading({
+      meterId: meterId,
+      number: this.number.toString(),
+      readingDate: this.readingDate.toISOString(),
     });
     if (successfulAdded) {
       this.dialogVisible.set(false);
@@ -89,20 +88,13 @@ export class NewMeterDialogComponent {
   }
 
   protected async onKeyPress(event: KeyboardEvent): Promise<void> {
-    if (
-      event.key === 'Enter' &&
-      this.location !== '' &&
-      this.meterNumber !== '' &&
-      this.type !== undefined
-    ) {
+    if (event.key === 'Enter' && !this.readingDate && !this.number) {
       await this.onSave();
     }
   }
 
   private resetDialog(): void {
-    this.location = undefined;
-    this.meterNumber = undefined;
-    this.comment = undefined;
-    this.type = undefined;
+    this.number = undefined;
+    this.readingDate = undefined;
   }
 }

@@ -20,7 +20,7 @@ import { TableModule } from 'primeng/table';
 
 import { NavigationService } from './../../services/navigation.service';
 import { DataStore } from './../../store/data.store';
-import { NewReadingDialogComponent } from '../../components/new-reading-dialog/new-reading-dialog.component';
+import { ReadingDialogComponent } from '../../components/reading-dialog/reading-dialog.component';
 
 @Component({
   selector: 'app-meter-details',
@@ -33,8 +33,8 @@ import { NewReadingDialogComponent } from '../../components/new-reading-dialog/n
     FloatLabelModule,
     FormsModule,
     InputTextModule,
-    NewReadingDialogComponent,
     RadioButtonModule,
+    ReadingDialogComponent,
     TableModule,
   ],
   templateUrl: './meter-details.component.html',
@@ -42,13 +42,13 @@ import { NewReadingDialogComponent } from '../../components/new-reading-dialog/n
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeterDetailsComponent implements OnInit {
-  public readonly dataStore = inject(DataStore);
+  protected readonly dataStore = inject(DataStore);
   private readonly navigationService = inject(NavigationService);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly messageService = inject(MessageService);
 
-  private readonly dialog = viewChild.required(NewReadingDialogComponent);
+  private readonly dialog = viewChild.required(ReadingDialogComponent);
 
   public meterId = signal(-1);
 
