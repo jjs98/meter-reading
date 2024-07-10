@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { signalState, signalStoreFeature, withMethods, withState } from '@ngrx/signals';
 import { MessageService } from 'primeng/api';
 
+import { TranslateService } from './../../services/translate.service';
 import { Meter, Reading } from '../../api/models';
 import { MeterService } from '../../api/services/meter.service';
 import { patch } from '../../utils/data-store.utils';
@@ -17,7 +18,12 @@ export function withMeters() {
   return signalStoreFeature(
     withState(metersState),
     withMethods(
-      (store, meterService = inject(MeterService), messageService = inject(MessageService)) => ({
+      (
+        store,
+        meterService = inject(MeterService),
+        messageService = inject(MessageService),
+        translations = inject(TranslateService).translations
+      ) => ({
         setMeters(meters: Meter[]): void {
           patch(store, draft => {
             draft.meters = meters;
@@ -44,15 +50,15 @@ export function withMeters() {
             await this.refreshMeters();
             messageService.add({
               severity: 'success',
-              summary: 'Success',
-              detail: 'Meter added',
+              summary: translations.success(),
+              detail: translations.meter_success_add(),
             });
             return true;
           }
           messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: 'Failed to add meter',
+            summary: translations.error(),
+            detail: translations.meter_error_add(),
           });
           return false;
         },
@@ -62,15 +68,15 @@ export function withMeters() {
             await this.refreshMeters();
             messageService.add({
               severity: 'success',
-              summary: 'Success',
-              detail: 'Meter deleted',
+              summary: translations.success(),
+              detail: translations.meter_success_delete(),
             });
             return true;
           }
           messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: 'Failed to delete meter',
+            summary: translations.error(),
+            detail: translations.meter_error_delete(),
           });
           return false;
         },
@@ -78,8 +84,8 @@ export function withMeters() {
           if (!meter.id) {
             messageService.add({
               severity: 'error',
-              summary: 'Error',
-              detail: 'Meter ID is missing',
+              summary: translations.error(),
+              detail: translations.meter_error_meterIdMissing(),
             });
             return false;
           }
@@ -88,15 +94,15 @@ export function withMeters() {
             await this.refreshMeters();
             messageService.add({
               severity: 'success',
-              summary: 'Success',
-              detail: 'Meter updated',
+              summary: translations.success(),
+              detail: translations.meter_success_update(),
             });
             return true;
           }
           messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: 'Failed to update meter',
+            summary: translations.error(),
+            detail: translations.meter_error_update(),
           });
           return false;
         },

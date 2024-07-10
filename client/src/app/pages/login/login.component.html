@@ -1,5 +1,5 @@
 <p-dialog
-  header="Login"
+  header="{{ translations.login_login() }}"
   [modal]="true"
   [(visible)]="visible"
   [closable]="false"
@@ -16,7 +16,7 @@
         autocomplete="off"
         (keypress)="onKeyPress($event)"
       />
-      <label for="username" class="font-semibold w-6rem">Username</label>
+      <label for="username" class="font-semibold w-6rem">{{ translations.login_username() }}</label>
     </p-floatLabel>
   </div>
   <div class="flex items-center gap-3 mb-8">
@@ -30,7 +30,7 @@
         [feedback]="false"
         (keypress)="onKeyPress($event)"
       />
-      <label for="password" class="font-semibold w-6rem">Password</label>
+      <label for="password" class="font-semibold w-6rem">{{ translations.login_password() }}</label>
     </p-floatLabel>
   </div>
   <div class="flex justify-end gap-4">
@@ -43,7 +43,7 @@
       @if (loading()) {
         <span class="animate-spin i-[mdi--loading]"></span>
       } @else {
-        Login
+        {{ translations.login_login() }}
       }
     </button>
   </div>

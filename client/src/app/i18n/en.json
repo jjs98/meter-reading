@@ -1,3 +1,65 @@
 {
-  "meter": "Meter"
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "confirmDelete": {
+    "header": "Delete Confirmation",
+    "message": "Are you sure you want to delete this record?"
+  },
+  "delete": "Delete",
+  "error": "Error",
+  "info": "Info",
+  "login": {
+    "login": "Login",
+    "loginFailed": "Login failed",
+    "loginInvalid": "Invalid username or password",
+    "password": "Password",
+    "username": "Username"
+  },
+  "meter": {
+    "comment": "Comment",
+    "error": {
+      "add": "Failed to add meter",
+      "delete": "Failed to delete meter",
+      "determine": "Could not determine meter",
+      "meterIdMissing": "Meter ID is missing",
+      "update": "Failed to update meter"
+    },
+    "location": "Location",
+    "meter": "Meter",
+    "meters": "Meters",
+    "number": "Meter Number",
+    "success": {
+      "add": "Meter added",
+      "delete": "Meter deleted",
+      "update": "Meter updated"
+    },
+    "type": {
+      "electricity": "Electricity",
+      "gas": "Gas",
+      "type": "Type",
+      "water": "Water"
+    }
+  },
+  "meterReadings": "Meter Readings",
+  "noRecordsFound": "No records found",
+  "reading": {
+    "error": {
+      "add": "Failed to add reading",
+      "delete": "Failed to delete reading",
+      "determine": "Could not determine reading",
+      "readingIdMissing": "Reading ID is missing",
+      "update": "Failed to update reading"
+    },
+    "reading": "Reading",
+    "readingDate": "Reading Date",
+    "readings": "Readings",
+    "success": {
+      "add": "Meter added",
+      "delete": "Meter deleted",
+      "update": "Meter updated"
+    }
+  },
+  "save": "Save",
+  "success": "Success",
+  "warning": "Warning"
 }

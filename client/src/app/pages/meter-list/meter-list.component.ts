@@ -20,6 +20,7 @@ import { TableModule, TableRowSelectEvent } from 'primeng/table';
 import { DataStore } from './../../store/data.store';
 import { Meter } from '../../api/models';
 import { MeterDialogComponent } from '../../components/meter-dialog/meter-dialog.component';
+import { TranslateService } from '../../services/translate.service';
 
 @Component({
   selector: 'app-meter',
@@ -42,6 +43,7 @@ import { MeterDialogComponent } from '../../components/meter-dialog/meter-dialog
 })
 export class MeterComponent implements OnInit {
   protected readonly dataStore = inject(DataStore);
+  protected readonly translations = inject(TranslateService).translations;
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
 

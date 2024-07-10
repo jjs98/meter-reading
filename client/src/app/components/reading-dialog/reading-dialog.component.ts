@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
@@ -10,6 +10,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 
+import { Reading } from '../../api/models';
+import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 
 @Component({
@@ -32,7 +34,9 @@ import { DataStore } from '../../store/data.store';
 })
 export class ReadingDialogComponent {
   protected readonly dataStore = inject(DataStore);
+  protected readonly translations = inject(TranslateService).translations;
   private readonly messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
 
   public readonly meterId = input<number>();
   public readonly currentDate = new Date();
@@ -42,6 +46,10 @@ export class ReadingDialogComponent {
 
   protected dialogVisible = signal(false);
 
+  private isEdit = false;
+
+  public existingReading: Reading | undefined = undefined;
+
   constructor() {
     effect(() => {
       if (!this.dialogVisible()) {
@@ -50,7 +58,14 @@ export class ReadingDialogComponent {
     });
   }
 
-  public showDialog(): void {
+  public showDialog(reading: Reading | undefined = undefined): void {
+    if (reading) {
+      this.isEdit = true;
+      this.existingReading = reading;
+      this.number = Number(reading.number ?? undefined);
+      this.readingDate = new Date(reading.readingDate ?? undefined);
+    }
+
     this.dialogVisible.set(true);
   }
 
@@ -68,7 +83,7 @@ export class ReadingDialogComponent {
       });
       return;
     }
-    if (!this.number || !this.readingDate) {
+    if (this.number === undefined || !this.readingDate) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -77,13 +92,10 @@ export class ReadingDialogComponent {
       return;
     }
 
-    const successfulAdded = await this.dataStore.addReading({
-      meterId: meterId,
-      number: this.number.toString(),
-      readingDate: this.readingDate.toISOString(),
-    });
-    if (successfulAdded) {
-      this.dialogVisible.set(false);
+    if (this.isEdit) {
+      await this.editReading();
+    } else {
+      await this.addReading(meterId);
     }
   }
 
@@ -93,8 +105,98 @@ export class ReadingDialogComponent {
     }
   }
 
+  protected hasReadingChanged(): boolean {
+    const reading = this.existingReading;
+    if (!reading) {
+      return true;
+    }
+
+    return (
+      this.number != Number(reading.number) ||
+      this.readingDate?.toISOString() != new Date(reading.readingDate).toISOString()
+    );
+  }
+
+  protected async confirmDeleteReading(): Promise<void> {
+    this.confirmationService.confirm({
+      header: this.translations.confirmDelete_header(),
+      message: this.translations.confirmDelete_message(),
+      icon: 'i-[mdi--alert-circle]',
+      acceptButtonStyleClass: 'p-button-danger p-button',
+      rejectButtonStyleClass: 'p-button',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        this.deleteReading();
+      },
+      reject: () => {},
+    });
+  }
+
+  private async deleteReading(): Promise<void> {
+    const readingId = this.existingReading?.id;
+    if (!readingId) {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translations.error(),
+        detail: this.translations.reading_error_determine(),
+      });
+      return;
+    }
+    const meterId = this.meterId();
+    if (!meterId) {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translations.error(),
+        detail: this.translations.meter_error_determine(),
+      });
+      return;
+    }
+    const deleted = await this.dataStore.deleteReading(readingId, meterId);
+    if (deleted) {
+      this.dialogVisible.set(false);
+    }
+  }
+
   private resetDialog(): void {
     this.number = undefined;
     this.readingDate = undefined;
+
+    this.isEdit = false;
+    this.existingReading = undefined;
+  }
+
+  private async addReading(meterId: number): Promise<void> {
+    const successfulAdded = await this.dataStore.addReading({
+      meterId: meterId,
+      number: this.number?.toString() ?? null,
+      readingDate: this.readingDate?.toISOString() ?? '',
+    });
+    if (successfulAdded) {
+      this.dialogVisible.set(false);
+    }
+  }
+
+  private async editReading(): Promise<void> {
+    const reading = this.existingReading;
+    if (!reading) {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translations.error(),
+        detail: this.translations.meter_error_determine(),
+      });
+      return;
+    }
+
+    const successfulUpdated = await this.dataStore.updateReading({
+      id: reading.id,
+      meterId: reading.meterId,
+      number: this.number?.toString() ?? null,
+      readingDate: this.readingDate?.toISOString() ?? '',
+    });
+    if (successfulUpdated) {
+      this.dialogVisible.set(false);
+    }
   }
 }

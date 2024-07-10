@@ -1,4 +1,4 @@
-import { User } from './../api/models/user';
+import { User } from '../api/models/user';
 import { Token } from '../models/Token.type';
 
 export function mapTokenToUser(token: Token | undefined): User | undefined {

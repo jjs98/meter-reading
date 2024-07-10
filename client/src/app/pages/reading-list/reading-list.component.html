@@ -1,0 +1,47 @@
+<p-card [styleClass]="'overflow-hidden h-full'">
+  <p-table [value]="dataStore.readings()" [scrollable]="true" scrollHeight="flex" class="h-full">
+    <ng-template pTemplate="caption">
+      <div class="flex items-center justify-between">
+        <p-button
+          (onClick)="navigateBack()"
+          icon="i-[mdi--arrow-left]"
+          class="mr-4"
+          [rounded]="true"
+        ></p-button>
+        {{ translations.reading_readings() }}
+        <p-button icon="i-[mdi--plus]" [rounded]="true" (onClick)="showNewDialog()" />
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{ translations.reading_reading() }}</th>
+        <th>{{ translations.reading_readingDate() }}</th>
+        <th style="width: 5rem"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-reading>
+      <tr [pSelectableRow]="reading">
+        <td>
+          <span>{{ reading.number | number: '' : 'de' }}</span>
+        </td>
+        <td>
+          <span>{{ reading.readingDate | date: 'dd.MM.yyyy' }}</span>
+        </td>
+        <td>
+          <p-button
+            icon="i-[mdi--pencil]"
+            [rounded]="true"
+            (onClick)="showEditDialog(reading)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="3">{{ translations.noRecordsFound() }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+<app-reading-dialog [meterId]="meterId()"></app-reading-dialog>

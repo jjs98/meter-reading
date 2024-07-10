@@ -17,9 +17,7 @@ export const appRoutes: Route[] = [
       {
         path: ':id',
         loadComponent: () =>
-          import('./pages/meter-details/meter-details.component').then(
-            m => m.MeterDetailsComponent
-          ),
+          import('./pages/reading-list/reading-list.component').then(m => m.ReadingListComponent),
       },
     ],
   },

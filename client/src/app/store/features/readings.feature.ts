@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 
 import { Reading } from '../../api/models';
 import { ReadingService } from '../../api/services';
+import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
 type ReadingsState = { readings: Reading[] };
@@ -20,7 +21,8 @@ export function withReadings() {
       (
         store,
         readingService = inject(ReadingService),
-        messageService = inject(MessageService)
+        messageService = inject(MessageService),
+        translations = inject(TranslateService).translations
       ) => ({
         setMeterReading(readings: Reading[]): void {
           patch(store, draft => {
@@ -41,12 +43,61 @@ export function withReadings() {
           const resonse = await readingService.postApiReading({ body: reading });
           if (resonse.status === 201) {
             await this.refreshReadings(reading.meterId);
+            messageService.add({
+              severity: 'success',
+              summary: translations.success(),
+              detail: translations.reading_success_add(),
+            });
             return true;
           }
           messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: 'Failed to add reading',
+            summary: translations.error(),
+            detail: translations.reading_error_add(),
+          });
+          return false;
+        },
+        async deleteReading(readingId: number, meterId: number): Promise<boolean> {
+          const resonse = await readingService.deleteApiReadingId({ id: readingId });
+          if (resonse.status === 204) {
+            await this.refreshReadings(meterId);
+            messageService.add({
+              severity: 'success',
+              summary: translations.success(),
+              detail: translations.reading_success_delete(),
+            });
+            return true;
+          }
+          messageService.add({
+            severity: 'error',
+            summary: translations.error(),
+            detail: translations.reading_error_delete(),
+          });
+          return false;
+        },
+        async updateReading(reading: Reading): Promise<boolean> {
+          if (!reading.id) {
+            messageService.add({
+              severity: 'error',
+              summary: translations.error(),
+              detail: translations.reading_error_readingIdMissing(),
+            });
+            return false;
+          }
+          const resonse = await readingService.putApiReadingId({ id: reading.id, body: reading });
+          if (resonse.status === 204) {
+            await this.refreshReadings(reading.meterId);
+            messageService.add({
+              severity: 'success',
+              summary: translations.success(),
+              detail: translations.reading_success_update(),
+            });
+            return true;
+          }
+          messageService.add({
+            severity: 'error',
+            summary: translations.error(),
+            detail: translations.reading_error_update(),
           });
           return false;
         },

@@ -7,6 +7,7 @@ import { TokenDto } from '../../api/models';
 import { AuthService } from '../../api/services';
 import { Token } from '../../models/Token.type';
 import { patch } from '../../utils/data-store.utils';
+import { getLocalStorage, setLocalStorage } from '../../utils/local-storage.utils';
 
 type TokenState = { token: Token | undefined };
 
@@ -26,17 +27,16 @@ export function withToken() {
       },
       setTokenString(token: string | undefined): void {
         if (!token) {
-          localStorage.removeItem('token');
+          setLocalStorage('token', undefined);
           this.setToken(undefined);
           return;
         }
-        localStorage.setItem('token', token ?? '');
+        setLocalStorage('token', token);
         const decodedToken = this.decodeToken(token ?? '');
         this.setToken(decodedToken);
       },
-      // implement tokenService here
       loadToken(): void {
-        const token = localStorage.getItem('token');
+        const token = getLocalStorage('token');
         this.setTokenString(token ?? undefined);
       },
       deleteToken(): void {

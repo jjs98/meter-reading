@@ -13,6 +13,7 @@ import { AuthService } from './../../api/services/auth.service';
 import { NavigationService } from './../../services/navigation.service';
 import { DataStore } from './../../store/data.store';
 import { TokenDto } from '../../api/models';
+import { TranslateService } from '../../services/translate.service';
 
 @Component({
   selector: 'app-login',
@@ -33,6 +34,7 @@ import { TokenDto } from '../../api/models';
 })
 export class LoginComponent implements OnInit {
   private readonly dataStore = inject(DataStore);
+  protected readonly translations = inject(TranslateService).translations;
   private readonly navigationService = inject(NavigationService);
   private readonly authService = inject(AuthService);
   private readonly messageService = inject(MessageService);
@@ -82,8 +84,8 @@ export class LoginComponent implements OnInit {
     this.loading.set(false);
     this.messageService.add({
       severity: 'error',
-      summary: 'Login Failed',
-      detail: 'Invalid username or password',
+      summary: this.translations.login_loginFailed(),
+      detail: this.translations.login_loginInvalid(),
     });
   }
 

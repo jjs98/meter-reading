@@ -1,26 +1,14 @@
 <div class="h-full flex flex-col overflow-hidden">
   @if (dataStore.isTokenValid()) {
-    <p-menubar [model]="items" styleClass="ml-2 mr-2 mt-2 p-4">
+    <p-menubar styleClass="ml-2 mr-2 mt-2 p-4">
       <ng-template pTemplate="start">
-        <span class="ml-4 mr-4"> MeterReading </span>
-        <ng-template pTemplate="item" let-item let-root="root">
-          <a pRipple class="flex align-items-center p-menuitem-link">
-            <span [class]="item.icon"></span>
-            <span class="ml-2">{{ item.label }}</span>
-            <span
-              *ngIf="item.shortcut"
-              class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1"
-              >{{ item.shortcut }}</span
-            >
-            <i
-              *ngIf="item.items"
-              [ngClass]="['pi', root ? 'pi-angle-down ml-2' : 'pi-angle-right ml-auto']"
-            ></i>
-          </a>
-        </ng-template>
+        <span class="ml-4"> {{ translations.meterReadings() }} </span>
       </ng-template>
       <ng-template pTemplate="end">
-        <p-button icon="i-[mdi--logout]" styleClass="mr-4" [rounded]="true" (click)="logOff()" />
+        <div class="flex flex-row items-center">
+          <span class="mr-8"> {{ dataStore.getUserName() }} </span>
+          <p-button icon="i-[mdi--logout]" styleClass="mr-4" [rounded]="true" (click)="logOff()" />
+        </div>
       </ng-template>
     </p-menubar>
   }
@@ -38,12 +26,20 @@
         <p class="mb-0">{{ message.message }}</p>
       </div>
       <div class="flex justify-end gap-4">
-        <button pButton label="Cancel" (click)="cd.reject()" class="justify-center w-8rem"></button>
         <button
           pButton
-          label="Delete"
+          icon="i-[mdi--cancel]"
+          severity="secondary"
+          (click)="cd.reject()"
+          [rounded]="true"
+          class="justify-center w-8rem"
+        ></button>
+        <button
+          pButton
+          icon="i-[mdi--delete]"
           severity="danger"
           (click)="cd.accept()"
+          [rounded]="true"
           class="justify-center w-8rem"
         ></button>
       </div>

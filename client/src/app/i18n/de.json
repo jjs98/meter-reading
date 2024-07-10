@@ -1,3 +1,65 @@
 {
-  "meter": "Zähler"
+  "cancel": "Abbrechen",
+  "confirm": "Bestätigen",
+  "confirmDelete": {
+    "header": "Löschbestätigung",
+    "message": "Sind Sie sicher, dass Sie diesen Datensatz löschen möchten?"
+  },
+  "delete": "Löschen",
+  "error": "Fehler",
+  "info": "Info",
+  "login": {
+    "login": "Einloggen",
+    "loginFailed": "Login fehlgeschlagen",
+    "loginInvalid": "Ungültiger Benutzername oder Passwort",
+    "password": "Passwort",
+    "username": "Benutzername"
+  },
+  "meter": {
+    "comment": "Kommentar",
+    "error": {
+      "add": "Fehler beim Hinzufügen des Zählers",
+      "delete": "Fehler beim Löschen des Zählers",
+      "determine": "Konnte den Zähler nicht bestimmen",
+      "meterIdMissing": "Zähler-ID fehlt",
+      "update": "Fehler beim Aktualisieren des Zählers"
+    },
+    "location": "Ort",
+    "meter": "Zähler",
+    "meters": "Zähler",
+    "number": "Zählernummer",
+    "success": {
+      "add": "Zähler hinzugefügt",
+      "delete": "Zähler gelöscht",
+      "update": "Zähler aktualisiert"
+    },
+    "type": {
+      "electricity": "Strom",
+      "gas": "Gas",
+      "type": "Typ",
+      "water": "Wasser"
+    }
+  },
+  "meterReadings": "Zählerstände",
+  "noRecordsFound": "Keine Datensätze gefunden",
+  "reading": {
+    "error": {
+      "add": "Fehler beim Hinzufügen des Zählerstands",
+      "delete": "Fehler beim Löschen des Zählerstands",
+      "determine": "Konnte den Zählerstand nicht bestimmen",
+      "readingIdMissing": "Zählerstands-ID fehlt",
+      "update": "Fehler beim Aktualisieren des Zählerstands"
+    },
+    "reading": "Zählerstand",
+    "readingDate": "Ablesedatum",
+    "readings": "Zählerstände",
+    "success": {
+      "add": "Zählerstand hinzugefügt",
+      "delete": "Zählerstand gelöscht",
+      "update": "Zählerstand aktualisiert"
+    }
+  },
+  "save": "Speichern",
+  "success": "Erfolg",
+  "warning": "Warnung"
 }

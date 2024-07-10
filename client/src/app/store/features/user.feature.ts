@@ -1,4 +1,4 @@
-import { signalState, signalStoreFeature, withMethods, withState } from '@ngrx/signals';
+import { getState, signalState, signalStoreFeature, withMethods, withState } from '@ngrx/signals';
 
 import { User } from '../../api/models';
 import { patch } from '../../utils/data-store.utils';
@@ -21,6 +21,14 @@ export function withUser() {
         patch(store, draft => {
           draft.user = user;
         });
+      },
+      getUserName(): string {
+        const state = getState(store);
+        if (!state.user?.firstName && !state.user?.lastName) {
+          return state.user?.username ?? '';
+        } else {
+          return `${state.user?.firstName ?? ''} ${state.user?.lastName ?? ''}`;
+        }
       },
     }))
   );

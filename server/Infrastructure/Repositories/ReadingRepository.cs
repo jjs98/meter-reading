@@ -17,7 +17,10 @@ public class ReadingRepository : IReadingRepository
     public async Task<IEnumerable<Reading>> GetAll()
     {
         var context = _contextFactory.CreateDbContext();
-        return await context.Readings.AsNoTracking().ToListAsync();
+        return await context
+            .Readings.AsNoTracking()
+            .OrderByDescending(x => x.ReadingDate)
+            .ToListAsync();
     }
 
     public async Task<Reading> GetById(int id)
@@ -33,7 +36,11 @@ public class ReadingRepository : IReadingRepository
     public async Task<IEnumerable<Reading>> GetAllByMeterId(int meterId)
     {
         var context = _contextFactory.CreateDbContext();
-        return await context.Readings.AsNoTracking().Where(x => x.MeterId == meterId).ToListAsync();
+        return await context
+            .Readings.AsNoTracking()
+            .Where(x => x.MeterId == meterId)
+            .OrderByDescending(x => x.ReadingDate)
+            .ToListAsync();
     }
 
     public async Task<Reading> Create(Reading reading)
