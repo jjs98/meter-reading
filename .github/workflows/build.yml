@@ -92,7 +92,7 @@ jobs:
           platforms: linux/arm64v8
 
   build-backend:
-    name: Build API
+    name: Build server
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -111,10 +111,15 @@ jobs:
       #   run: dotnet test ./server/WebApi.Tests/WebApi.Tests.csproj
 
   docker-backend:
-    name: Build and push api docker image
+    name: Build and push server docker image
     needs: [build-backend]
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    strategy:
+      matrix:
+        platform:
+          - linux/arm64v8
+    if: success()
     steps:
       - name: Checkout
         uses: actions/checkout@v3
