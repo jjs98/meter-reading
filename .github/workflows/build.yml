@@ -7,13 +7,15 @@ on:
 
 jobs:
   build-frontend:
-    name: Run Pnpm Build
+    name: Build client
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - run: corepack enable
+        
       - uses: actions/setup-node@v3
         with:
           node-version: 20
@@ -52,7 +54,7 @@ jobs:
         # working-directory: ./client
 
   docker-frontend:
-    name: Build and push docker image
+    name: Build and push client docker image
     needs: [build-frontend]
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -102,13 +104,13 @@ jobs:
           dotnet-version: 8.x
 
       - name: Build API
-        run: dotnet build ./server/WebApi/WebApi.csproj
+        run: dotnet build ./server/WebApi/WebApi.csproj -c Release
 
       # - name: Test API
       #   run: dotnet test ./server/WebApi.Tests/WebApi.Tests.csproj
 
   docker-backend:
-    name: Build and push docker image
+    name: Build and push api docker image
     needs: [build-backend]
     runs-on: ubuntu-latest
     timeout-minutes: 10
