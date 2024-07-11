@@ -62,7 +62,7 @@ jobs:
     strategy:
       matrix:
         platform:
-          - linux/arm64v8
+          - linux/arm64
     if: success()
     steps:
       - name: Checkout
@@ -89,7 +89,7 @@ jobs:
           context: client
           push: true
           tags: jjs98/meter-reading-client:latest
-          platforms: linux/arm64v8
+          platforms: linux/arm64
 
   build-backend:
     name: Build server
@@ -118,7 +118,7 @@ jobs:
     strategy:
       matrix:
         platform:
-          - linux/arm64v8
+          - linux/arm64
     if: success()
     steps:
       - name: Checkout
@@ -141,5 +141,5 @@ jobs:
           context: server
           push: true
           tags: jjs98/meter-reading-api:latest
-          platforms: linux/arm64v8
+          platforms: linux/arm64
     
