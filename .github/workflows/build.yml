@@ -20,6 +20,7 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+          cache-dependency-path: ./client/pnpm-lock.yaml
 
       - name: Pnpm install
         run: pnpm i
@@ -85,7 +86,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: .client
+          context: client
           push: true
           tags: jjs98/meter-reading-client:latest
           platforms: linux/arm64v8
@@ -132,7 +133,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: .server
+          context: server
           push: true
           tags: jjs98/meter-reading-api:latest
           platforms: linux/arm64v8
