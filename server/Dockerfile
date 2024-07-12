@@ -7,7 +7,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY *.sln .
-COPY WebApi/WebApi.csproj, WebApi/
+COPY WebApi/*.csproj WebApi/
+COPY Application/*.csproj Application/
+COPY Domain/*.csproj Domain/
+COPY Infrastructure/*.csproj Infrastructure/
 
 RUN dotnet restore
 
