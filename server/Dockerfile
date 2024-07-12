@@ -6,8 +6,14 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["WebApi/WebApi.csproj", "WebApi/"]
-RUN dotnet restore "WebApi/WebApi.csproj"
+
+
+WORKDIR "/src/WebApi"
+RUN dotnet restore "WebApi.csproj"
+
+WORKDIR /src
 COPY . .
+
 WORKDIR "/src/WebApi"
 RUN dotnet build "WebApi.csproj" -c Release -o /app/build
 
