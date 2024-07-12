@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
   api: {
-    baseUrl: 'http://localhost:5401',
+    baseUrl: 'http://raspberrypi:5401',
   },
 };
