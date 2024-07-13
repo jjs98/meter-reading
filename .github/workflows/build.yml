@@ -142,4 +142,15 @@ jobs:
           push: true
           tags: jjs98/meter-reading-api:latest
           platforms: linux/arm64
+
+  deploy:
+    name: Deploy
+    needs: [docker-frontend, docker-backend]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Push Watchtower
+        id: push_watchtower
+        run: 'curl -H "Authorization: Bearer ${{ secrets.WATCHTOWER_TOKEN }}" "${{ secrets.WATCHTOWER_URL }}"'
+        if: github.ref == 'refs/heads/main'
     
