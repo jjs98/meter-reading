@@ -1,0 +1,21 @@
+{
+  "name": "Meter Reading",
+  "short_name": "Meter Reading",
+  "display": "standalone",
+  "scope": "./",
+  "start_url": "./meters",
+  "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "256x256",
+      "src": "icons/counter.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "256x256",
+      "src": "icons/counter-rounded.png",
+      "type": "image/png"
+    }
+  ]
+}
