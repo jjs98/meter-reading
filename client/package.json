@@ -29,6 +29,7 @@
     "@ngrx/signals": "18.0.0-rc.2",
     "@nx/angular": "^19.4.2",
     "bcrypt-ts": "^5.0.2",
+    "chart.js": "^4.4.3",
     "immer": "^10.1.1",
     "jwt-decode": "^4.0.0",
     "material-icons": "^1.13.12",

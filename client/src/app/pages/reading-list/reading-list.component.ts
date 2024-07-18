@@ -3,6 +3,7 @@ import de from '@angular/common/locales/de';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   OnInit,
   signal,
@@ -12,7 +13,9 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { ChartModule } from 'primeng/chart';
 import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -30,8 +33,10 @@ import { DataStore } from '../../store/data.store';
   imports: [
     ButtonModule,
     CardModule,
+    ChartModule,
     CommonModule,
     DialogModule,
+    DropdownModule,
     FloatLabelModule,
     FormsModule,
     InputTextModule,
@@ -52,7 +57,31 @@ export class ReadingListComponent implements OnInit {
   private readonly newDialog = viewChild.required(ReadingDialogComponent);
   private readonly editDialog = viewChild.required(ReadingDialogComponent);
 
-  public meterId = signal(-1);
+  protected valuesCount = signal(10);
+  protected readonly valuesCountOptions = [5, 10, 15, 20];
+  protected meterId = signal(-1);
+  protected chartData = computed(() => {
+    const labels: string[] = [];
+    const data: number[] = [];
+    this.dataStore.readings().map(reading => {
+      labels.push(new Date(reading.readingDate).toLocaleDateString());
+      data.push(Number(reading.number ?? 0));
+    });
+
+    return {
+      labels: labels.reverse().slice(0, this.valuesCount()),
+      datasets: [
+        {
+          label: 'Readings',
+          data: data.reverse().slice(0, this.valuesCount()),
+          fill: false,
+          borderColor: getComputedStyle(document.documentElement).getPropertyValue(
+            '--primary-color'
+          ),
+        },
+      ],
+    };
+  });
 
   public async ngOnInit(): Promise<void> {
     registerLocaleData(de);
