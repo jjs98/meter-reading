@@ -1,14 +1,16 @@
 <p-card [styleClass]="'overflow-hidden h-full flex flex-col'">
   <div class="h-full">
-    <div class="h-1/4 flex flex-col">
-      <div class="flex justify-end">
+    <div class="h-2/5 flex flex-col">
+      <div class="flex justify-between mb-4 items-center">
+        <p-button (onClick)="navigateBack()" icon="i-[mdi--arrow-left]" [rounded]="true"></p-button>
+        <span>{{ translations.reading_readingDelta() }}</span>
         <p-dropdown [options]="valuesCountOptions" [(ngModel)]="valuesCount" />
       </div>
       <div class="flex-1">
-        <p-chart type="line" [data]="chartData()" [height]="'100%'" />
+        <p-chart type="line" [data]="chartData()" [options]="chartOptions" [height]="'100%'" />
       </div>
     </div>
-    <div class="h-3/4">
+    <div class="h-3/5">
       <p-table
         [value]="dataStore.readings()"
         [scrollable]="true"
@@ -17,12 +19,6 @@
       >
         <ng-template pTemplate="caption">
           <div class="flex items-center justify-between">
-            <p-button
-              (onClick)="navigateBack()"
-              icon="i-[mdi--arrow-left]"
-              class="mr-4"
-              [rounded]="true"
-            ></p-button>
             {{ translations.reading_readings() }}
             <p-button icon="i-[mdi--plus]" [rounded]="true" (onClick)="showNewDialog()" />
           </div>

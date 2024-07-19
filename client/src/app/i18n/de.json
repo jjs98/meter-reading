@@ -52,6 +52,7 @@
     },
     "reading": "Zählerstand",
     "readingDate": "Ablesedatum",
+    "readingDelta": "Zählerstandsdifferenz",
     "readings": "Zählerstände",
     "success": {
       "add": "Zählerstand hinzugefügt",

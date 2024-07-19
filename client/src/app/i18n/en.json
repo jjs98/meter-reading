@@ -52,6 +52,7 @@
     },
     "reading": "Reading",
     "readingDate": "Reading Date",
+    "readingDelta": "Reading Delta",
     "readings": "Readings",
     "success": {
       "add": "Meter added",

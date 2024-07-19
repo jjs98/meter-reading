@@ -68,12 +68,19 @@ export class ReadingListComponent implements OnInit {
       data.push(Number(reading.number ?? 0));
     });
 
+    const deltaData = data.reverse().map((value, index) => {
+      if (index === 0) {
+        return 0;
+      }
+      return value - data[index - 1];
+    });
+
     return {
-      labels: labels.reverse().slice(0, this.valuesCount()),
+      labels: labels.reverse().slice(1, this.valuesCount() + 1),
       datasets: [
         {
           label: 'Readings',
-          data: data.reverse().slice(0, this.valuesCount()),
+          data: deltaData.slice(1, this.valuesCount() + 1),
           fill: false,
           borderColor: getComputedStyle(document.documentElement).getPropertyValue(
             '--primary-color'
@@ -82,6 +89,13 @@ export class ReadingListComponent implements OnInit {
       ],
     };
   });
+  protected chartOptions = {
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
 
   public async ngOnInit(): Promise<void> {
     registerLocaleData(de);
