@@ -76,11 +76,11 @@ export class ReadingListComponent implements OnInit {
     });
 
     return {
-      labels: labels.reverse().slice(1, this.valuesCount() + 1),
+      labels: labels.reverse().slice(labels.length - this.valuesCount(), labels.length),
       datasets: [
         {
           label: 'Readings',
-          data: deltaData.slice(1, this.valuesCount() + 1),
+          data: deltaData.slice(deltaData.length - this.valuesCount(), deltaData.length),
           fill: false,
           borderColor: getComputedStyle(document.documentElement).getPropertyValue(
             '--primary-color'

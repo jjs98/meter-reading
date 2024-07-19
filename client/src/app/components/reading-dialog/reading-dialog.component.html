@@ -60,7 +60,7 @@
       icon="i-[mdi--content-save]"
       (onClick)="onSave()"
       [rounded]="true"
-      [disabled]="!number || !readingDate || !hasReadingChanged() || hasReadingForDate()"
+      [disabled]="!number || !readingDate() || !hasReadingChanged() || hasReadingForDate()"
     />
   </div>
 </p-dialog>
