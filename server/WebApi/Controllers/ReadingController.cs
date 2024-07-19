@@ -4,6 +4,7 @@ using Domain.Exceptions;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Controllers;
 
@@ -83,18 +84,31 @@ public class ReadingController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(Reading), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Create([FromBody] Reading reading)
     {
-        var meter = await _meterService.GetById(reading.MeterId);
+        try
+        {
+            var meter = await _meterService.GetById(reading.MeterId);
 
-        if (
-            meter.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1")
-            && !User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin")
-        )
-            return Unauthorized();
+            if (
+                meter.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1")
+                && !User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin")
+            )
+                return Unauthorized();
 
-        var createdReading = await _readingService.Create(reading);
-        return CreatedAtAction(nameof(Create), new { id = createdReading.Id }, createdReading);
+            var createdReading = await _readingService.Create(reading);
+            return CreatedAtAction(nameof(Create), new { id = createdReading.Id }, createdReading);
+        }
+        catch (Exception ex)
+        {
+            if (ex is DbUpdateException)
+                return BadRequest("Reading for this date already exists");
+
+            _logger.LogError(ex, "An error occurred while creating reading");
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 
     [HttpPut("{id}")]

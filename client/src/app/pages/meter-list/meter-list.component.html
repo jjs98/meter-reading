@@ -7,18 +7,14 @@
     [scrollable]="true"
     scrollHeight="flex"
   >
-    <ng-template pTemplate="caption">
-      <div class="flex items-center justify-between">
-        {{ translations.meter_meters() }}
-        <p-button icon="i-[mdi--plus]" [rounded]="true" (onClick)="showNewDialog()" />
-      </div>
-    </ng-template>
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 25%">{{ translations.meter_type_type() }}</th>
         <th style="width: auto">{{ translations.meter_number() }}</th>
         <th style="width: auto">{{ translations.meter_location() }}</th>
-        <th style="width: 5rem"></th>
+        <th style="width: 5rem">
+          <p-button icon="i-[mdi--plus]" [rounded]="true" (onClick)="showNewDialog()" />
+        </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-meter>

@@ -71,3 +71,34 @@ export type PostApiAuthRefreshApiResponse<TStatus extends PostApiAuthRefreshStat
       status: TStatus;
     });
 
+type PostApiAuthHashStatusCodes =
+  | (200)
+  | (401)
+  | (403)
+  | (500);
+/**
+ * Response model for operation postApiAuthHash
+ */
+export type PostApiAuthHashApiResponse<TStatus extends PostApiAuthHashStatusCodes = PostApiAuthHashStatusCodes> = (
+    | ((HttpResponse<string>) & ({
+          status: 200;
+          ok: true;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (never) | (null);
+          status: 401;
+          ok: false;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (never) | (null);
+          status: 403;
+          ok: false;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (never) | (null);
+          status: 500;
+          ok: false;
+        }))) & ({
+      status: TStatus;
+    });
+

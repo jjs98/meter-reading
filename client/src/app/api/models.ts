@@ -1,4 +1,4 @@
-export { MeterType } from './models/meter-type';
+export { METER_TYPE_VALUES, MeterType } from './models/meter-type';
 export { Meter } from './models/meter';
 export { ProblemDetails } from './models/problem-details';
 export { Reading } from './models/reading';

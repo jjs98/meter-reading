@@ -4,7 +4,7 @@
   [(visible)]="dialogVisible"
   [draggable]="false"
   [resizable]="false"
-  styleClass="w-[25rem]"
+  styleClass="w-[23rem]"
 >
   <div class="flex items-center gap-3 mb-8 mt-8">
     <span class="i-[mdi--counter]"></span>
@@ -38,6 +38,14 @@
       }}</label>
     </p-floatLabel>
   </div>
+  @if (hasReadingForDate()) {
+    <div class="flex items-center gap-3 mb-8">
+      <span class="i-[mdi--alert-circle]"></span>
+      <p-floatLabel>
+        <span class="text-red-500">{{ translations.reading_error_alreadyExists() }}</span>
+      </p-floatLabel>
+    </div>
+  }
   <div class="flex justify-end gap-4">
     @if (existingReading) {
       <p-button
@@ -52,7 +60,7 @@
       icon="i-[mdi--content-save]"
       (onClick)="onSave()"
       [rounded]="true"
-      [disabled]="!number || !readingDate || !hasReadingChanged()"
+      [disabled]="!number || !readingDate || !hasReadingChanged() || hasReadingForDate()"
     />
   </div>
 </p-dialog>

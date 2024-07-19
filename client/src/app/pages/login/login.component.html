@@ -2,8 +2,9 @@
   header="{{ translations.login_login() }}"
   [modal]="true"
   [(visible)]="visible"
-  [closable]="false"
   [draggable]="false"
+  [closable]="false"
+  styleClass="w-[23rem]"
 >
   <div class="flex items-center gap-3 mb-8 mt-8">
     <span class="i-[mdi--account]"></span>
@@ -34,17 +35,12 @@
     </p-floatLabel>
   </div>
   <div class="flex justify-end gap-4">
-    <button
-      pButton
-      class="w-24 justify-center"
+    <p-button
+      icon="{{ loading() ? 'i-[mdi--loading]' : 'i-[mdi--login]' }}"
+      class="{{ loading() ? 'animate-spin' : '' }}"
+      [rounded]="true"
       (click)="login()"
       [disabled]="!username || !password || loading()"
-    >
-      @if (loading()) {
-        <span class="animate-spin i-[mdi--loading]"></span>
-      } @else {
-        {{ translations.login_login() }}
-      }
-    </button>
+    />
   </div>
 </p-dialog>

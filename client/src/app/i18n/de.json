@@ -45,6 +45,7 @@
   "reading": {
     "error": {
       "add": "Fehler beim Hinzufügen des Zählerstands",
+      "alreadyExists": "Zählerstand für Datum existiert bereits",
       "delete": "Fehler beim Löschen des Zählerstands",
       "determine": "Konnte den Zählerstand nicht bestimmen",
       "readingIdMissing": "Zählerstands-ID fehlt",

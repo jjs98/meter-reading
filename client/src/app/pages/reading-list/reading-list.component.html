@@ -17,17 +17,13 @@
         scrollHeight="flex"
         class="h-full"
       >
-        <ng-template pTemplate="caption">
-          <div class="flex items-center justify-between">
-            {{ translations.reading_readings() }}
-            <p-button icon="i-[mdi--plus]" [rounded]="true" (onClick)="showNewDialog()" />
-          </div>
-        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>{{ translations.reading_reading() }}</th>
             <th>{{ translations.reading_readingDate() }}</th>
-            <th style="width: 5rem"></th>
+            <th style="width: 5rem">
+              <p-button icon="i-[mdi--plus]" [rounded]="true" (onClick)="showNewDialog()" />
+            </th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-reading>

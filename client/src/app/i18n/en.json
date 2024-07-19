@@ -45,6 +45,7 @@
   "reading": {
     "error": {
       "add": "Failed to add reading",
+      "alreadyExists": "Reading for date already exists",
       "delete": "Failed to delete reading",
       "determine": "Could not determine reading",
       "readingIdMissing": "Reading ID is missing",

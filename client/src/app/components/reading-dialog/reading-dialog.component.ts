@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -42,20 +51,34 @@ export class ReadingDialogComponent {
   public readonly currentDate = new Date();
 
   protected number: number | undefined = undefined;
-  protected readingDate: Date | undefined = undefined;
+  protected readingDate: WritableSignal<Date | undefined> = signal(undefined);
 
   protected dialogVisible = signal(false);
+  protected hasReadingForDate = computed(() => {
+    if (this.readingDate() === this.lastReadingDate) return false;
+
+    const hasReading =
+      this.dataStore
+        .readings()
+        .find(r => new Date(r.readingDate).toISOString() === this.readingDate()?.toISOString()) !==
+      undefined;
+    return hasReading;
+  });
 
   private isEdit = false;
+  private lastReadingDate: Date | undefined = undefined;
 
   public existingReading: Reading | undefined = undefined;
 
   constructor() {
-    effect(() => {
-      if (!this.dialogVisible()) {
-        this.resetDialog();
-      }
-    });
+    effect(
+      () => {
+        if (!this.dialogVisible()) {
+          this.resetDialog();
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   public showDialog(reading: Reading | undefined = undefined): void {
@@ -63,7 +86,8 @@ export class ReadingDialogComponent {
       this.isEdit = true;
       this.existingReading = reading;
       this.number = Number(reading.number ?? undefined);
-      this.readingDate = new Date(reading.readingDate ?? undefined);
+      this.readingDate.set(new Date(reading.readingDate ?? undefined));
+      this.lastReadingDate = this.readingDate();
     }
 
     this.dialogVisible.set(true);
@@ -113,7 +137,7 @@ export class ReadingDialogComponent {
 
     return (
       this.number != Number(reading.number) ||
-      this.readingDate?.toISOString() != new Date(reading.readingDate).toISOString()
+      this.readingDate()?.toISOString() != new Date(reading.readingDate).toISOString()
     );
   }
 
@@ -161,7 +185,7 @@ export class ReadingDialogComponent {
 
   private resetDialog(): void {
     this.number = undefined;
-    this.readingDate = undefined;
+    this.readingDate.set(undefined);
 
     this.isEdit = false;
     this.existingReading = undefined;
@@ -171,7 +195,7 @@ export class ReadingDialogComponent {
     const successfulAdded = await this.dataStore.addReading({
       meterId: meterId,
       number: this.number?.toString() ?? null,
-      readingDate: this.readingDate?.toISOString() ?? '',
+      readingDate: this.readingDate()?.toISOString() ?? '',
     });
     if (successfulAdded) {
       this.dialogVisible.set(false);
@@ -193,7 +217,7 @@ export class ReadingDialogComponent {
       id: reading.id,
       meterId: reading.meterId,
       number: this.number?.toString() ?? null,
-      readingDate: this.readingDate?.toISOString() ?? '',
+      readingDate: this.readingDate()?.toISOString() ?? '',
     });
     if (successfulUpdated) {
       this.dialogVisible.set(false);
