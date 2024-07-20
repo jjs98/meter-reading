@@ -12,6 +12,7 @@ const getApiReadingResponder = getStubResponder<{
 
 const postApiReadingResponder = getStubResponder<{
     201: Reading;
+    400: ProblemDetails;
     401: never;
     403: never;
     500: never;

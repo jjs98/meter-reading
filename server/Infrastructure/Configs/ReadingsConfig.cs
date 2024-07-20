@@ -19,6 +19,6 @@ public class ReadingsConfig : IEntityTypeConfiguration<Reading>
         builder.Property(m => m.Number).IsRequired();
         builder.Property(m => m.ReadingDate).IsRequired();
 
-        builder.HasIndex(m => m.ReadingDate).IsUnique();
+        builder.HasIndex(m => new { m.MeterId, m.ReadingDate }).IsUnique();
     }
 }

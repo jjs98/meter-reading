@@ -42,6 +42,7 @@ export type GetApiReadingApiResponse<TStatus extends GetApiReadingStatusCodes = 
 
 type PostApiReadingStatusCodes =
   | (201)
+  | (400)
   | (401)
   | (403)
   | (500);
@@ -52,6 +53,11 @@ export type PostApiReadingApiResponse<TStatus extends PostApiReadingStatusCodes 
     | ((HttpResponse<Reading>) & ({
           status: 201;
           ok: true;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (ProblemDetails) | (null);
+          status: 400;
+          ok: false;
         }))
     | ((HttpErrorResponse) & ({
           error: (never) | (null);
