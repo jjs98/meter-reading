@@ -88,6 +88,11 @@ export class ReadingDialogComponent {
       this.number = Number(reading.number ?? undefined);
       this.readingDate.set(new Date(reading.readingDate ?? undefined));
       this.lastReadingDate = this.readingDate();
+    } else {
+      const currentDate = new Date();
+      this.readingDate.set(
+        new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())
+      );
     }
 
     this.dialogVisible.set(true);

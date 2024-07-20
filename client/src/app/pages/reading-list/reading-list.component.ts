@@ -78,7 +78,7 @@ export class ReadingListComponent implements OnInit {
     return {
       labels:
         this.valuesCount() >= labels.length
-          ? labels
+          ? labels.reverse()
           : labels.reverse().slice(labels.length - this.valuesCount(), labels.length),
       datasets: [
         {
