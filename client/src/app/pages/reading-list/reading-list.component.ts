@@ -76,11 +76,17 @@ export class ReadingListComponent implements OnInit {
     });
 
     return {
-      labels: labels.reverse().slice(labels.length - this.valuesCount(), labels.length),
+      labels:
+        this.valuesCount() >= labels.length
+          ? labels
+          : labels.reverse().slice(labels.length - this.valuesCount(), labels.length),
       datasets: [
         {
           label: 'Readings',
-          data: deltaData.slice(deltaData.length - this.valuesCount(), deltaData.length),
+          data:
+            this.valuesCount() >= deltaData.length
+              ? deltaData
+              : deltaData.slice(deltaData.length - this.valuesCount(), deltaData.length),
           fill: false,
           borderColor: getComputedStyle(document.documentElement).getPropertyValue(
             '--primary-color'
@@ -93,6 +99,11 @@ export class ReadingListComponent implements OnInit {
     plugins: {
       legend: {
         display: false,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
       },
     },
   };
