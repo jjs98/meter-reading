@@ -89,9 +89,11 @@ export class ReadingDialogComponent {
       this.readingDate.set(new Date(reading.readingDate ?? undefined));
       this.lastReadingDate = this.readingDate();
     } else {
-      const currentDate = new Date();
+      const currentDate = this.toUTC(new Date());
       this.readingDate.set(
-        new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())
+        this.toUTC(
+          new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())
+        )
       );
     }
 
@@ -132,6 +134,14 @@ export class ReadingDialogComponent {
     if (event.key === 'Enter' && !this.readingDate && !this.number) {
       await this.onSave();
     }
+  }
+
+  protected onCalendarSelect(date: Date): void {
+    this.readingDate.set(this.toUTC(date));
+  }
+
+  protected toUTC(date: Date): Date {
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
   }
 
   protected hasReadingChanged(): boolean {

@@ -32,6 +32,7 @@
         [(ngModel)]="readingDate"
         [touchUI]="true"
         [maxDate]="currentDate"
+        (onSelect)="onCalendarSelect($event)"
         dateFormat="dd.mm.yy"
       />
       <label for="readingDate" class="font-semibold w-6rem">{{
