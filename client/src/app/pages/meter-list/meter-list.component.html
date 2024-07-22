@@ -10,7 +10,7 @@
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 25%">{{ translations.meter_type_type() }}</th>
-        <th style="width: auto">{{ translations.meter_number() }}</th>
+        <th style="width: auto">{{ translations.meter_comment() }}</th>
         <th style="width: auto">{{ translations.meter_location() }}</th>
         <th style="width: 5rem">
           <p-button icon="i-[mdi--plus]" [rounded]="true" (onClick)="showNewDialog()" />
@@ -31,7 +31,7 @@
           ></span>
         </td>
         <td>
-          <span>{{ meter.meterNumber }}</span>
+          <span>{{ meter.comment }}</span>
         </td>
         <td>
           <span>{{ meter.location }}</span>
