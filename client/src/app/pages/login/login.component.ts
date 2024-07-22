@@ -42,7 +42,6 @@ export class LoginComponent implements OnInit {
   protected username = '';
   protected password = '';
 
-  protected visible = signal(false);
   protected loading = signal(false);
 
   public ngOnInit(): void {
@@ -50,7 +49,6 @@ export class LoginComponent implements OnInit {
       this.navigationService.navigateToHome();
       return;
     }
-    this.visible.set(true);
   }
 
   protected async login(): Promise<void> {
@@ -70,13 +68,11 @@ export class LoginComponent implements OnInit {
 
         if (returnUrl) {
           this.navigationService.navigateTo(returnUrl);
-          this.visible.set(false);
           this.loading.set(false);
           return;
         }
 
         this.navigationService.navigateToHome();
-        this.visible.set(false);
         this.loading.set(false);
         return;
       }

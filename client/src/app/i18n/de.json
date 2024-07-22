@@ -13,7 +13,10 @@
     "loginFailed": "Login fehlgeschlagen",
     "loginInvalid": "Ungültiger Benutzername oder Passwort",
     "password": "Passwort",
-    "username": "Benutzername"
+    "username": "Benutzername",
+    "error": {
+      "noRights": "Sie haben nicht die erforderlichen Rechte, um auf diese Seite zuzugreifen"
+    }
   },
   "meter": {
     "comment": "Kommentar",

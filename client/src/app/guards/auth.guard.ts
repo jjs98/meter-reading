@@ -5,9 +5,11 @@ import {
   CanActivateChild,
   RouterStateSnapshot,
 } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 import { DataStore } from './../store/data.store';
 import { NavigationService } from '../services/navigation.service';
+import { TranslateService } from '../services/translate.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +17,8 @@ import { NavigationService } from '../services/navigation.service';
 export class AuthGuard implements CanActivate, CanActivateChild {
   private readonly dataStore = inject(DataStore);
   private readonly navigationService = inject(NavigationService);
+  private readonly messageService = inject(MessageService);
+  private readonly translations = inject(TranslateService).translations;
 
   public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.checkUserLogin(next, state.url);
@@ -27,7 +31,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     if (this.dataStore.isTokenValid()) {
       const userRoles = this.dataStore.token()?.role ?? [];
       if (route.data['role'] && userRoles.indexOf(route.data['role']) === -1) {
-        this.navigationService.navigateToHome();
+        this.dataStore.deleteToken();
+        this.messageService.add({
+          severity: 'error',
+          summary: this.translations.error(),
+          detail: this.translations.login_error_noRights(),
+        });
+        this.navigationService.navigateToLogin();
         return false;
       }
 

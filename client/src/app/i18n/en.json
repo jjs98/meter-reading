@@ -13,7 +13,10 @@
     "loginFailed": "Login failed",
     "loginInvalid": "Invalid username or password",
     "password": "Password",
-    "username": "Username"
+    "username": "Username",
+    "error": {
+      "noRights": "You do not have the necessary rights to access this page"
+    }
   },
   "meter": {
     "comment": "Comment",
