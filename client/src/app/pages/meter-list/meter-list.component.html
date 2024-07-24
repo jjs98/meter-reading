@@ -55,48 +55,50 @@
         </tr>
       </ng-template>
     </p-table>
-    <p-table
-      [value]="dataStore.sharedMeters()"
-      selectionMode="single"
-      (onRowSelect)="onRowSelect($event)"
-      class="h-full"
-      [scrollable]="true"
-      scrollHeight="flex"
-    >
-      <ng-template pTemplate="caption">
-        <span>{{ translations.meter_sharedMeters() }}</span>
-      </ng-template>
-      <ng-template pTemplate="header">
-        <tr>
-          <th style="width: 25%">{{ translations.meter_type_type() }}</th>
-          <th style="width: auto">{{ translations.meter_location() }}</th>
-          <th style="width: auto">{{ translations.meter_addition() }}</th>
-          <th style="width: 5rem"></th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-meter>
-        <tr [pSelectableRow]="meter">
-          <td>
-            <span
-              class="{{
-                meter.type === 0
-                  ? 'i-[mdi--lightning-bolt]'
-                  : meter.type === 1
-                    ? 'i-[mdi--water]'
-                    : 'i-[mdi--gas-cylinder]'
-              }}"
-            ></span>
-          </td>
-          <td>
-            <span>{{ meter.location }}</span>
-          </td>
-          <td>
-            <span>{{ meter.addition }}</span>
-          </td>
-          <td></td>
-        </tr>
-      </ng-template>
-    </p-table>
+    @if (dataStore.sharedMeters().length > 0) {
+      <p-table
+        [value]="dataStore.sharedMeters()"
+        selectionMode="single"
+        (onRowSelect)="onRowSelect($event)"
+        class="h-full"
+        [scrollable]="true"
+        scrollHeight="flex"
+      >
+        <ng-template pTemplate="caption">
+          <span>{{ translations.meter_sharedMeters() }}</span>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 25%">{{ translations.meter_type_type() }}</th>
+            <th style="width: auto">{{ translations.meter_location() }}</th>
+            <th style="width: auto">{{ translations.meter_addition() }}</th>
+            <th style="width: 5rem"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-meter>
+          <tr [pSelectableRow]="meter">
+            <td>
+              <span
+                class="{{
+                  meter.type === 0
+                    ? 'i-[mdi--lightning-bolt]'
+                    : meter.type === 1
+                      ? 'i-[mdi--water]'
+                      : 'i-[mdi--gas-cylinder]'
+                }}"
+              ></span>
+            </td>
+            <td>
+              <span>{{ meter.location }}</span>
+            </td>
+            <td>
+              <span>{{ meter.addition }}</span>
+            </td>
+            <td></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
   </div>
 </p-card>
 
