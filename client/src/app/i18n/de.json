@@ -19,7 +19,7 @@
     }
   },
   "meter": {
-    "comment": "Kommentar",
+    "addition": "Zusatz",
     "error": {
       "add": "Fehler beim Hinzufügen des Zählers",
       "delete": "Fehler beim Löschen des Zählers",

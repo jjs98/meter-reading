@@ -77,7 +77,7 @@ public class MeterRepository : IMeterRepository
                 x.SetProperty(m => m.Location, meter.Location)
                     .SetProperty(m => m.Type, meter.Type)
                     .SetProperty(m => m.MeterNumber, meter.MeterNumber)
-                    .SetProperty(m => m.Comment, meter.Comment)
+                    .SetProperty(m => m.Addition, meter.Addition)
                     .SetProperty(m => m.UpdateDate, DateTime.UtcNow)
             );
 

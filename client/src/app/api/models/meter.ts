@@ -7,8 +7,8 @@ export type Meter = {
     updateDate?: (string) | (null);
     userId: number;
     location: (string) | (null);
-    meterNumber: (string) | (null);
-    comment?: (string) | (null);
+    meterNumber?: (string) | (null);
+    addition?: (string) | (null);
     type?: MeterType;
     readings?: ((Reading)[]) | (null);
   };

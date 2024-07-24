@@ -1416,7 +1416,6 @@
       "Meter": {
         "required": [
           "location",
-          "meterNumber",
           "userId"
         ],
         "type": "object",
@@ -1446,7 +1445,7 @@
             "type": "string",
             "nullable": true
           },
-          "comment": {
+          "addition": {
             "type": "string",
             "nullable": true
           },

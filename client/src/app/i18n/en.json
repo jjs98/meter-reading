@@ -19,7 +19,7 @@
     }
   },
   "meter": {
-    "comment": "Comment",
+    "addition": "Addition",
     "error": {
       "add": "Failed to add meter",
       "delete": "Failed to delete meter",

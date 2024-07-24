@@ -18,7 +18,7 @@ public class MetersConfig : IEntityTypeConfiguration<Meter>
         builder.Property(m => m.UserId).IsRequired();
         builder.Property(m => m.Location).IsRequired();
         builder.Property(m => m.Type).IsRequired();
-        builder.Property(m => m.MeterNumber).IsRequired();
-        builder.Property(m => m.Comment);
+        builder.Property(m => m.MeterNumber);
+        builder.Property(m => m.Addition);
     }
 }

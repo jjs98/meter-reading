@@ -36,7 +36,7 @@ export class MeterDialogComponent {
 
   protected location: string | undefined = undefined;
   protected meterNumber: string | undefined = undefined;
-  protected comment: string | undefined = undefined;
+  protected addition: string | undefined = undefined;
   protected type: MeterType | undefined = undefined;
 
   protected dialogVisible = signal(false);
@@ -59,7 +59,7 @@ export class MeterDialogComponent {
       this.existingMeter = meter;
       this.location = meter.location ?? undefined;
       this.meterNumber = meter.meterNumber ?? undefined;
-      this.comment = meter.comment ?? undefined;
+      this.addition = meter.addition ?? undefined;
       this.type = meter.type;
     }
 
@@ -80,7 +80,7 @@ export class MeterDialogComponent {
       });
       return;
     }
-    if (!this.location || !this.meterNumber || this.type === undefined) {
+    if (!this.location || this.type === undefined) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -97,12 +97,7 @@ export class MeterDialogComponent {
   }
 
   protected async onKeyPress(event: KeyboardEvent): Promise<void> {
-    if (
-      event.key === 'Enter' &&
-      this.location !== '' &&
-      this.meterNumber !== '' &&
-      this.type !== undefined
-    ) {
+    if (event.key === 'Enter' && this.location !== '' && this.type !== undefined) {
       await this.onSave();
     }
   }
@@ -116,7 +111,7 @@ export class MeterDialogComponent {
     return (
       this.location != meter.location ||
       this.meterNumber != meter.meterNumber ||
-      this.comment != meter.comment ||
+      this.addition != meter.addition ||
       this.type != meter.type
     );
   }
@@ -157,7 +152,7 @@ export class MeterDialogComponent {
   private resetDialog(): void {
     this.location = undefined;
     this.meterNumber = undefined;
-    this.comment = undefined;
+    this.addition = undefined;
     this.type = undefined;
 
     this.isEdit = false;
@@ -170,7 +165,7 @@ export class MeterDialogComponent {
       meterNumber: this.meterNumber ?? null,
       location: this.location ?? null,
       type: this.type,
-      comment: this.comment,
+      addition: this.addition,
     });
     if (successfulAdded) {
       this.dialogVisible.set(false);
@@ -194,7 +189,7 @@ export class MeterDialogComponent {
       meterNumber: this.meterNumber ?? null,
       location: this.location ?? null,
       type: this.type,
-      comment: this.comment,
+      addition: this.addition,
     });
     if (successfulUpdated) {
       this.dialogVisible.set(false);
