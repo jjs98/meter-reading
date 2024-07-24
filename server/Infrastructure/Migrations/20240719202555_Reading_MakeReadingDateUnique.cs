@@ -14,15 +14,14 @@ namespace Infrastructure.Migrations
                 name: "IX_Readings_ReadingDate",
                 table: "Readings",
                 column: "ReadingDate",
-                unique: true);
+                unique: true
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Readings_ReadingDate",
-                table: "Readings");
+            migrationBuilder.DropIndex(name: "IX_Readings_ReadingDate", table: "Readings");
         }
     }
 }

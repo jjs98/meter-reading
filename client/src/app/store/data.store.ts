@@ -4,6 +4,7 @@ import { signalStore, withHooks } from '@ngrx/signals';
 
 import { withMeters } from './features/meters.feature';
 import { withReadings } from './features/readings.feature';
+import { withSharedMeters } from './features/shared-meters.feature';
 import { withToken } from './features/token.feature';
 import { withUser } from './features/user.feature';
 import { mapTokenToUser } from '../utils/token.utils';
@@ -16,6 +17,7 @@ export const DataStore = signalStore(
   withToken(),
   withMeters(),
   withReadings(),
+  withSharedMeters(),
   withHooks({
     onInit(store) {
       store.loadToken();

@@ -2,7 +2,7 @@ import { HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Meter } from '../models/meter';
-import { DeleteApiMeterIdApiResponse, GetApiMeterApiResponse, GetApiMeterIdApiResponse, PostApiMeterApiResponse, PutApiMeterIdApiResponse } from '../models/responses/meter-responses.model';
+import { DeleteApiMeterIdApiResponse, GetApiMeterApiResponse, GetApiMeterIdApiResponse, GetApiMeterSharedApiResponse, PostApiMeterApiResponse, PutApiMeterIdApiResponse } from '../models/responses/meter-responses.model';
 import { AbortablePromise, waitForResponse } from '../utils/angular-service.utils';
 import { ApiBaseService } from '../utils/api-base-service';
 import { RequestBuilder } from '../utils/request-builder';
@@ -43,6 +43,7 @@ export class MeterService extends ApiBaseService {
   private static readonly GET_API_METER_ID_PATH = '/api/Meter/{id}';
   private static readonly PUT_API_METER_ID_PATH = '/api/Meter/{id}';
   private static readonly DELETE_API_METER_ID_PATH = '/api/Meter/{id}';
+  private static readonly GET_API_METER_SHARED_PATH = '/api/Meter/shared';
 
   public getApiMeter(context?: HttpContext): AbortablePromise<GetApiMeterApiResponse> {
     const rb = new RequestBuilder(this.rootUrl, MeterService.GET_API_METER_PATH, 'get');
@@ -137,6 +138,26 @@ export class MeterService extends ApiBaseService {
       this.http.request(rb.build({
         responseType: 'text',
         accept: '*/*',
+        context,
+      })),
+      {
+        errorResponseTypes: {
+          401: 'text',
+          403: 'text',
+          404: 'json',
+          500: 'text',
+        }
+      }
+    )
+  }
+
+  public getApiMeterShared(context?: HttpContext): AbortablePromise<GetApiMeterSharedApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, MeterService.GET_API_METER_SHARED_PATH, 'get');
+
+    return waitForResponse<GetApiMeterSharedApiResponse>(
+      this.http.request(rb.build({
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {

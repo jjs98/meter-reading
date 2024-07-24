@@ -61,6 +61,31 @@ public class MeterController : ControllerBase
         }
     }
 
+    [HttpGet("shared")]
+    [ProducesResponseType(typeof(IEnumerable<Meter>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetShared()
+    {
+        try
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1");
+            if (userId == -1)
+                return Unauthorized();
+
+            var meters = await _meterService.GetShared(userId);
+            return Ok(meters);
+        }
+        catch (Exception ex)
+        {
+            if (ex is EntityNotFoundException)
+                return NotFound();
+
+            _logger.LogError(ex, $"An error occurred while getting meter share");
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
     [HttpPost]
     [ProducesResponseType(typeof(Meter), StatusCodes.Status201Created)]
     public async Task<IActionResult> Create([FromBody] Meter meter)

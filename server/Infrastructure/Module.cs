@@ -23,6 +23,7 @@ public static class Module
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+        services.AddScoped<ISharedMeterRepository, SharedMeterRepository>();
 
         return services;
     }

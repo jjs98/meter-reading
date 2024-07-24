@@ -41,18 +41,28 @@ const deleteApiMeterIdResponder = getStubResponder<{
     500: never;
   }>();
 
+const getApiMeterSharedResponder = getStubResponder<{
+    200: (Meter)[];
+    401: never;
+    403: never;
+    404: ProblemDetails;
+    500: never;
+  }>();
+
 export class MeterStubs extends EasyNetworkStubBase {
   private static readonly GET_API_METER_PATH = 'api/Meter' as const;
   private static readonly POST_API_METER_PATH = 'api/Meter' as const;
   private static readonly GET_API_METER_ID_PATH = 'api/Meter/{id:number}' as const;
   private static readonly PUT_API_METER_ID_PATH = 'api/Meter/{id:number}' as const;
   private static readonly DELETE_API_METER_ID_PATH = 'api/Meter/{id:number}' as const;
+  private static readonly GET_API_METER_SHARED_PATH = 'api/Meter/shared' as const;
 
   private readonly _getApiMeterRequests: (StubRequestInfo<typeof MeterStubs.GET_API_METER_PATH, unknown>)[] = [];
   private readonly _postApiMeterRequests: (StubRequestInfo<typeof MeterStubs.POST_API_METER_PATH, Meter>)[] = [];
   private readonly _getApiMeterIdRequests: (StubRequestInfo<typeof MeterStubs.GET_API_METER_ID_PATH, unknown>)[] = [];
   private readonly _putApiMeterIdRequests: (StubRequestInfo<typeof MeterStubs.PUT_API_METER_ID_PATH, Meter>)[] = [];
   private readonly _deleteApiMeterIdRequests: (StubRequestInfo<typeof MeterStubs.DELETE_API_METER_ID_PATH, unknown>)[] = [];
+  private readonly _getApiMeterSharedRequests: (StubRequestInfo<typeof MeterStubs.GET_API_METER_SHARED_PATH, unknown>)[] = [];
 
   public get getApiMeterRequests(): readonly (StubRequestInfo<typeof MeterStubs.GET_API_METER_PATH, unknown>)[] {
     return this._getApiMeterRequests;
@@ -68,6 +78,9 @@ export class MeterStubs extends EasyNetworkStubBase {
   }
   public get deleteApiMeterIdRequests(): readonly (StubRequestInfo<typeof MeterStubs.DELETE_API_METER_ID_PATH, unknown>)[] {
     return this._deleteApiMeterIdRequests;
+  }
+  public get getApiMeterSharedRequests(): readonly (StubRequestInfo<typeof MeterStubs.GET_API_METER_SHARED_PATH, unknown>)[] {
+    return this._getApiMeterSharedRequests;
   }
 
   public stubGetApiMeter(response: StrictRouteResponseCallback<
@@ -160,12 +173,31 @@ export class MeterStubs extends EasyNetworkStubBase {
     return this;
   }
 
+  public stubGetApiMeterShared(response: StrictRouteResponseCallback<
+      unknown,
+      typeof MeterStubs.GET_API_METER_SHARED_PATH,
+      typeof getApiMeterSharedResponder
+    >): this {
+    this.stubWrapper.stub2<unknown>()(
+      'GET',
+      MeterStubs.GET_API_METER_SHARED_PATH,
+      async (request) => {
+        if (this.stubWrapper.options.rememberRequests) {
+          this._getApiMeterSharedRequests.push(request);
+        }
+        throw await response(getApiMeterSharedResponder, request);
+      }
+    );
+    return this;
+  }
+
   public override reset(): void {
     this._getApiMeterRequests.length = 0;
     this._postApiMeterRequests.length = 0;
     this._getApiMeterIdRequests.length = 0;
     this._putApiMeterIdRequests.length = 0;
     this._deleteApiMeterIdRequests.length = 0;
+    this._getApiMeterSharedRequests.length = 0;
     super.reset();
   }
 }

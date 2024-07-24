@@ -182,3 +182,40 @@ export type DeleteApiMeterIdApiResponse<TStatus extends DeleteApiMeterIdStatusCo
       status: TStatus;
     });
 
+type GetApiMeterSharedStatusCodes =
+  | (200)
+  | (401)
+  | (403)
+  | (404)
+  | (500);
+/**
+ * Response model for operation getApiMeterShared
+ */
+export type GetApiMeterSharedApiResponse<TStatus extends GetApiMeterSharedStatusCodes = GetApiMeterSharedStatusCodes> = (
+    | ((HttpResponse<(Meter)[]>) & ({
+          status: 200;
+          ok: true;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (never) | (null);
+          status: 401;
+          ok: false;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (never) | (null);
+          status: 403;
+          ok: false;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (ProblemDetails) | (null);
+          status: 404;
+          ok: false;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (never) | (null);
+          status: 500;
+          ok: false;
+        }))) & ({
+      status: TStatus;
+    });
+

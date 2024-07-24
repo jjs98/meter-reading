@@ -36,8 +36,18 @@ public class ReadingController : ControllerBase
     {
         try
         {
+            var meter = await _meterService.GetById(meterId);
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1");
+
             if (userId == -1)
+                return Unauthorized();
+
+            var sharedMeters = await _meterService.GetShared(userId);
+
+            if (
+                sharedMeters.Any(x => x.Id == meterId)
+                && !User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin")
+            )
                 return Unauthorized();
 
             var readings = await _readingService.GetByMeterId(meterId);

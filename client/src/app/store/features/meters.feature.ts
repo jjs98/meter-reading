@@ -3,11 +3,13 @@ import { signalState, signalStoreFeature, withMethods, withState } from '@ngrx/s
 import { MessageService } from 'primeng/api';
 
 import { TranslateService } from './../../services/translate.service';
-import { Meter, Reading } from '../../api/models';
+import { Meter } from '../../api/models';
 import { MeterService } from '../../api/services/meter.service';
 import { patch } from '../../utils/data-store.utils';
 
-type MetersState = { meters: Meter[] };
+type MetersState = {
+  meters: Meter[];
+};
 
 const metersState = signalState<MetersState>({
   meters: [],
@@ -27,14 +29,6 @@ export function withMeters() {
         setMeters(meters: Meter[]): void {
           patch(store, draft => {
             draft.meters = meters;
-          });
-        },
-        setMeterReading(meterId: number, reading: Reading[]): void {
-          patch(store, draft => {
-            const meter = draft.meters.find(x => x.id === meterId);
-            if (meter) {
-              meter.readings = reading;
-            }
           });
         },
         async refreshMeters(): Promise<void> {

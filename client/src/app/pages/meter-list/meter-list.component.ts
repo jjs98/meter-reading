@@ -53,6 +53,7 @@ export class MeterComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.dataStore.refreshMeters();
+    await this.dataStore.refreshSharedMeters();
   }
 
   protected showNewDialog(): void {

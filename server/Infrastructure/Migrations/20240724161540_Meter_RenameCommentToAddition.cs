@@ -10,10 +10,7 @@ namespace Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Comment",
-                table: "Meters",
-                newName: "Addition");
+            migrationBuilder.RenameColumn(name: "Comment", table: "Meters", newName: "Addition");
 
             migrationBuilder.AlterColumn<string>(
                 name: "MeterNumber",
@@ -21,16 +18,14 @@ namespace Infrastructure.Migrations
                 type: "text",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Addition",
-                table: "Meters",
-                newName: "Comment");
+            migrationBuilder.RenameColumn(name: "Addition", table: "Meters", newName: "Comment");
 
             migrationBuilder.AlterColumn<string>(
                 name: "MeterNumber",
@@ -40,7 +35,8 @@ namespace Infrastructure.Migrations
                 defaultValue: "",
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
         }
     }
 }
