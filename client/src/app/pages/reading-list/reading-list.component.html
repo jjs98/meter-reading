@@ -1,6 +1,6 @@
 <p-card [styleClass]="'overflow-hidden h-full flex flex-col'">
   <div class="h-full">
-    <div class="h-2/5 flex flex-col">
+    <div class="h-2/6 flex flex-col">
       <div class="flex justify-between mb-4 items-center">
         <p-button (onClick)="navigateBack()" icon="i-[mdi--arrow-left]" [rounded]="true"></p-button>
         <span>{{ translations.reading_readingDelta() }}</span>
@@ -10,13 +10,22 @@
         <p-chart type="line" [data]="chartData()" [options]="chartOptions" [height]="'100%'" />
       </div>
     </div>
-    <div class="h-3/5">
+    <div class="h-4/6">
       <p-table
         [value]="dataStore.readings()"
         [scrollable]="true"
         scrollHeight="flex"
         class="h-full"
       >
+        <ng-template pTemplate="caption">
+          <div class="flex justify-between items-center">
+            <span>{{ translations.reading_readings() }}</span>
+
+            @if (dataStore.readings().length > 0) {
+              <p-button icon="i-[mdi--export]" [rounded]="true" (onClick)="exportExcel()" />
+            }
+          </div>
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>{{ translations.reading_reading() }}</th>
