@@ -22,7 +22,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TableModule } from 'primeng/table';
 
-import { Reading } from '../../api/models';
+import { Meter, Reading } from '../../api/models';
 import { ReadingDialogComponent } from '../../components/reading-dialog/reading-dialog.component';
 import { NavigationService } from '../../services/navigation.service';
 import { TranslateService } from '../../services/translate.service';
@@ -61,6 +61,7 @@ export class ReadingListComponent implements OnInit {
   protected valuesCount = signal('12');
   protected readonly valuesCountOptions = ['6', '12', '24', 'max'];
   protected meterId = signal(-1);
+  protected meter = signal<Meter | undefined>(undefined);
   protected chartData = computed(() => {
     const labels: string[] = [];
     const data: number[] = [];
@@ -114,6 +115,13 @@ export class ReadingListComponent implements OnInit {
     const meterId = this.activatedRoute.snapshot.url[0].path;
     this.meterId.set(Number(meterId));
     await this.dataStore.refreshReadings(this.meterId());
+
+    const meter = this.dataStore.meters().find(meter => meter.id === this.meterId());
+    if (!meter) {
+      this.meter.set(this.dataStore.sharedMeters().find(meter => meter.id === this.meterId()));
+    } else {
+      this.meter.set(meter);
+    }
   }
 
   protected showNewDialog(): void {
@@ -140,10 +148,7 @@ export class ReadingListComponent implements OnInit {
       const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-      let meter = this.dataStore.meters().find(meter => meter.id === this.meterId());
-      if (!meter) {
-        meter = this.dataStore.sharedMeters().find(meter => meter.id === this.meterId());
-      }
+      const meter = this.meter();
       let fileName = meter?.location ?? 'Zähler';
       fileName += meter?.addition ? `_${meter?.addition}` : '';
       if (meter?.type !== undefined) {

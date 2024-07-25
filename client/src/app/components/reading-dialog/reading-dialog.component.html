@@ -8,7 +8,7 @@
 >
   <div class="flex items-center gap-3 mb-8 mt-8">
     <span class="i-[mdi--counter]"></span>
-    <p-floatLabel>
+    <p-floatLabel class="w-64">
       <p-inputNumber
         pInputNumber
         inputId="number"
@@ -26,13 +26,14 @@
   </div>
   <div class="flex items-center gap-3 mb-8">
     <span class="i-[mdi--calendar]"></span>
-    <p-floatLabel>
+    <p-floatLabel class="w-64">
       <p-calendar
         id="readingDate"
         [(ngModel)]="readingDate"
         [touchUI]="true"
+        [showIcon]="true"
+        [showOnFocus]="false"
         [maxDate]="currentDate"
-        (onSelect)="onCalendarSelect($event)"
         dateFormat="dd.mm.yy"
       />
       <label for="readingDate" class="font-semibold w-6rem">{{

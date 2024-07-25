@@ -1,16 +1,32 @@
 <p-card [styleClass]="'overflow-hidden h-full flex flex-col'">
   <div class="h-full">
-    <div class="h-2/6 flex flex-col">
+    <div class="h-2/5 flex flex-col">
       <div class="flex justify-between mb-4 items-center">
         <p-button (onClick)="navigateBack()" icon="i-[mdi--arrow-left]" [rounded]="true"></p-button>
-        <span>{{ translations.reading_readingDelta() }}</span>
+        @if (meter()) {
+          <div class="flex flex-row items-center">
+            <span
+              class="{{
+                meter()?.type === 0
+                  ? 'i-[mdi--lightning-bolt]'
+                  : meter()?.type === 1
+                    ? 'i-[mdi--water]'
+                    : 'i-[mdi--gas-cylinder]'
+              }}"
+            ></span>
+            <span>
+              {{ meter()?.location }}-{{ meter()?.addition }}
+              {{ translations.reading_readingDelta() }}</span
+            >
+          </div>
+        }
         <p-dropdown [options]="valuesCountOptions" [(ngModel)]="valuesCount" />
       </div>
       <div class="flex-1">
         <p-chart type="line" [data]="chartData()" [options]="chartOptions" [height]="'100%'" />
       </div>
     </div>
-    <div class="h-4/6">
+    <div class="h-3/5">
       <p-table
         [value]="dataStore.readings()"
         [scrollable]="true"

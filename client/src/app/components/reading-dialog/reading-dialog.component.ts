@@ -89,11 +89,9 @@ export class ReadingDialogComponent {
       this.readingDate.set(new Date(reading.readingDate ?? undefined));
       this.lastReadingDate = this.readingDate();
     } else {
-      const currentDate = this.toUTC(new Date());
+      const currentDate = new Date();
       this.readingDate.set(
-        this.toUTC(
-          new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())
-        )
+        new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())
       );
     }
 
@@ -114,7 +112,8 @@ export class ReadingDialogComponent {
       });
       return;
     }
-    if (this.number === undefined || !this.readingDate) {
+    const readingDate = this.readingDate();
+    if (this.number === undefined || !readingDate) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -122,6 +121,7 @@ export class ReadingDialogComponent {
       });
       return;
     }
+    this.readingDate.set(this.toUTC(readingDate));
 
     if (this.isEdit) {
       await this.editReading();
@@ -134,10 +134,6 @@ export class ReadingDialogComponent {
     if (event.key === 'Enter' && !this.readingDate && !this.number) {
       await this.onSave();
     }
-  }
-
-  protected onCalendarSelect(date: Date): void {
-    this.readingDate.set(this.toUTC(date));
   }
 
   protected toUTC(date: Date): Date {
