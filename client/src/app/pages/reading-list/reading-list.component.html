@@ -15,7 +15,7 @@
               }}"
             ></span>
             <span>
-              {{ meter()?.location }}-{{ meter()?.addition }}
+              {{ meter()?.location }}{{ meter()?.addition ? ' - ' + meter()?.addition : '' }}
               {{ translations.reading_readingDelta() }}</span
             >
           </div>
