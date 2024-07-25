@@ -33,6 +33,7 @@ export function withReadings() {
           return store.readings().filter(x => x.meterId === meterId);
         },
         async refreshReadings(meterId: number): Promise<void> {
+          this.setMeterReading([]);
           const resonse = await readingService.getApiReading({ meterId: meterId });
           if (resonse.status === 200) {
             const readings = resonse.body as Reading[];
