@@ -80,14 +80,14 @@ export class ReadingListComponent implements OnInit {
     return {
       labels:
         this.valuesCount() === 'max' || Number(this.valuesCount()) >= labels.length
-          ? labels.reverse()
+          ? labels.reverse().slice(1, labels.length)
           : labels.reverse().slice(labels.length - Number(this.valuesCount()), labels.length),
       datasets: [
         {
           label: 'Readings',
           data:
             this.valuesCount() === 'max' || Number(this.valuesCount()) >= deltaData.length
-              ? deltaData
+              ? deltaData.slice(1, deltaData.length)
               : deltaData.slice(deltaData.length - Number(this.valuesCount()), deltaData.length),
           fill: false,
           borderColor: getComputedStyle(document.documentElement).getPropertyValue(
