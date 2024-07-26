@@ -45,7 +45,7 @@ public class ReadingController : ControllerBase
             var sharedMeters = await _meterService.GetShared(userId);
 
             if (
-                sharedMeters.Any(x => x.Id == meterId)
+                !sharedMeters.Any(x => x.Id == meterId && x.UserId == userId)
                 && !User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin")
             )
                 return Unauthorized();
