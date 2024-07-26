@@ -42,13 +42,16 @@ public class ReadingController : ControllerBase
             if (userId == -1)
                 return Unauthorized();
 
-            var sharedMeters = await _meterService.GetShared(userId);
+            if (meter.UserId != userId)
+            {
+                var sharedMeters = await _meterService.GetShared(userId);
 
-            if (
-                !sharedMeters.Any(x => x.Id == meterId && x.UserId == userId)
-                && !User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin")
-            )
-                return Unauthorized();
+                if (!sharedMeters.Any(x => x.Id == meterId && x.UserId == userId))
+                {
+                    if (!User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin"))
+                        return Unauthorized();
+                }
+            }
 
             var readings = await _readingService.GetByMeterId(meterId);
             return Ok(readings);
