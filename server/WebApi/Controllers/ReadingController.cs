@@ -143,12 +143,21 @@ public class ReadingController : ControllerBase
         try
         {
             var meter = await _meterService.GetById(reading.MeterId);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1");
 
-            if (
-                meter.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1")
-                && !User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin")
-            )
+            if (userId == -1)
                 return Unauthorized();
+
+            if (meter.UserId != userId)
+            {
+                var sharedMeters = await _meterService.GetShared(userId);
+
+                if (!sharedMeters.Any(x => x.Id == meter.Id))
+                {
+                    if (!User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin"))
+                        return Unauthorized();
+                }
+            }
 
             await _readingService.Update(reading);
             return NoContent();
@@ -173,12 +182,21 @@ public class ReadingController : ControllerBase
         {
             var reading = await _readingService.GetById(id);
             var meter = await _meterService.GetById(reading.MeterId);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1");
 
-            if (
-                meter.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1")
-                && !User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin")
-            )
+            if (userId == -1)
                 return Unauthorized();
+
+            if (meter.UserId != userId)
+            {
+                var sharedMeters = await _meterService.GetShared(userId);
+
+                if (!sharedMeters.Any(x => x.Id == meter.Id))
+                {
+                    if (!User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin"))
+                        return Unauthorized();
+                }
+            }
 
             await _readingService.Delete(id);
             return NoContent();
