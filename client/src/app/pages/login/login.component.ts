@@ -9,11 +9,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-import { AuthService } from './../../api/services/auth.service';
-import { NavigationService } from './../../services/navigation.service';
-import { DataStore } from './../../store/data.store';
 import { TokenDto } from '../../api/models';
+import { AuthService } from '../../api/services/auth.service';
+import { NavigationService } from '../../services/navigation.service';
 import { TranslateService } from '../../services/translate.service';
+import { DataStore } from '../../store/data.store';
 
 @Component({
   selector: 'app-login',

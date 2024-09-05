@@ -7,9 +7,9 @@ import {
 } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
-import { DataStore } from './../store/data.store';
 import { NavigationService } from '../services/navigation.service';
 import { TranslateService } from '../services/translate.service';
+import { DataStore } from '../store/data.store';
 
 @Injectable({
   providedIn: 'root',

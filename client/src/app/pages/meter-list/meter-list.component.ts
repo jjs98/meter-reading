@@ -17,10 +17,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TableModule, TableRowSelectEvent } from 'primeng/table';
 
-import { DataStore } from './../../store/data.store';
 import { Meter } from '../../api/models';
 import { MeterDialogComponent } from '../../components/meter-dialog/meter-dialog.component';
 import { TranslateService } from '../../services/translate.service';
+import { DataStore } from '../../store/data.store';
 
 @Component({
   selector: 'app-meter',

@@ -2,9 +2,9 @@ import { inject } from '@angular/core';
 import { signalState, signalStoreFeature, withMethods, withState } from '@ngrx/signals';
 import { MessageService } from 'primeng/api';
 
-import { TranslateService } from './../../services/translate.service';
 import { Meter } from '../../api/models';
 import { MeterService } from '../../api/services/meter.service';
+import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
 type MetersState = {
