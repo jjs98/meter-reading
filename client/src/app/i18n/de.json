@@ -47,6 +47,7 @@
   "meterReadings": "Zählerstände",
   "noRecordsFound": "Keine Datensätze gefunden",
   "reading": {
+    "difference": "Differenz",
     "error": {
       "add": "Fehler beim Hinzufügen des Zählerstands",
       "alreadyExists": "Zählerstand für Datum existiert bereits",

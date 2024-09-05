@@ -47,6 +47,7 @@
   "meterReadings": "Meter Readings",
   "noRecordsFound": "No records found",
   "reading": {
+    "difference": "Difference",
     "error": {
       "add": "Failed to add reading",
       "alreadyExists": "Reading for date already exists",

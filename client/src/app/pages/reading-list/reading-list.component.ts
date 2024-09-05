@@ -84,7 +84,7 @@ export class ReadingListComponent implements OnInit {
           : labels.reverse().slice(labels.length - Number(this.valuesCount()), labels.length),
       datasets: [
         {
-          label: 'Readings',
+          label: this.translations.reading_difference(),
           data:
             this.valuesCount() === 'max' || Number(this.valuesCount()) >= deltaData.length
               ? deltaData.slice(1, deltaData.length)

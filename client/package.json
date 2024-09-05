@@ -15,7 +15,7 @@
   "prettier": "@ngneers/prettier-config",
   "private": true,
   "dependencies": {
-    "@angular-architects/ngrx-toolkit": "18.0.0-rc.2.0",
+    "@angular-architects/ngrx-toolkit": "18.0.3",
     "@angular/animations": "~18.1.2",
     "@angular/common": "~18.1.2",
     "@angular/compiler": "~18.1.2",
@@ -26,7 +26,7 @@
     "@angular/router": "~18.1.2",
     "@iconify/tailwind": "^1.1.1",
     "@ngneers/signal-translate": "^0.1.3",
-    "@ngrx/signals": "18.0.0-rc.2",
+    "@ngrx/signals": "18.0.2",
     "@nx/angular": "^19.5.3",
     "bcrypt-ts": "^5.0.2",
     "chart.js": "^4.4.3",
