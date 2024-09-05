@@ -29,7 +29,6 @@
         class="flex-auto"
         [(ngModel)]="password"
         [feedback]="false"
-        [toggleMask]="true"
         (keypress)="onKeyPress($event)"
       />
       <label for="password" class="font-semibold w-6rem">{{ translations.login_password() }}</label>
