@@ -16,6 +16,7 @@
     "passwordChange": "Change Password",
     "passwordChangeFailed": "Password change failed",
     "passwordChangeInvalid": "Invalid password",
+    "passwordChangeSuccess": "Password changed",
     "passwordOld": "Old Password",
     "passwordNew": "New Password",
     "passwordRepeat": "Repeat Password",

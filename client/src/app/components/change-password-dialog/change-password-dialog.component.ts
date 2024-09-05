@@ -39,6 +39,8 @@ export class ChangePasswordDialogComponent {
   protected oldPassword: string = '';
   protected newPassword: string = '';
   protected repeatNewPassword: string = '';
+  protected repeatNewPasswordValid: boolean = true;
+  protected oldPasswordValid: boolean = true;
 
   protected dialogVisible = signal(false);
   protected loading = signal(false);
@@ -68,6 +70,9 @@ export class ChangePasswordDialogComponent {
   protected async changePassword(): Promise<void> {
     this.loading.set(true);
 
+    this.repeatNewPasswordValid = true;
+    this.oldPasswordValid = true;
+
     if (this.newPassword !== this.repeatNewPassword) {
       this.messageService.add({
         severity: 'error',
@@ -75,6 +80,7 @@ export class ChangePasswordDialogComponent {
         detail: this.translations.login_passwordRepeatInvalid(),
       });
       this.loading.set(false);
+      this.repeatNewPasswordValid = false;
       return;
     }
 
@@ -86,8 +92,15 @@ export class ChangePasswordDialogComponent {
     });
 
     if (response.status === 200) {
+      this.messageService.add({
+        severity: 'success',
+        summary: this.translations.success(),
+        detail: this.translations.login_passwordChangeSuccess(),
+      });
       this.dialogVisible.set(false);
+      return;
     }
+    this.oldPasswordValid = false;
     this.loading.set(false);
     this.messageService.add({
       severity: 'error',
@@ -100,5 +113,7 @@ export class ChangePasswordDialogComponent {
     this.oldPassword = '';
     this.newPassword = '';
     this.repeatNewPassword = '';
+    this.repeatNewPasswordValid = true;
+    this.oldPasswordValid = true;
   }
 }
