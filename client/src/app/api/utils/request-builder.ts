@@ -1,4 +1,6 @@
-import { HttpRequest, HttpParameterCodec, HttpParams, HttpHeaders, HttpContext } from '@angular/common/http';
+import { HttpRequest, HttpParams, HttpHeaders, HttpContext } from '@angular/common/http';
+
+import type { HttpParameterCodec } from '@angular/common/http';
 
 /**
  * Custom parameter codec to correctly handle the plus sign in parameter
@@ -308,7 +310,7 @@ export class RequestBuilder {
       return value;
     }
     if (typeof value === 'object') {
-      return JSON.stringify(value);
+      return new Blob([JSON.stringify(value)], { type: 'application/json' });
     }
     return String(value);
   }

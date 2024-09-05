@@ -1,11 +1,13 @@
 import { HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { DeleteApiRoleIdApiResponse, GetApiRoleApiResponse, GetApiRoleIdApiResponse, PostApiRoleApiResponse, PutApiRoleIdApiResponse } from '../models/responses/role-responses.model';
-import { Role } from '../models/role';
-import { AbortablePromise, waitForResponse } from '../utils/angular-service.utils';
+import { waitForResponse } from '../utils/angular-service.utils';
 import { ApiBaseService } from '../utils/api-base-service';
 import { RequestBuilder } from '../utils/request-builder';
+
+import type { DeleteApiRoleIdApiResponse, GetApiRoleApiResponse, GetApiRoleIdApiResponse, PostApiRoleApiResponse, PutApiRoleIdApiResponse } from '../models/responses/role-responses.model';
+import type { Role } from '../models/role';
+import type { AbortablePromise } from '../utils/angular-service.utils';
 
 /**
  * Parameters for operation postApiRole

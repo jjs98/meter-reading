@@ -1,5 +1,5 @@
-import { MeterType } from './meter-type';
-import { Reading } from './reading';
+import type { MeterType } from './meter-type';
+import type { Reading } from './reading';
 
 export type Meter = {
     id?: number;

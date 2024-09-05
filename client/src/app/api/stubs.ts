@@ -6,7 +6,9 @@ import { ReadingStubs } from './stubs/reading.stubs';
 import { RoleStubs } from './stubs/role.stubs';
 import { UserRoleStubs } from './stubs/user-role.stubs';
 import { UserStubs } from './stubs/user.stubs';
-import { EasyNetworkStubGroup, EasyNetworkStubWrapper, EasyNetworkStubWrapperOptions, StubRequestItem, createEasyNetworkStubGroup } from './utils/easy-network-stub.utils';
+import { EasyNetworkStubWrapper, createEasyNetworkStubGroup } from './utils/easy-network-stub.utils';
+
+import type { EasyNetworkStubGroup, EasyNetworkStubWrapperOptions, StubRequestItem } from './utils/easy-network-stub.utils';
 
 export { AuthStubs } from './stubs/auth.stubs';
 export { MeterStubs } from './stubs/meter.stubs';

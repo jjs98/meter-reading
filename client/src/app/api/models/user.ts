@@ -1,5 +1,5 @@
-import { Meter } from './meter';
-import { UserRole } from './user-role';
+import type { Meter } from './meter';
+import type { UserRole } from './user-role';
 
 export type User = {
     id?: number;

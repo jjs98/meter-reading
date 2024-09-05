@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
-import { ProblemDetails } from '../problem-details';
-import { Reading } from '../reading';
+import type { ProblemDetails } from '../problem-details';
+import type { Reading } from '../reading';
 
 type GetApiReadingStatusCodes =
   | (200)

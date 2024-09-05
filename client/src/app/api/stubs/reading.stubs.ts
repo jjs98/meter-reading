@@ -1,6 +1,8 @@
-import { ProblemDetails } from '../models/problem-details';
-import { Reading } from '../models/reading';
-import { EasyNetworkStubBase, StrictRouteResponseCallback, StubRequestInfo, getStubResponder } from '../utils/easy-network-stub.utils';
+import { EasyNetworkStubBase, getStubResponder } from '../utils/easy-network-stub.utils';
+
+import type { ProblemDetails } from '../models/problem-details';
+import type { Reading } from '../models/reading';
+import type { StrictRouteResponseCallback, StubRequestInfo } from '../utils/easy-network-stub.utils';
 
 const getApiReadingResponder = getStubResponder<{
     200: (Reading)[];

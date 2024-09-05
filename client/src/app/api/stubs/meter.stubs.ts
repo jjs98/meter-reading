@@ -1,6 +1,8 @@
-import { Meter } from '../models/meter';
-import { ProblemDetails } from '../models/problem-details';
-import { EasyNetworkStubBase, StrictRouteResponseCallback, StubRequestInfo, getStubResponder } from '../utils/easy-network-stub.utils';
+import { EasyNetworkStubBase, getStubResponder } from '../utils/easy-network-stub.utils';
+
+import type { Meter } from '../models/meter';
+import type { ProblemDetails } from '../models/problem-details';
+import type { StrictRouteResponseCallback, StubRequestInfo } from '../utils/easy-network-stub.utils';
 
 const getApiMeterResponder = getStubResponder<{
     200: (Meter)[];

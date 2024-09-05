@@ -13,6 +13,13 @@
     "loginFailed": "Login fehlgeschlagen",
     "loginInvalid": "Ungültiger Benutzername oder Passwort",
     "password": "Passwort",
+    "passwordChange": "Passwort ändern",
+    "passwordChangeFailed": "Passwortänderung fehlgeschlagen",
+    "passwordChangeInvalid": "Ungültiges Passwort",
+    "passwordOld": "Altes Passwort",
+    "passwordNew": "Neues Passwort",
+    "passwordRepeat": "Passwort wiederholen",
+    "passwordRepeatInvalid": "Passwörter stimmen nicht überein",
     "username": "Benutzername",
     "error": {
       "noRights": "Sie haben nicht die erforderlichen Rechte, um auf diese Seite zuzugreifen"

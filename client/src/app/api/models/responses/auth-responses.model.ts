@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
-import { ProblemDetails } from '../problem-details';
-import { TokenDto } from '../token-dto';
+import type { ProblemDetails } from '../problem-details';
+import type { TokenDto } from '../token-dto';
 
 type PostApiAuthLoginStatusCodes =
   | (200)
@@ -54,7 +54,38 @@ export type PostApiAuthRefreshApiResponse<TStatus extends PostApiAuthRefreshStat
           ok: false;
         }))
     | ((HttpErrorResponse) & ({
+          error: (ProblemDetails) | (null);
+          status: 401;
+          ok: false;
+        }))
+    | ((HttpErrorResponse) & ({
           error: (never) | (null);
+          status: 403;
+          ok: false;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (never) | (null);
+          status: 500;
+          ok: false;
+        }))) & ({
+      status: TStatus;
+    });
+
+type PostApiAuthChangePasswordStatusCodes =
+  | (200)
+  | (401)
+  | (403)
+  | (500);
+/**
+ * Response model for operation postApiAuthChangePassword
+ */
+export type PostApiAuthChangePasswordApiResponse<TStatus extends PostApiAuthChangePasswordStatusCodes = PostApiAuthChangePasswordStatusCodes> = (
+    | ((HttpResponse<TokenDto>) & ({
+          status: 200;
+          ok: true;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))

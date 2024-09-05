@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using Application.DTOs;
+using Domain.Interfaces;
 using Domain.Models;
 using InterfaceGenerator;
 
@@ -9,11 +10,17 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IMeterService _meterService;
+    private readonly IAuthService _authService;
 
-    public UserService(IUserRepository userRepository, IMeterService meterService)
+    public UserService(
+        IUserRepository userRepository,
+        IMeterService meterService,
+        IAuthService authService
+    )
     {
         _userRepository = userRepository;
         _meterService = meterService;
+        _authService = authService;
     }
 
     public async Task<IEnumerable<User>> GetAll()
@@ -39,6 +46,17 @@ public class UserService : IUserService
     public async Task Update(User user)
     {
         await _userRepository.Update(user);
+    }
+
+    public async Task ChangePassword(int id, ChangePasswordDto changePasswordDto)
+    {
+        var user = await _userRepository.GetById(id);
+        if (user == null || !BCrypt.Net.BCrypt.Verify(changePasswordDto.OldPassword, user.Password))
+        {
+            throw new UnauthorizedAccessException("Invalid credentials");
+        }
+        var hashedPassword = _authService.HashPassword(changePasswordDto.NewPassword);
+        await _userRepository.UpdatePassword(id, hashedPassword);
     }
 
     public async Task Delete(int id)

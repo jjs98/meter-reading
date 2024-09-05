@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
-import { ProblemDetails } from '../problem-details';
-import { UserRole } from '../user-role';
+import type { ProblemDetails } from '../problem-details';
+import type { UserRole } from '../user-role';
 
 type GetApiUserRoleRoleRoleIdStatusCodes =
   | (200)

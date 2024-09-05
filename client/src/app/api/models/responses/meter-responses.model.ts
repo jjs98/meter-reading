@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
-import { Meter } from '../meter';
-import { ProblemDetails } from '../problem-details';
+import type { Meter } from '../meter';
+import type { ProblemDetails } from '../problem-details';
 
 type GetApiMeterStatusCodes =
   | (200)

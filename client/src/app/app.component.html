@@ -6,7 +6,18 @@
       </ng-template>
       <ng-template pTemplate="end">
         <div class="flex flex-row items-center">
-          <span class="mr-8"> {{ dataStore.getUserName() }} </span>
+          <span class="mr-8" (click)="menu.toggle($event)"> {{ dataStore.getUserName() }} </span>
+          <p-tieredMenu #menu [model]="items" [popup]="true">
+            <ng-template pTemplate="item" let-item let-hasSubmenu="hasSubmenu">
+              <ng-container>
+                <a class="p-menuitem-link">
+                  <span [class]="item.icon"></span>
+                  <span class="ml-2">{{ translationService.translate(item.label) }}</span>
+                  <span *ngIf="hasSubmenu" class="i-[mdi--chevron-right]"></span>
+                </a>
+              </ng-container>
+            </ng-template>
+          </p-tieredMenu>
           <p-button icon="i-[mdi--logout]" styleClass="mr-4" [rounded]="true" (click)="logOff()" />
         </div>
       </ng-template>
@@ -18,6 +29,7 @@
 </div>
 
 <p-toast />
+<app-change-password-dialog></app-change-password-dialog>
 <p-confirmDialog #cd>
   <ng-template pTemplate="headless" let-message>
     <p-card header="{{ message.header }}">

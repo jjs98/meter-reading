@@ -9,5 +9,6 @@ public interface IUserRepository
     Task<User> GetByUsername(string name);
     Task<User> Create(User user);
     Task Update(User user);
+    Task UpdatePassword(int id, string password);
     Task Delete(int id);
 }

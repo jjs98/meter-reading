@@ -1,6 +1,8 @@
-import { ProblemDetails } from '../models/problem-details';
-import { Role } from '../models/role';
-import { EasyNetworkStubBase, StrictRouteResponseCallback, StubRequestInfo, getStubResponder } from '../utils/easy-network-stub.utils';
+import { EasyNetworkStubBase, getStubResponder } from '../utils/easy-network-stub.utils';
+
+import type { ProblemDetails } from '../models/problem-details';
+import type { Role } from '../models/role';
+import type { StrictRouteResponseCallback, StubRequestInfo } from '../utils/easy-network-stub.utils';
 
 const getApiRoleResponder = getStubResponder<{
     200: (Role)[];

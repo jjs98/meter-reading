@@ -13,6 +13,13 @@
     "loginFailed": "Login failed",
     "loginInvalid": "Invalid username or password",
     "password": "Password",
+    "passwordChange": "Change Password",
+    "passwordChangeFailed": "Password change failed",
+    "passwordChangeInvalid": "Invalid password",
+    "passwordOld": "Old Password",
+    "passwordNew": "New Password",
+    "passwordRepeat": "Repeat Password",
+    "passwordRepeatInvalid": "Passwords do not match",
     "username": "Username",
     "error": {
       "noRights": "You do not have the necessary rights to access this page"

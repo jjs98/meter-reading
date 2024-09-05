@@ -71,6 +71,18 @@ public class UserRepository : IUserRepository
         context.ChangeTracker.Clear();
     }
 
+    public async Task UpdatePassword(int id, string password)
+    {
+        var context = _contextFactory.CreateDbContext();
+        var existingUser = await GetById(id);
+
+        await context
+            .Users.Where(x => x.Id == id)
+            .ExecuteUpdateAsync(x => x.SetProperty(u => u.Password, password));
+
+        context.ChangeTracker.Clear();
+    }
+
     public async Task Delete(int id)
     {
         var context = _contextFactory.CreateDbContext();

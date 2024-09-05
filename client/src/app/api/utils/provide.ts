@@ -1,5 +1,3 @@
-import { Provider } from '@angular/core';
-
 import { AuthService } from '../services/auth.service';
 import { MeterService } from '../services/meter.service';
 import { ReadingService } from '../services/reading.service';
@@ -7,6 +5,8 @@ import { RoleService } from '../services/role.service';
 import { UserRoleService } from '../services/user-role.service';
 import { UserService } from '../services/user.service';
 import { ApiConfiguration } from './api-configuration';
+
+import type { Provider } from '@angular/core';
 
 /**
  * Provides all the API services.

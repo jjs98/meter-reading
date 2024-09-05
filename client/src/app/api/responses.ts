@@ -1,6 +1,6 @@
-export { PostApiAuthHashApiResponse, PostApiAuthLoginApiResponse, PostApiAuthRefreshApiResponse } from './models/responses/auth-responses.model';
-export { DeleteApiMeterIdApiResponse, GetApiMeterApiResponse, GetApiMeterIdApiResponse, GetApiMeterSharedApiResponse, PostApiMeterApiResponse, PutApiMeterIdApiResponse } from './models/responses/meter-responses.model';
-export { DeleteApiReadingIdApiResponse, GetApiReadingApiResponse, GetApiReadingIdApiResponse, PostApiReadingApiResponse, PutApiReadingIdApiResponse } from './models/responses/reading-responses.model';
-export { DeleteApiRoleIdApiResponse, GetApiRoleApiResponse, GetApiRoleIdApiResponse, PostApiRoleApiResponse, PutApiRoleIdApiResponse } from './models/responses/role-responses.model';
-export { DeleteApiUserIdApiResponse, GetApiUserApiResponse, GetApiUserIdApiResponse, PostApiUserApiResponse, PutApiUserIdApiResponse } from './models/responses/user-responses.model';
-export { DeleteApiUserRoleIdApiResponse, GetApiUserRoleRoleRoleIdApiResponse, GetApiUserRoleUserUserIdApiResponse, PostApiUserRoleApiResponse, PutApiUserRoleIdApiResponse } from './models/responses/user-role-responses.model';
+export type { PostApiAuthChangePasswordApiResponse, PostApiAuthHashApiResponse, PostApiAuthLoginApiResponse, PostApiAuthRefreshApiResponse } from './models/responses/auth-responses.model';
+export type { DeleteApiMeterIdApiResponse, GetApiMeterApiResponse, GetApiMeterIdApiResponse, GetApiMeterSharedApiResponse, PostApiMeterApiResponse, PutApiMeterIdApiResponse } from './models/responses/meter-responses.model';
+export type { DeleteApiReadingIdApiResponse, GetApiReadingApiResponse, GetApiReadingIdApiResponse, PostApiReadingApiResponse, PutApiReadingIdApiResponse } from './models/responses/reading-responses.model';
+export type { DeleteApiRoleIdApiResponse, GetApiRoleApiResponse, GetApiRoleIdApiResponse, PostApiRoleApiResponse, PutApiRoleIdApiResponse } from './models/responses/role-responses.model';
+export type { DeleteApiUserIdApiResponse, GetApiUserApiResponse, GetApiUserIdApiResponse, PostApiUserApiResponse, PutApiUserIdApiResponse } from './models/responses/user-responses.model';
+export type { DeleteApiUserRoleIdApiResponse, GetApiUserRoleRoleRoleIdApiResponse, GetApiUserRoleUserUserIdApiResponse, PostApiUserRoleApiResponse, PutApiUserRoleIdApiResponse } from './models/responses/user-role-responses.model';

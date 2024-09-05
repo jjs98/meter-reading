@@ -1,11 +1,13 @@
 import { HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Meter } from '../models/meter';
-import { DeleteApiMeterIdApiResponse, GetApiMeterApiResponse, GetApiMeterIdApiResponse, GetApiMeterSharedApiResponse, PostApiMeterApiResponse, PutApiMeterIdApiResponse } from '../models/responses/meter-responses.model';
-import { AbortablePromise, waitForResponse } from '../utils/angular-service.utils';
+import { waitForResponse } from '../utils/angular-service.utils';
 import { ApiBaseService } from '../utils/api-base-service';
 import { RequestBuilder } from '../utils/request-builder';
+
+import type { Meter } from '../models/meter';
+import type { DeleteApiMeterIdApiResponse, GetApiMeterApiResponse, GetApiMeterIdApiResponse, GetApiMeterSharedApiResponse, PostApiMeterApiResponse, PutApiMeterIdApiResponse } from '../models/responses/meter-responses.model';
+import type { AbortablePromise } from '../utils/angular-service.utils';
 
 /**
  * Parameters for operation postApiMeter
