@@ -18,6 +18,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { Reading } from '../../api/models';
 import { TranslateService } from '../../services/translate.service';
@@ -36,6 +37,7 @@ import { DataStore } from '../../store/data.store';
     InputNumberModule,
     InputTextModule,
     RadioButtonModule,
+    TooltipModule,
   ],
   templateUrl: './reading-dialog.component.html',
   styleUrl: './reading-dialog.component.scss',

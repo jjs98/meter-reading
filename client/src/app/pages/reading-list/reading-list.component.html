@@ -2,7 +2,14 @@
   <div class="h-full">
     <div class="h-2/5 flex flex-col">
       <div class="flex justify-between mb-4 items-center">
-        <p-button (onClick)="navigateBack()" icon="i-[mdi--arrow-left]" [rounded]="true"></p-button>
+        <p-button
+          (onClick)="navigateBack()"
+          icon="i-[mdi--arrow-left]"
+          [pTooltip]="translations.back()"
+          [tooltipPosition]="'bottom'"
+          [showDelay]="1000"
+          [rounded]="true"
+        ></p-button>
         @if (meter()) {
           <div class="flex flex-row items-center">
             <span
@@ -38,7 +45,14 @@
             <span>{{ translations.reading_readings() }}</span>
 
             @if (dataStore.readings().length > 0) {
-              <p-button icon="i-[mdi--export]" [rounded]="true" (onClick)="exportExcel()" />
+              <p-button
+                icon="i-[mdi--export]"
+                [pTooltip]="translations.export()"
+                [tooltipPosition]="'bottom'"
+                [showDelay]="1000"
+                [rounded]="true"
+                (onClick)="exportExcel()"
+              />
             }
           </div>
         </ng-template>
@@ -47,7 +61,14 @@
             <th>{{ translations.reading_reading() }}</th>
             <th>{{ translations.reading_readingDate() }}</th>
             <th style="width: 5rem">
-              <p-button icon="i-[mdi--plus]" [rounded]="true" (onClick)="showNewDialog()" />
+              <p-button
+                icon="i-[mdi--plus]"
+                [rounded]="true"
+                [pTooltip]="translations.add()"
+                [tooltipPosition]="'bottom'"
+                [showDelay]="1000"
+                (onClick)="showNewDialog()"
+              />
             </th>
           </tr>
         </ng-template>
@@ -63,6 +84,9 @@
               <p-button
                 icon="i-[mdi--pencil]"
                 [rounded]="true"
+                [pTooltip]="translations.edit()"
+                [tooltipPosition]="'bottom'"
+                [showDelay]="1000"
                 (onClick)="showEditDialog(reading)"
               ></p-button>
             </td>

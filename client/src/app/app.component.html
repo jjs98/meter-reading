@@ -18,7 +18,15 @@
               </ng-container>
             </ng-template>
           </p-tieredMenu>
-          <p-button icon="i-[mdi--logout]" styleClass="mr-4" [rounded]="true" (click)="logOff()" />
+          <p-button
+            icon="i-[mdi--logout]"
+            styleClass="mr-4"
+            [pTooltip]="translations.logout()"
+            [tooltipPosition]="'bottom'"
+            [showDelay]="1000"
+            [rounded]="true"
+            (click)="logOff()"
+          />
         </div>
       </ng-template>
     </p-menubar>

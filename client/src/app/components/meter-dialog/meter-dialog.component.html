@@ -71,16 +71,30 @@
       <p-button
         icon="i-[mdi--delete]"
         severity="danger"
-        (onClick)="confirmDeleteMeter()"
+        [pTooltip]="translations.delete()"
+        [tooltipPosition]="'bottom'"
+        [showDelay]="1000"
         [rounded]="true"
+        (onClick)="confirmDeleteMeter()"
       />
     }
-    <p-button icon="i-[mdi--cancel]" severity="secondary" (onClick)="onCancel()" [rounded]="true" />
+    <p-button
+      icon="i-[mdi--cancel]"
+      severity="secondary"
+      [pTooltip]="translations.cancel()"
+      [tooltipPosition]="'bottom'"
+      [showDelay]="1000"
+      [rounded]="true"
+      (onClick)="onCancel()"
+    />
     <p-button
       icon="i-[mdi--content-save]"
-      (onClick)="onSave()"
+      [pTooltip]="translations.save()"
+      [tooltipPosition]="'bottom'"
+      [showDelay]="1000"
       [rounded]="true"
       [disabled]="!location || type === undefined || !hasMeterChanged()"
+      (onClick)="onSave()"
     />
   </div>
 </p-dialog>

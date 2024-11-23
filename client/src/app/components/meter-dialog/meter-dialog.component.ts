@@ -7,6 +7,7 @@ import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { Meter, MeterType } from '../../api/models';
 import { TranslateService } from '../../services/translate.service';
@@ -23,6 +24,7 @@ import { DataStore } from '../../store/data.store';
     FormsModule,
     InputTextModule,
     RadioButtonModule,
+    TooltipModule,
   ],
   templateUrl: './meter-dialog.component.html',
   styleUrl: './meter-dialog.component.scss',

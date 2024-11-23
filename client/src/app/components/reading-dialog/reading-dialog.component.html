@@ -54,16 +54,30 @@
       <p-button
         icon="i-[mdi--delete]"
         severity="danger"
-        (onClick)="confirmDeleteReading()"
+        [pTooltip]="translations.delete()"
+        [tooltipPosition]="'bottom'"
+        [showDelay]="1000"
         [rounded]="true"
+        (onClick)="confirmDeleteReading()"
       />
     }
-    <p-button icon="i-[mdi--cancel]" severity="secondary" (onClick)="onCancel()" [rounded]="true" />
+    <p-button
+      icon="i-[mdi--cancel]"
+      severity="secondary"
+      [pTooltip]="translations.cancel()"
+      [tooltipPosition]="'bottom'"
+      [showDelay]="1000"
+      [rounded]="true"
+      (onClick)="onCancel()"
+    />
     <p-button
       icon="i-[mdi--content-save]"
-      (onClick)="onSave()"
+      [pTooltip]="translations.save()"
+      [tooltipPosition]="'bottom'"
+      [showDelay]="1000"
       [rounded]="true"
       [disabled]="!number || !readingDate() || !hasReadingChanged() || hasReadingForDate()"
+      (onClick)="onSave()"
     />
   </div>
 </p-dialog>

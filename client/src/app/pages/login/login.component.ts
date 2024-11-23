@@ -8,6 +8,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { TokenDto } from '../../api/models';
 import { AuthService } from '../../api/services/auth.service';
@@ -27,6 +28,7 @@ import { DataStore } from '../../store/data.store';
     InputTextModule,
     PasswordModule,
     ProgressSpinnerModule,
+    TooltipModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',

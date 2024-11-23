@@ -21,6 +21,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TableModule } from 'primeng/table';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { Meter, Reading } from '../../api/models';
 import { ReadingDialogComponent } from '../../components/reading-dialog/reading-dialog.component';
@@ -44,6 +45,7 @@ import { DataStore } from '../../store/data.store';
     RadioButtonModule,
     ReadingDialogComponent,
     TableModule,
+    TooltipModule,
   ],
   templateUrl: './reading-list.component.html',
   styleUrl: './reading-list.component.scss',
@@ -140,8 +142,8 @@ export class ReadingListComponent implements OnInit {
     import('xlsx').then(xlsx => {
       const readings = this.dataStore.readings().map(reading => {
         return {
-          Datum: new Date(reading.readingDate).toLocaleDateString(),
-          Zählerstand: reading.number,
+          Datum: new Date(reading.readingDate).toLocaleDateString('de-DE', { dateStyle: 'medium' }),
+          Zählerstand: reading.number?.toString().replace('.', ','),
         };
       });
       const worksheet = xlsx.utils.json_to_sheet(readings);

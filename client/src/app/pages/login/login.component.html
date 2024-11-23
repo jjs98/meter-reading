@@ -38,9 +38,12 @@
     <p-button
       icon="{{ loading() ? 'i-[mdi--loading]' : 'i-[mdi--login]' }}"
       class="{{ loading() ? 'animate-spin' : '' }}"
+      [pTooltip]="translations.login_login()"
+      [tooltipPosition]="'bottom'"
+      [showDelay]="1000"
       [rounded]="true"
-      (click)="login()"
       [disabled]="!username || !password || loading()"
+      (click)="login()"
     />
   </div>
 </p-dialog>

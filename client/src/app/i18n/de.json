@@ -1,12 +1,17 @@
 {
+  "add": "Hinzufügen",
+  "back": "Zurück",
   "cancel": "Abbrechen",
+  "close": "Schließen",
   "confirm": "Bestätigen",
   "confirmDelete": {
     "header": "Löschbestätigung",
     "message": "Sind Sie sicher, dass Sie diesen Datensatz löschen möchten?"
   },
   "delete": "Löschen",
+  "edit": "Bearbeiten",
   "error": "Fehler",
+  "export": "Exportieren",
   "info": "Info",
   "login": {
     "login": "Einloggen",
@@ -26,6 +31,7 @@
       "noRights": "Sie haben nicht die erforderlichen Rechte, um auf diese Seite zuzugreifen"
     }
   },
+  "logout": "Ausloggen",
   "meter": {
     "addition": "Zusatz",
     "error": {

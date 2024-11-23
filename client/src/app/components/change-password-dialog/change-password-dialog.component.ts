@@ -8,6 +8,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { AuthService } from '../../api/services';
 import { TranslateService } from '../../services/translate.service';
@@ -25,6 +26,7 @@ import { DataStore } from '../../store/data.store';
     InputTextModule,
     PasswordModule,
     RadioButtonModule,
+    TooltipModule,
   ],
   templateUrl: './change-password-dialog.component.html',
   styleUrl: './change-password-dialog.component.scss',

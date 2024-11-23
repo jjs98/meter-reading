@@ -17,7 +17,14 @@
           <th style="width: auto">{{ translations.meter_location() }}</th>
           <th style="width: auto">{{ translations.meter_addition() }}</th>
           <th style="width: 5rem">
-            <p-button icon="i-[mdi--plus]" [rounded]="true" (onClick)="showNewDialog()" />
+            <p-button
+              icon="i-[mdi--plus]"
+              [pTooltip]="translations.add()"
+              [tooltipPosition]="'bottom'"
+              [showDelay]="1000"
+              [rounded]="true"
+              (onClick)="showNewDialog()"
+            />
           </th>
         </tr>
       </ng-template>
@@ -43,6 +50,9 @@
           <td>
             <p-button
               icon="i-[mdi--pencil]"
+              [pTooltip]="translations.edit()"
+              [tooltipPosition]="'bottom'"
+              [showDelay]="1000"
               [rounded]="true"
               (onClick)="showEditDialog(meter)"
             ></p-button>
