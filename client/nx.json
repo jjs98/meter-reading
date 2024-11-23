@@ -73,5 +73,6 @@
       "changeDetection": "OnPush"
     }
   },
-  "defaultProject": "client"
+  "defaultProject": "client",
+  "useLegacyCache": true
 }
