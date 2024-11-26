@@ -1,0 +1,4 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+node ./hooks/add-emoji-to-commit-message.js "$@"
