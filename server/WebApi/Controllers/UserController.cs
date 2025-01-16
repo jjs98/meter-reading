@@ -53,7 +53,7 @@ public class UserController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while getting user by id for id {id}");
+            _logger.LogError(ex, "An error occurred while getting user by id for id {Id}", id);
             return StatusCode((int)HttpStatusCode.InternalServerError);
         }
     }
@@ -95,7 +95,11 @@ public class UserController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while updating user by id for id {user.Id}");
+            _logger.LogError(
+                ex,
+                "An error occurred while updating user by id for id {UserId}",
+                user.Id
+            );
             return StatusCode((int)HttpStatusCode.InternalServerError);
         }
     }
@@ -117,7 +121,7 @@ public class UserController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while deleting user by id for id {id}");
+            _logger.LogError(ex, "An error occurred while deleting user by id for id {Id}", id);
             return StatusCode((int)HttpStatusCode.InternalServerError);
         }
     }
