@@ -56,7 +56,7 @@ public class MeterController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while getting meter by id for id {id}");
+            _logger.LogError(ex, "An error occurred while getting meter by id for id {Id}", id);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -126,7 +126,11 @@ public class MeterController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while updating meter by id for id {meter.Id}");
+            _logger.LogError(
+                ex,
+                "An error occurred while updating meter by id for id {MeterId}",
+                meter.Id
+            );
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -155,7 +159,7 @@ public class MeterController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while deleting meter by id for id {id}");
+            _logger.LogError(ex, "An error occurred while deleting meter by id for id {Id}", id);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
