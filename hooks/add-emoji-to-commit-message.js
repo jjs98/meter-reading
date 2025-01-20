@@ -1,31 +1,5 @@
 const fs = require('fs');
-
-// Array of emojis to choose from
-const emojis = [
-  '(⊙_⊙;)',
-  '༼ つ ◕_◕ ༽つ',
-  'ᓚᘏᗢ',
-  '(╯°□°）╯︵ ┻━┻',
-  '(•_•)',
-  '(*/ω＼*)',
-  'ಠ_ಠ',
-  '(⌐■_■)',
-  '(T_T)',
-  `(●'◡'●)`,
-  '¯_(ツ)_/¯',
-  '(❁´◡`❁)',
-  '╰(*°▽°*)╯',
-  'o(≧▽≦)o',
-  '(^///^)',
-  '(┬┬﹏┬┬)',
-  'ಥ_ಥ',
-  '( ´･･)ﾉ(._.`)',
-  '(ˉ﹃ˉ)',
-  '(☞ﾟヮﾟ)☞',
-  '☜(ﾟヮﾟ☜)',
-  '(¬‿¬)',
-  '(¬_¬ )',
-];
+const emojis = require('./emojis');
 
 // Choose a random emoji
 const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
