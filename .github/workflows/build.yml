@@ -25,14 +25,29 @@ jobs:
       - run: pnpm install
         working-directory: ./client
 
+      - name: Create SBOM
+        uses: CycloneDX/gh-node-module-generatebom@v1
+        with:
+          path: ./client/
+          output: './client.bom.xml'
+
+      - name: Upload SBOM
+        uses: DependencyTrack/gh-upload-sbom@v3
+        with:
+          serverHostname: ${{ secrets.DEPENDENCYTRACK_URL }}
+          apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+          projectName: 'meter-reading-client'
+          bomFilename: "client.bom.xml"
+          autoCreate: true
+
       - run: pnpm build
         working-directory: ./client
         
       - run: pnpm lint
         working-directory: ./client
         
-      - run: pnpm audit
-        working-directory: ./client
+      # - run: pnpm audit
+      #   working-directory: ./client
 
       # - run: pnpm pw:install
         # working-directory: ./client
@@ -84,6 +99,21 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.x
+
+      - name: Install CycloneDx
+        run: dotnet tool install --global CycloneDX
+      
+      - name: Create SBOM
+        run: dotnet CycloneDx ./server/server.sln -o .
+
+      - name: Upload SBOM
+        uses: DependencyTrack/gh-upload-sbom@v3
+        with:
+          serverHostname: ${{ secrets.DEPENDENCYTRACK_URL }}
+          apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+          projectName: 'meter-reading-api'
+          bomFilename: "bom.xml"
+          autoCreate: true
 
       - name: Build API
         run: dotnet build ./server/WebApi/WebApi.csproj -c Release
