@@ -29,14 +29,16 @@ jobs:
       #   uses: CycloneDX/gh-node-module-generatebom@v1
       #   with:
       #     path: ./client/
-      #     output: './client.bom.xml'
+      #     output: ./client.bom.xml
 
       # - name: Upload SBOM
       #   uses: DependencyTrack/gh-upload-sbom@v3
       #   with:
       #     serverHostname: ${{ secrets.DEPENDENCYTRACK_URL }}
       #     apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-      #     projectName: 'meter-reading-client'
+      #     projectName: meter-reading-client
+      #     projectVersion: ${GITHUB_REF##*/}
+      #     parent: 6f798505-509e-4a26-83a8-fd54bec81a5c
       #     bomFilename: "client.bom.xml"
       #     autoCreate: true
 
@@ -110,10 +112,10 @@ jobs:
         with:
           serverHostname: ${{ secrets.DEPENDENCYTRACK_URL }}
           apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-          projectName: 'meter-reading-api'
-          projectVersion: '${GITHUB_REF##*/}'
-          parent: '6f798505-509e-4a26-83a8-fd54bec81a5c'
-          bomFilename: "bom.xml"
+          projectName: meter-reading-api
+          projectVersion: ${GITHUB_REF##*/}
+          parent: 6f798505-509e-4a26-83a8-fd54bec81a5c
+          bomFilename: bom.xml
           autoCreate: true
 
       - name: Build API
