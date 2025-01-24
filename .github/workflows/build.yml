@@ -111,6 +111,7 @@ jobs:
           serverHostname: ${{ secrets.DEPENDENCYTRACK_URL }}
           apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
           projectName: 'meter-reading-api'
+          projectVersion: 'main'
           bomFilename: "bom.xml"
           autoCreate: true
 
