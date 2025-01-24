@@ -100,19 +100,19 @@ jobs:
         with:
           dotnet-version: 9.x
 
-      - name: Install CycloneDx
-        run: dotnet tool install --global CycloneDX
-      
       - name: Create SBOM
-        run: dotnet CycloneDx ./server/server.sln -o .
-
+        uses: CycloneDX/gh-dotnet-generate-sbom@v1
+        with:
+          path: ./server/server.sln
+          out: ./api.bom.xml
+      
       - name: Upload SBOM
         uses: DependencyTrack/gh-upload-sbom@v3
         with:
           serverHostname: ${{ secrets.DEPENDENCYTRACK_URL }}
           apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
           projectName: 'meter-reading-api'
-          bomFilename: "bom.xml"
+          bomFilename: "api.bom.xml"
           autoCreate: true
 
       - name: Build API
