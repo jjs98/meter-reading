@@ -30,22 +30,19 @@ jobs:
       - run: pnpm install
         working-directory: ./client
 
-      # - name: Create SBOM
-      #   uses: CycloneDX/gh-node-module-generatebom@v1
-      #   with:
-      #     path: ./client/
-      #     output: ./client.bom.xml
+      - run: npx cdxgen -o bom.json
+        working-directory: ./client
 
-      # - name: Upload SBOM
-      #   uses: DependencyTrack/gh-upload-sbom@v3
-      #   with:
-      #     serverHostname: ${{ secrets.DEPENDENCYTRACK_URL }}
-      #     apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-      #     projectName: meter-reading-client
-      #     projectVersion: ${{ steps.extract_branch.outputs.branch }}
-      #     parent: 6f798505-509e-4a26-83a8-fd54bec81a5c
-      #     bomFilename: "client.bom.xml"
-      #     autoCreate: true
+      - name: Upload SBOM
+        uses: DependencyTrack/gh-upload-sbom@v3
+        with:
+          serverHostname: ${{ secrets.DEPENDENCYTRACK_URL }}
+          apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+          projectName: meter-reading-client
+          projectVersion: ${{ steps.extract_branch.outputs.branch }}
+          parent: 6f798505-509e-4a26-83a8-fd54bec81a5c
+          bomFilename: "client/bom.json"
+          autoCreate: true
 
       - run: pnpm build
         working-directory: ./client
