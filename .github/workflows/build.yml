@@ -32,7 +32,7 @@ jobs:
 
       - run: npx --package @cyclonedx/cyclonedx-npm --call exit
 
-      - run: npx @cyclonedx/cyclonedx-npm client/package.json --output-format XML --output ./bom.xml
+      - run: npx @cyclonedx/cyclonedx-npm client/package.json --output-format XML --output-file ./bom.xml
 
       # - name: Create SBOM
       #   uses: CycloneDX/gh-node-module-generatebom@v1
