@@ -22,6 +22,11 @@ jobs:
           cache: pnpm
           cache-dependency-path: ./client/pnpm-lock.yaml
 
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+        id: extract_branch
+        
       - run: pnpm install
         working-directory: ./client
 
@@ -37,7 +42,7 @@ jobs:
       #     serverHostname: ${{ secrets.DEPENDENCYTRACK_URL }}
       #     apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
       #     projectName: meter-reading-client
-      #     projectVersion: ${GITHUB_REF##*/}
+      #     projectVersion: ${{ steps.extract_branch.outputs.branch }}
       #     parent: 6f798505-509e-4a26-83a8-fd54bec81a5c
       #     bomFilename: "client.bom.xml"
       #     autoCreate: true
@@ -102,6 +107,11 @@ jobs:
         with:
           dotnet-version: 9.x
 
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
       - name: Create SBOM
         uses: CycloneDX/gh-dotnet-generate-sbom@v1
         with:
@@ -113,7 +123,7 @@ jobs:
           serverHostname: ${{ secrets.DEPENDENCYTRACK_URL }}
           apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
           projectName: meter-reading-api
-          projectVersion: ${GITHUB_REF##*/}
+          projectVersion: ${{ steps.extract_branch.outputs.branch }}
           parent: 6f798505-509e-4a26-83a8-fd54bec81a5c
           bomFilename: bom.xml
           autoCreate: true
