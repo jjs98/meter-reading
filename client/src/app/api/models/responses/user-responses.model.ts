@@ -182,3 +182,40 @@ export type DeleteApiUserIdApiResponse<TStatus extends DeleteApiUserIdStatusCode
       status: TStatus;
     });
 
+type GetApiUserIdNameStatusCodes =
+  | (200)
+  | (401)
+  | (403)
+  | (404)
+  | (500);
+/**
+ * Response model for operation getApiUserIdName
+ */
+export type GetApiUserIdNameApiResponse<TStatus extends GetApiUserIdNameStatusCodes = GetApiUserIdNameStatusCodes> = (
+    | ((HttpResponse<string>) & ({
+          status: 200;
+          ok: true;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (never) | (null);
+          status: 401;
+          ok: false;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (never) | (null);
+          status: 403;
+          ok: false;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (ProblemDetails) | (null);
+          status: 404;
+          ok: false;
+        }))
+    | ((HttpErrorResponse) & ({
+          error: (never) | (null);
+          status: 500;
+          ok: false;
+        }))) & ({
+      status: TStatus;
+    });
+

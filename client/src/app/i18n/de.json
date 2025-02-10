@@ -46,6 +46,7 @@
     "meters": "Zähler",
     "number": "Zählernummer",
     "sharedMeters": "Gemeinsame Zähler",
+    "sharedBy": "Geteilt von",
     "success": {
       "add": "Zähler hinzugefügt",
       "delete": "Zähler gelöscht",

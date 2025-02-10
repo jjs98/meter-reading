@@ -9,4 +9,12 @@ public class User : DbEntity
     public string? Email { get; set; }
     public IEnumerable<UserRole>? Roles { get; set; }
     public IEnumerable<Meter>? Meters { get; set; }
+
+    public string GetName()
+    {
+        if (string.IsNullOrWhiteSpace(FirstName) && string.IsNullOrWhiteSpace(LastName))
+            return Username;
+
+        return $"{FirstName} {LastName}";
+    }
 }

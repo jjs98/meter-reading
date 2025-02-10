@@ -5,7 +5,7 @@ import { waitForResponse } from '../utils/angular-service.utils';
 import { ApiBaseService } from '../utils/api-base-service';
 import { RequestBuilder } from '../utils/request-builder';
 
-import type { DeleteApiUserIdApiResponse, GetApiUserApiResponse, GetApiUserIdApiResponse, PostApiUserApiResponse, PutApiUserIdApiResponse } from '../models/responses/user-responses.model';
+import type { DeleteApiUserIdApiResponse, GetApiUserApiResponse, GetApiUserIdApiResponse, GetApiUserIdNameApiResponse, PostApiUserApiResponse, PutApiUserIdApiResponse } from '../models/responses/user-responses.model';
 import type { User } from '../models/user';
 import type { AbortablePromise } from '../utils/angular-service.utils';
 
@@ -38,6 +38,13 @@ type DeleteApiUserIdParams = {
     id: number;
   };
 
+/**
+ * Parameters for operation getApiUserIdName
+ */
+type GetApiUserIdNameParams = {
+    id: number;
+  };
+
 @Injectable()
 export class UserService extends ApiBaseService {
   private static readonly GET_API_USER_PATH = '/api/User';
@@ -45,6 +52,7 @@ export class UserService extends ApiBaseService {
   private static readonly GET_API_USER_ID_PATH = '/api/User/{id}';
   private static readonly PUT_API_USER_ID_PATH = '/api/User/{id}';
   private static readonly DELETE_API_USER_ID_PATH = '/api/User/{id}';
+  private static readonly GET_API_USER_ID_NAME_PATH = '/api/User/{id}/name';
 
   public getApiUser(context?: HttpContext): AbortablePromise<GetApiUserApiResponse> {
     const rb = new RequestBuilder(this.rootUrl, UserService.GET_API_USER_PATH, 'get');
@@ -139,6 +147,27 @@ export class UserService extends ApiBaseService {
       this.http.request(rb.build({
         responseType: 'text',
         accept: '*/*',
+        context,
+      })),
+      {
+        errorResponseTypes: {
+          401: 'text',
+          403: 'text',
+          404: 'json',
+          500: 'text',
+        }
+      }
+    )
+  }
+
+  public getApiUserIdName(params: GetApiUserIdNameParams, context?: HttpContext): AbortablePromise<GetApiUserIdNameApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, UserService.GET_API_USER_ID_NAME_PATH, 'get');
+    rb.path('id', params.id, {});
+
+    return waitForResponse<GetApiUserIdNameApiResponse>(
+      this.http.request(rb.build({
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {

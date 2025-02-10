@@ -46,6 +46,7 @@
     "meters": "Meters",
     "number": "Meter Number",
     "sharedMeters": "Shared Meters",
+    "sharedBy": "Shared by",
     "success": {
       "add": "Meter added",
       "delete": "Meter deleted",
