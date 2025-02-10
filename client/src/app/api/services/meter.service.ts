@@ -5,8 +5,10 @@ import { waitForResponse } from '../utils/angular-service.utils';
 import { ApiBaseService } from '../utils/api-base-service';
 import { RequestBuilder } from '../utils/request-builder';
 
+import type { MeterShareDto } from '../models/meter-share-dto';
 import type { Meter } from '../models/meter';
-import type { DeleteApiMeterIdApiResponse, GetApiMeterApiResponse, GetApiMeterIdApiResponse, GetApiMeterSharedApiResponse, PostApiMeterApiResponse, PutApiMeterIdApiResponse } from '../models/responses/meter-responses.model';
+import type { DeleteApiMeterIdApiResponse, DeleteApiMeterRevokeApiResponse, GetApiMeterApiResponse, GetApiMeterIdApiResponse, GetApiMeterSharedApiResponse, GetApiMeterSharedMeterIdApiResponse, PostApiMeterApiResponse, PostApiMeterShareApiResponse, PutApiMeterIdApiResponse } from '../models/responses/meter-responses.model';
+import type { RevokeMeterShareDto } from '../models/revoke-meter-share-dto';
 import type { AbortablePromise } from '../utils/angular-service.utils';
 
 /**
@@ -38,6 +40,27 @@ type DeleteApiMeterIdParams = {
     id: number;
   };
 
+/**
+ * Parameters for operation getApiMeterSharedMeterId
+ */
+type GetApiMeterSharedMeterIdParams = {
+    meterId: number;
+  };
+
+/**
+ * Parameters for operation postApiMeterShare
+ */
+type PostApiMeterShareParams = {
+    body?: MeterShareDto;
+  };
+
+/**
+ * Parameters for operation deleteApiMeterRevoke
+ */
+type DeleteApiMeterRevokeParams = {
+    body?: RevokeMeterShareDto;
+  };
+
 @Injectable()
 export class MeterService extends ApiBaseService {
   private static readonly GET_API_METER_PATH = '/api/Meter';
@@ -46,6 +69,9 @@ export class MeterService extends ApiBaseService {
   private static readonly PUT_API_METER_ID_PATH = '/api/Meter/{id}';
   private static readonly DELETE_API_METER_ID_PATH = '/api/Meter/{id}';
   private static readonly GET_API_METER_SHARED_PATH = '/api/Meter/shared';
+  private static readonly GET_API_METER_SHARED_METER_ID_PATH = '/api/Meter/shared/{meterId}';
+  private static readonly POST_API_METER_SHARE_PATH = '/api/Meter/share';
+  private static readonly DELETE_API_METER_REVOKE_PATH = '/api/Meter/revoke';
 
   public getApiMeter(context?: HttpContext): AbortablePromise<GetApiMeterApiResponse> {
     const rb = new RequestBuilder(this.rootUrl, MeterService.GET_API_METER_PATH, 'get');
@@ -80,7 +106,7 @@ export class MeterService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
-          401: 'text',
+          401: 'json',
           403: 'text',
           500: 'text',
         }
@@ -100,7 +126,7 @@ export class MeterService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
-          401: 'text',
+          401: 'json',
           403: 'text',
           404: 'json',
           500: 'text',
@@ -123,7 +149,7 @@ export class MeterService extends ApiBaseService {
       {
         errorResponseTypes: {
           400: 'json',
-          401: 'text',
+          401: 'json',
           403: 'text',
           404: 'json',
           500: 'text',
@@ -144,7 +170,7 @@ export class MeterService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
-          401: 'text',
+          401: 'json',
           403: 'text',
           404: 'json',
           500: 'text',
@@ -164,7 +190,74 @@ export class MeterService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
-          401: 'text',
+          401: 'json',
+          403: 'text',
+          404: 'json',
+          500: 'text',
+        }
+      }
+    )
+  }
+
+  public getApiMeterSharedMeterId(params: GetApiMeterSharedMeterIdParams, context?: HttpContext): AbortablePromise<GetApiMeterSharedMeterIdApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, MeterService.GET_API_METER_SHARED_METER_ID_PATH, 'get');
+    rb.path('meterId', params.meterId, {});
+
+    return waitForResponse<GetApiMeterSharedMeterIdApiResponse>(
+      this.http.request(rb.build({
+        responseType: 'json',
+        accept: 'application/json',
+        context,
+      })),
+      {
+        errorResponseTypes: {
+          401: 'json',
+          403: 'text',
+          404: 'json',
+          500: 'text',
+        }
+      }
+    )
+  }
+
+  public postApiMeterShare(params?: PostApiMeterShareParams, context?: HttpContext): AbortablePromise<PostApiMeterShareApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, MeterService.POST_API_METER_SHARE_PATH, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return waitForResponse<PostApiMeterShareApiResponse>(
+      this.http.request(rb.build({
+        responseType: 'json',
+        accept: 'application/json',
+        context,
+      })),
+      {
+        errorResponseTypes: {
+          401: 'json',
+          403: 'text',
+          404: 'json',
+          500: 'text',
+        }
+      }
+    )
+  }
+
+  public deleteApiMeterRevoke(params?: DeleteApiMeterRevokeParams, context?: HttpContext): AbortablePromise<DeleteApiMeterRevokeApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, MeterService.DELETE_API_METER_REVOKE_PATH, 'delete');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return waitForResponse<DeleteApiMeterRevokeApiResponse>(
+      this.http.request(rb.build({
+        responseType: 'text',
+        accept: '*/*',
+        context,
+      })),
+      {
+        errorResponseTypes: {
+          401: 'json',
           403: 'text',
           404: 'json',
           500: 'text',

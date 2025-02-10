@@ -77,6 +77,18 @@ export class MeterComponent implements OnInit {
     this.onRowSelect(selectedMeter.meter.id);
   }
 
+  protected async revokeMeterShare(sharedMeter: SharedMeter): Promise<void> {
+    const meter = sharedMeter.meter;
+    const user = this.dataStore.user();
+    if (!meter.id || !user?.id) {
+      return;
+    }
+    const succeeded = await this.dataStore.revokeMeterShare(meter.id, user.id);
+    if (succeeded) {
+      await this.dataStore.refreshSharedMeters();
+    }
+  }
+
   private onRowSelect(id: number | undefined): void {
     if (!id) {
       return;

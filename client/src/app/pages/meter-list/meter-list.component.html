@@ -108,7 +108,17 @@
             <td>
               <span>{{ sharedMeter.owner }}</span>
             </td>
-            <td></td>
+            <td>
+              <p-button
+                icon="i-[mdi--account-cancel]"
+                severity="danger"
+                [pTooltip]="translations.meterShare_revoke()"
+                [tooltipPosition]="'bottom'"
+                [showDelay]="1000"
+                [rounded]="true"
+                (onClick)="revokeMeterShare(sharedMeter)"
+              ></p-button>
+            </td>
           </tr>
         </ng-template>
       </p-table>

@@ -17,7 +17,7 @@ export type GetApiUserApiResponse<TStatus extends GetApiUserStatusCodes = GetApi
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -48,7 +48,7 @@ export type PostApiUserApiResponse<TStatus extends PostApiUserStatusCodes = Post
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -80,7 +80,7 @@ export type GetApiUserIdApiResponse<TStatus extends GetApiUserIdStatusCodes = Ge
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -123,7 +123,7 @@ export type PutApiUserIdApiResponse<TStatus extends PutApiUserIdStatusCodes = Pu
           ok: false;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -160,7 +160,7 @@ export type DeleteApiUserIdApiResponse<TStatus extends DeleteApiUserIdStatusCode
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -197,7 +197,7 @@ export type GetApiUserIdNameApiResponse<TStatus extends GetApiUserIdNameStatusCo
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))

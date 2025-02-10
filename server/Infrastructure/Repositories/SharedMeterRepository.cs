@@ -31,6 +31,17 @@ public class SharedMeterRepository : ISharedMeterRepository
         return sharedMeters;
     }
 
+    public async Task<IEnumerable<SharedMeter>> GetByMeterId(int meterId)
+    {
+        var context = _contextFactory.CreateDbContext();
+        var sharedMeters = await context
+            .SharedMeters.AsNoTracking()
+            .Where(x => x.MeterId == meterId)
+            .ToListAsync();
+
+        return sharedMeters;
+    }
+
     public async Task<SharedMeter> GetBy(int userId, int meterId)
     {
         var context = _contextFactory.CreateDbContext();
@@ -59,6 +70,17 @@ public class SharedMeterRepository : ISharedMeterRepository
         var context = _contextFactory.CreateDbContext();
         var sharedMeter = await context
             .SharedMeters.Where(x => x.UserId == userId && x.MeterId == meterId)
+            .ToArrayAsync();
+
+        context.SharedMeters.RemoveRange(sharedMeter);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task DeleteByMeterId(int meterId)
+    {
+        var context = _contextFactory.CreateDbContext();
+        var sharedMeter = await context
+            .SharedMeters.Where(x => x.MeterId == meterId)
             .ToArrayAsync();
 
         context.SharedMeters.RemoveRange(sharedMeter);

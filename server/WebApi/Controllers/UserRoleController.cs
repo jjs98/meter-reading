@@ -22,6 +22,7 @@ public class UserRoleController : ControllerBase
 
     [HttpGet("role/{roleId}")]
     [ProducesResponseType(typeof(IEnumerable<UserRole>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetByRoleId(int roleId)
@@ -43,6 +44,7 @@ public class UserRoleController : ControllerBase
 
     [HttpGet("user/{userId}")]
     [ProducesResponseType(typeof(IEnumerable<UserRole>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetByUserId(int userId)
@@ -64,6 +66,7 @@ public class UserRoleController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(UserRole), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Create([FromBody] UserRole userRole)
     {
         var createdUserRole = await _userRoleService.Create(userRole);
@@ -72,6 +75,7 @@ public class UserRoleController : ControllerBase
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -100,6 +104,7 @@ public class UserRoleController : ControllerBase
 
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete(int id)

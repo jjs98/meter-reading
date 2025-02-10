@@ -18,7 +18,7 @@ export type GetApiUserRoleRoleRoleIdApiResponse<TStatus extends GetApiUserRoleRo
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -55,7 +55,7 @@ export type GetApiUserRoleUserUserIdApiResponse<TStatus extends GetApiUserRoleUs
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -91,7 +91,7 @@ export type PostApiUserRoleApiResponse<TStatus extends PostApiUserRoleStatusCode
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -129,7 +129,7 @@ export type PutApiUserRoleIdApiResponse<TStatus extends PutApiUserRoleIdStatusCo
           ok: false;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -166,7 +166,7 @@ export type DeleteApiUserRoleIdApiResponse<TStatus extends DeleteApiUserRoleIdSt
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))

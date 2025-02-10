@@ -32,15 +32,15 @@ export function withMeters() {
           });
         },
         async refreshMeters(): Promise<void> {
-          const resonse = await meterService.getApiMeter();
-          if (resonse.status === 200) {
-            const meters = resonse.body as Meter[];
+          const response = await meterService.getApiMeter();
+          if (response.status === 200) {
+            const meters = response.body as Meter[];
             this.setMeters(meters);
           }
         },
         async addMeter(meter: Meter): Promise<boolean> {
-          const resonse = await meterService.postApiMeter({ body: meter });
-          if (resonse.status === 201) {
+          const response = await meterService.postApiMeter({ body: meter });
+          if (response.status === 201) {
             await this.refreshMeters();
             messageService.add({
               severity: 'success',
@@ -57,8 +57,8 @@ export function withMeters() {
           return false;
         },
         async deleteMeter(meterId: number): Promise<boolean> {
-          const resonse = await meterService.deleteApiMeterId({ id: meterId });
-          if (resonse.status === 204) {
+          const response = await meterService.deleteApiMeterId({ id: meterId });
+          if (response.status === 204) {
             await this.refreshMeters();
             messageService.add({
               severity: 'success',
@@ -83,8 +83,8 @@ export function withMeters() {
             });
             return false;
           }
-          const resonse = await meterService.putApiMeterId({ id: meter.id, body: meter });
-          if (resonse.status === 204) {
+          const response = await meterService.putApiMeterId({ id: meter.id, body: meter });
+          if (response.status === 204) {
             await this.refreshMeters();
             messageService.add({
               severity: 'success',

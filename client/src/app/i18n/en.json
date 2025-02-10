@@ -59,6 +59,19 @@
       "water": "Water"
     }
   },
+  "meterShare": {
+    "error": {
+      "add": "Failed to share meter",
+      "delete": "Failed to revoke meter sharing",
+      "notFound": "Username not found"
+    },
+    "revoke": "Revoke",
+    "share": "Share",
+    "success": {
+      "add": "Meter shared",
+      "delete": "Meter sharing revoked"
+    }
+  },
   "meterReadings": "Meter Readings",
   "noRecordsFound": "No records found",
   "reading": {

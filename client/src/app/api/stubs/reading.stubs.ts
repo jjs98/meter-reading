@@ -6,7 +6,7 @@ import type { StrictRouteResponseCallback, StubRequestInfo } from '../utils/easy
 
 const getApiReadingResponder = getStubResponder<{
     200: (Reading)[];
-    401: never;
+    401: ProblemDetails;
     403: never;
     404: ProblemDetails;
     500: never;
@@ -15,14 +15,14 @@ const getApiReadingResponder = getStubResponder<{
 const postApiReadingResponder = getStubResponder<{
     201: Reading;
     400: ProblemDetails;
-    401: never;
+    401: ProblemDetails;
     403: never;
     500: never;
   }>();
 
 const getApiReadingIdResponder = getStubResponder<{
     200: Reading;
-    401: never;
+    401: ProblemDetails;
     403: never;
     404: ProblemDetails;
     500: never;
@@ -30,8 +30,7 @@ const getApiReadingIdResponder = getStubResponder<{
 
 const putApiReadingIdResponder = getStubResponder<{
     204: never;
-    400: ProblemDetails;
-    401: never;
+    401: ProblemDetails;
     403: never;
     404: ProblemDetails;
     500: never;
@@ -39,7 +38,7 @@ const putApiReadingIdResponder = getStubResponder<{
 
 const deleteApiReadingIdResponder = getStubResponder<{
     204: never;
-    401: never;
+    401: ProblemDetails;
     403: never;
     404: ProblemDetails;
     500: never;

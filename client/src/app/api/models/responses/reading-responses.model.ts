@@ -18,7 +18,7 @@ export type GetApiReadingApiResponse<TStatus extends GetApiReadingStatusCodes = 
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -60,7 +60,7 @@ export type PostApiReadingApiResponse<TStatus extends PostApiReadingStatusCodes 
           ok: false;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -92,7 +92,7 @@ export type GetApiReadingIdApiResponse<TStatus extends GetApiReadingIdStatusCode
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -116,7 +116,6 @@ export type GetApiReadingIdApiResponse<TStatus extends GetApiReadingIdStatusCode
 
 type PutApiReadingIdStatusCodes =
   | (204)
-  | (400)
   | (401)
   | (403)
   | (404)
@@ -131,11 +130,6 @@ export type PutApiReadingIdApiResponse<TStatus extends PutApiReadingIdStatusCode
         }))
     | ((HttpErrorResponse) & ({
           error: (ProblemDetails) | (null);
-          status: 400;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
           status: 401;
           ok: false;
         }))
@@ -172,7 +166,7 @@ export type DeleteApiReadingIdApiResponse<TStatus extends DeleteApiReadingIdStat
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))

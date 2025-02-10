@@ -66,6 +66,49 @@
       <label for="gas" class="ml-2"> {{ translations.meter_type_gas() }} </label>
     </div>
   </div>
+  @if (existingMeter) {
+    <div class="flex items-center gap-3 mb-8">
+      <span class="i-[mdi--account-plus]"></span>
+      <p-floatLabel>
+        <input
+          pInputText
+          id="shareUser"
+          class="flex-auto"
+          [(ngModel)]="shareUsername"
+          autocomplete="off"
+          (keypress)="onShareKeyPress($event)"
+        />
+        <label for="shareUser" class="font-semibold w-6rem">{{
+          translations.meterShare_share()
+        }}</label>
+      </p-floatLabel>
+      <p-button
+        icon="i-[mdi--add]"
+        [pTooltip]="translations.meterShare_share()"
+        [tooltipPosition]="'bottom'"
+        [showDelay]="1000"
+        [rounded]="true"
+        [disabled]="!shareUsername || shareUsername === ''"
+        (onClick)="shareMeter()"
+      />
+    </div>
+    <p-listbox [options]="sharedMeters()" optionLabel="username" [filter]="true" styleClass="mb-8">
+      <ng-template pTemplate="username" let-sharedMeter #item>
+        <div class="flex items-center gap-4">
+          <div>{{ sharedMeter.username }}</div>
+          <p-button
+            icon="i-[mdi--delete]"
+            severity="danger"
+            [pTooltip]="translations.meterShare_revoke()"
+            [tooltipPosition]="'bottom'"
+            [showDelay]="1000"
+            [rounded]="true"
+            (onClick)="revokeShare(sharedMeter)"
+          />
+        </div>
+      </ng-template>
+    </p-listbox>
+  }
   <div class="flex justify-end gap-4">
     @if (existingMeter) {
       <p-button

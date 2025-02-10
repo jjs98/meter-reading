@@ -80,7 +80,7 @@ export type GetApiRoleIdApiResponse<TStatus extends GetApiRoleIdStatusCodes = Ge
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -123,7 +123,7 @@ export type PutApiRoleIdApiResponse<TStatus extends PutApiRoleIdStatusCodes = Pu
           ok: false;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))
@@ -160,7 +160,7 @@ export type DeleteApiRoleIdApiResponse<TStatus extends DeleteApiRoleIdStatusCode
           ok: true;
         }))
     | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+          error: (ProblemDetails) | (null);
           status: 401;
           ok: false;
         }))

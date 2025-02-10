@@ -1,15 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { ListboxModule } from 'primeng/listbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { Meter, MeterType } from '../../api/models';
+import { Meter, MeterShareDto, MeterType } from '../../api/models';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 
@@ -23,6 +31,7 @@ import { DataStore } from '../../store/data.store';
     FloatLabelModule,
     FormsModule,
     InputTextModule,
+    ListboxModule,
     RadioButtonModule,
     TooltipModule,
   ],
@@ -40,6 +49,9 @@ export class MeterDialogComponent {
   protected meterNumber: string | undefined = undefined;
   protected addition: string | undefined = undefined;
   protected type: MeterType | undefined = undefined;
+
+  protected shareUsername: string | undefined = undefined;
+  protected sharedMeters: WritableSignal<MeterShareDto[]> = signal([]);
 
   protected dialogVisible = signal(false);
 
@@ -65,11 +77,18 @@ export class MeterDialogComponent {
       this.type = meter.type;
     }
 
+    this.refreshSharedMeter();
     this.dialogVisible.set(true);
   }
 
   protected onCancel(): void {
     this.dialogVisible.set(false);
+  }
+
+  protected async refreshSharedMeter(): Promise<void> {
+    if (this.existingMeter?.id) {
+      this.sharedMeters.set(await this.dataStore.getSharedMeter(this.existingMeter.id));
+    }
   }
 
   protected async onSave(): Promise<void> {
@@ -101,6 +120,33 @@ export class MeterDialogComponent {
   protected async onKeyPress(event: KeyboardEvent): Promise<void> {
     if (event.key === 'Enter' && this.location !== '' && this.type !== undefined) {
       await this.onSave();
+    }
+  }
+
+  protected async onShareKeyPress(event: KeyboardEvent): Promise<void> {
+    if (event.key === 'Enter') {
+      await this.shareMeter();
+    }
+  }
+
+  protected async shareMeter(): Promise<void> {
+    if (this.shareUsername && this.shareUsername !== '' && this.existingMeter?.id) {
+      const succeeded = await this.dataStore.shareMeter(this.existingMeter.id, this.shareUsername);
+      if (succeeded) {
+        this.refreshSharedMeter();
+      }
+    }
+  }
+
+  protected async revokeShare(sharedMeter: MeterShareDto): Promise<void> {
+    if (sharedMeter && sharedMeter.userId && this.existingMeter?.id) {
+      const succeeded = await this.dataStore.revokeMeterShare(
+        this.existingMeter.id,
+        sharedMeter.userId
+      );
+      if (succeeded) {
+        this.refreshSharedMeter();
+      }
     }
   }
 
@@ -159,6 +205,9 @@ export class MeterDialogComponent {
 
     this.isEdit = false;
     this.existingMeter = undefined;
+
+    this.shareUsername = undefined;
+    this.sharedMeters.set([]);
   }
 
   private async addMeter(userId: number): Promise<void> {

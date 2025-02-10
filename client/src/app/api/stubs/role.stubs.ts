@@ -20,7 +20,7 @@ const postApiRoleResponder = getStubResponder<{
 
 const getApiRoleIdResponder = getStubResponder<{
     200: Role;
-    401: never;
+    401: ProblemDetails;
     403: never;
     404: ProblemDetails;
     500: never;
@@ -29,7 +29,7 @@ const getApiRoleIdResponder = getStubResponder<{
 const putApiRoleIdResponder = getStubResponder<{
     204: never;
     400: ProblemDetails;
-    401: never;
+    401: ProblemDetails;
     403: never;
     404: ProblemDetails;
     500: never;
@@ -37,7 +37,7 @@ const putApiRoleIdResponder = getStubResponder<{
 
 const deleteApiRoleIdResponder = getStubResponder<{
     204: never;
-    401: never;
+    401: ProblemDetails;
     403: never;
     404: ProblemDetails;
     500: never;

@@ -59,6 +59,19 @@
       "water": "Wasser"
     }
   },
+  "meterShare": {
+    "error": {
+      "add": "Fehler beim Teilen des Zählers",
+      "delete": "Fehler beim Aufheben des Zähler-Sharings",
+      "notFound": "Username nicht gefunden"
+    },
+    "revoke": "Freigabe aufheben",
+    "share": "Teilen",
+    "success": {
+      "add": "Zähler geteilt",
+      "delete": "Zähler-Sharing aufgehoben"
+    }
+  },
   "meterReadings": "Zählerstände",
   "noRecordsFound": "Keine Datensätze gefunden",
   "reading": {

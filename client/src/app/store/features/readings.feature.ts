@@ -34,15 +34,15 @@ export function withReadings() {
         },
         async refreshReadings(meterId: number): Promise<void> {
           this.setMeterReading([]);
-          const resonse = await readingService.getApiReading({ meterId: meterId });
-          if (resonse.status === 200) {
-            const readings = resonse.body as Reading[];
+          const response = await readingService.getApiReading({ meterId: meterId });
+          if (response.status === 200) {
+            const readings = response.body as Reading[];
             this.setMeterReading(readings);
           }
         },
         async addReading(reading: Reading): Promise<boolean> {
-          const resonse = await readingService.postApiReading({ body: reading });
-          if (resonse.status === 201) {
+          const response = await readingService.postApiReading({ body: reading });
+          if (response.status === 201) {
             await this.refreshReadings(reading.meterId);
             messageService.add({
               severity: 'success',
@@ -59,8 +59,8 @@ export function withReadings() {
           return false;
         },
         async deleteReading(readingId: number, meterId: number): Promise<boolean> {
-          const resonse = await readingService.deleteApiReadingId({ id: readingId });
-          if (resonse.status === 204) {
+          const response = await readingService.deleteApiReadingId({ id: readingId });
+          if (response.status === 204) {
             await this.refreshReadings(meterId);
             messageService.add({
               severity: 'success',
@@ -85,8 +85,8 @@ export function withReadings() {
             });
             return false;
           }
-          const resonse = await readingService.putApiReadingId({ id: reading.id, body: reading });
-          if (resonse.status === 204) {
+          const response = await readingService.putApiReadingId({ id: reading.id, body: reading });
+          if (response.status === 204) {
             await this.refreshReadings(reading.meterId);
             messageService.add({
               severity: 'success',

@@ -6,7 +6,7 @@ import type { StrictRouteResponseCallback, StubRequestInfo } from '../utils/easy
 
 const getApiUserRoleRoleRoleIdResponder = getStubResponder<{
     200: (UserRole)[];
-    401: never;
+    401: ProblemDetails;
     403: never;
     404: ProblemDetails;
     500: never;
@@ -14,7 +14,7 @@ const getApiUserRoleRoleRoleIdResponder = getStubResponder<{
 
 const getApiUserRoleUserUserIdResponder = getStubResponder<{
     200: (UserRole)[];
-    401: never;
+    401: ProblemDetails;
     403: never;
     404: ProblemDetails;
     500: never;
@@ -22,7 +22,7 @@ const getApiUserRoleUserUserIdResponder = getStubResponder<{
 
 const postApiUserRoleResponder = getStubResponder<{
     201: UserRole;
-    401: never;
+    401: ProblemDetails;
     403: never;
     500: never;
   }>();
@@ -30,7 +30,7 @@ const postApiUserRoleResponder = getStubResponder<{
 const putApiUserRoleIdResponder = getStubResponder<{
     204: never;
     400: ProblemDetails;
-    401: never;
+    401: ProblemDetails;
     403: never;
     404: ProblemDetails;
     500: never;
@@ -38,7 +38,7 @@ const putApiUserRoleIdResponder = getStubResponder<{
 
 const deleteApiUserRoleIdResponder = getStubResponder<{
     204: never;
-    401: never;
+    401: ProblemDetails;
     403: never;
     404: ProblemDetails;
     500: never;

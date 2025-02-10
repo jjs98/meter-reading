@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using Application.DTOs;
+using Domain.Interfaces;
 using Domain.Models;
 using InterfaceGenerator;
 
@@ -55,6 +56,22 @@ public class MeterService : IMeterService
         return meters;
     }
 
+    public async Task<IEnumerable<SharedMeter>> GetSharedByMeterId(int meterId)
+    {
+        return await _sharedMeterRepository.GetByMeterId(meterId);
+
+    }
+
+    public async Task<SharedMeter> ShareMeter(int userId, int meterId)
+    {
+        return await _sharedMeterRepository.Create(new SharedMeter { UserId = userId, MeterId = meterId, CreateDate = DateTime.UtcNow });
+    }
+
+    public async Task RevokeMeter(int userId, int meterId)
+    {
+        await _sharedMeterRepository.DeleteByUserId(userId, meterId);
+    }
+
     public async Task<Meter> Create(Meter meter)
     {
         return await _meterRepository.Create(meter);
@@ -68,6 +85,7 @@ public class MeterService : IMeterService
     public async Task Delete(int id)
     {
         await _readingService.DeleteByMeterId(id);
+        await _sharedMeterRepository.DeleteByMeterId(id);
         await _meterRepository.Delete(id);
     }
 }
