@@ -10,7 +10,7 @@ type SharedMetersState = {
   sharedMeters: SharedMeter[];
 };
 
-type SharedMeter = {
+export type SharedMeter = {
   meter: Meter;
   owner: string;
 };

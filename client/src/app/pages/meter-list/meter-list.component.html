@@ -3,7 +3,7 @@
     <p-table
       [value]="dataStore.meters()"
       selectionMode="single"
-      (onRowSelect)="onRowSelect($event)"
+      (onRowSelect)="onMeterSelect($event)"
       class="h-full"
       [scrollable]="true"
       scrollHeight="flex"
@@ -69,7 +69,7 @@
       <p-table
         [value]="dataStore.sharedMeters()"
         selectionMode="single"
-        (onRowSelect)="onRowSelect($event)"
+        (onRowSelect)="onSharedMeterSelect($event)"
         class="h-full"
         [scrollable]="true"
         scrollHeight="flex"

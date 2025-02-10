@@ -22,6 +22,7 @@ import { Meter } from '../../api/models';
 import { MeterDialogComponent } from '../../components/meter-dialog/meter-dialog.component';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
+import { SharedMeter } from '../../store/features/shared-meters.feature';
 
 @Component({
   selector: 'app-meter',
@@ -66,12 +67,22 @@ export class MeterComponent implements OnInit {
     this.editDialog().showDialog(meter);
   }
 
-  protected onRowSelect($event: TableRowSelectEvent): void {
+  protected onMeterSelect($event: TableRowSelectEvent): void {
     const selectedMeter = $event.data as Meter;
-    if (!selectedMeter.id) {
+    this.onRowSelect(selectedMeter.id);
+  }
+
+  protected onSharedMeterSelect($event: TableRowSelectEvent): void {
+    const selectedMeter = $event.data as SharedMeter;
+    this.onRowSelect(selectedMeter.meter.id);
+  }
+
+  private onRowSelect(id: number | undefined): void {
+    if (!id) {
       return;
     }
-    this.router.navigate([`${selectedMeter.id}`], {
+
+    this.router.navigate([`${id}`], {
       relativeTo: this.activatedRoute,
     });
   }
