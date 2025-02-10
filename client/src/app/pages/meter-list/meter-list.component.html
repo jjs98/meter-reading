@@ -82,27 +82,31 @@
             <th style="width: 25%">{{ translations.meter_type_type() }}</th>
             <th style="width: auto">{{ translations.meter_location() }}</th>
             <th style="width: auto">{{ translations.meter_addition() }}</th>
+            <th style="width: auto">{{ translations.meter_sharedBy() }}</th>
             <th style="width: 5rem"></th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-meter>
-          <tr [pSelectableRow]="meter">
+        <ng-template pTemplate="body" let-sharedMeter>
+          <tr [pSelectableRow]="sharedMeter">
             <td>
               <span
                 class="{{
-                  meter.type === 0
+                  sharedMeter.meter.type === 0
                     ? 'i-[mdi--lightning-bolt]'
-                    : meter.type === 1
+                    : sharedMeter.meter.type === 1
                       ? 'i-[mdi--water]'
                       : 'i-[mdi--gas-cylinder]'
                 }}"
               ></span>
             </td>
             <td>
-              <span>{{ meter.location }}</span>
+              <span>{{ sharedMeter.meter.location }}</span>
             </td>
             <td>
-              <span>{{ meter.addition }}</span>
+              <span>{{ sharedMeter.meter.addition }}</span>
+            </td>
+            <td>
+              <span>{{ sharedMeter.owner }}</span>
             </td>
             <td></td>
           </tr>

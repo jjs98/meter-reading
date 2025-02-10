@@ -120,7 +120,9 @@ export class ReadingListComponent implements OnInit {
 
     const meter = this.dataStore.meters().find(meter => meter.id === this.meterId());
     if (!meter) {
-      this.meter.set(this.dataStore.sharedMeters().find(meter => meter.id === this.meterId()));
+      this.meter.set(
+        this.dataStore.sharedMeters().find(meter => meter.meter.id === this.meterId())?.meter
+      );
     } else {
       this.meter.set(meter);
     }
