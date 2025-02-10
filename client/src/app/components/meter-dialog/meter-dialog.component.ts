@@ -134,11 +134,29 @@ export class MeterDialogComponent {
       const succeeded = await this.dataStore.shareMeter(this.existingMeter.id, this.shareUsername);
       if (succeeded) {
         this.refreshSharedMeter();
+        this.shareUsername = undefined;
       }
     }
   }
 
-  protected async revokeShare(sharedMeter: MeterShareDto): Promise<void> {
+  protected async confirmRevokeShare(sharedMeter: MeterShareDto): Promise<void> {
+    this.confirmationService.confirm({
+      header: this.translations.meterShare_confirmDelete_header(),
+      message: this.translations.meterShare_confirmDelete_message(),
+      icon: 'i-[mdi--alert-circle]',
+      acceptButtonStyleClass: 'p-button-danger p-button',
+      rejectButtonStyleClass: 'p-button',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        this.revokeShare(sharedMeter);
+      },
+      reject: () => {},
+    });
+  }
+
+  private async revokeShare(sharedMeter: MeterShareDto): Promise<void> {
     if (sharedMeter && sharedMeter.userId && this.existingMeter?.id) {
       const succeeded = await this.dataStore.revokeMeterShare(
         this.existingMeter.id,
@@ -166,8 +184,8 @@ export class MeterDialogComponent {
 
   protected async confirmDeleteMeter(): Promise<void> {
     this.confirmationService.confirm({
-      header: this.translations.confirmDelete_header(),
-      message: this.translations.confirmDelete_message(),
+      header: this.translations.meter_confirmDelete_header(),
+      message: this.translations.meter_confirmDelete_message(),
       icon: 'i-[mdi--alert-circle]',
       acceptButtonStyleClass: 'p-button-danger p-button',
       rejectButtonStyleClass: 'p-button',

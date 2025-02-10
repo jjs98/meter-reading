@@ -34,6 +34,10 @@
   "logout": "Ausloggen",
   "meter": {
     "addition": "Zusatz",
+    "confirmDelete": {
+      "header": "Löschbestätigung",
+      "message": "Sind Sie sicher, dass Sie diesen Zähler löschen möchten?"
+    },
     "error": {
       "add": "Fehler beim Hinzufügen des Zählers",
       "delete": "Fehler beim Löschen des Zählers",
@@ -60,6 +64,10 @@
     }
   },
   "meterShare": {
+    "confirmDelete": {
+      "header": "Löschbestätigung",
+      "message": "Sind Sie sicher, dass Sie dieses Zähler-Sharing aufheben möchten?"
+    },
     "error": {
       "add": "Fehler beim Teilen des Zählers",
       "delete": "Fehler beim Aufheben des Zähler-Sharings",
@@ -75,6 +83,10 @@
   "meterReadings": "Zählerstände",
   "noRecordsFound": "Keine Datensätze gefunden",
   "reading": {
+    "confirmDelete": {
+      "header": "Löschbestätigung",
+      "message": "Sind Sie sicher, dass Sie diesen Zählerstand löschen möchten?"
+    },
     "difference": "Differenz",
     "error": {
       "add": "Fehler beim Hinzufügen des Zählerstands",

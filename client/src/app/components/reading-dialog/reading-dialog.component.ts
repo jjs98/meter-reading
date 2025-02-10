@@ -156,8 +156,8 @@ export class ReadingDialogComponent {
 
   protected async confirmDeleteReading(): Promise<void> {
     this.confirmationService.confirm({
-      header: this.translations.confirmDelete_header(),
-      message: this.translations.confirmDelete_message(),
+      header: this.translations.reading_confirmDelete_header(),
+      message: this.translations.reading_confirmDelete_message(),
       icon: 'i-[mdi--alert-circle]',
       acceptButtonStyleClass: 'p-button-danger p-button',
       rejectButtonStyleClass: 'p-button',

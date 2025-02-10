@@ -34,6 +34,10 @@
   "logout": "Logout",
   "meter": {
     "addition": "Addition",
+    "confirmDelete": {
+      "header": "Delete Confirmation",
+      "message": "Are you sure you want to delete this meter?"
+    },
     "error": {
       "add": "Failed to add meter",
       "delete": "Failed to delete meter",
@@ -60,6 +64,10 @@
     }
   },
   "meterShare": {
+    "confirmDelete": {
+      "header": "Delete Confirmation",
+      "message": "Are you sure you want to revoke the sharing?"
+    },
     "error": {
       "add": "Failed to share meter",
       "delete": "Failed to revoke meter sharing",
@@ -75,6 +83,10 @@
   "meterReadings": "Meter Readings",
   "noRecordsFound": "No records found",
   "reading": {
+    "confirmDelete": {
+      "header": "Delete Confirmation",
+      "message": "Are you sure you want to delete this reading?"
+    },
     "difference": "Difference",
     "error": {
       "add": "Failed to add reading",

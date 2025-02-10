@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
@@ -49,6 +50,7 @@ export class MeterComponent implements OnInit {
   protected readonly translations = inject(TranslateService).translations;
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly confirmationService = inject(ConfirmationService);
 
   protected dialogVisible = signal(false);
   private readonly newDialog = viewChild.required(MeterDialogComponent);
@@ -77,7 +79,24 @@ export class MeterComponent implements OnInit {
     this.onRowSelect(selectedMeter.meter.id);
   }
 
-  protected async revokeMeterShare(sharedMeter: SharedMeter): Promise<void> {
+  protected async confirmRevokeShare(sharedMeter: SharedMeter): Promise<void> {
+    this.confirmationService.confirm({
+      header: this.translations.meterShare_confirmDelete_header(),
+      message: this.translations.meterShare_confirmDelete_message(),
+      icon: 'i-[mdi--alert-circle]',
+      acceptButtonStyleClass: 'p-button-danger p-button',
+      rejectButtonStyleClass: 'p-button',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        this.revokeMeterShare(sharedMeter);
+      },
+      reject: () => {},
+    });
+  }
+
+  private async revokeMeterShare(sharedMeter: SharedMeter): Promise<void> {
     const meter = sharedMeter.meter;
     const user = this.dataStore.user();
     if (!meter.id || !user?.id) {
