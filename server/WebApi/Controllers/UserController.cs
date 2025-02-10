@@ -95,12 +95,18 @@ public class UserController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
+            var userId = Sanitize(user.Id);
             _logger.LogError(
                 ex,
                 "An error occurred while updating user by id for id {UserId}",
-                user.Id
+                userId
             );
             return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+
+        static string Sanitize(int id)
+        {
+            return id.ToString();
         }
     }
 

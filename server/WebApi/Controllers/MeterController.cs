@@ -125,13 +125,18 @@ public class MeterController : ControllerBase
         {
             if (ex is EntityNotFoundException)
                 return NotFound();
-
+            var meterId = Sanitize(meter.Id);
             _logger.LogError(
                 ex,
                 "An error occurred while updating meter by id for id {MeterId}",
-                meter.Id
+                meterId
             );
             return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+        static string Sanitize(int id)
+        {
+            return id.ToString();
         }
     }
 

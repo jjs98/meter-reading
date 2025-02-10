@@ -30,20 +30,6 @@ jobs:
       - run: pnpm install
         working-directory: ./client
 
-      - run: npx cdxgen -o bom.json
-        working-directory: ./client
-
-      - name: Upload SBOM
-        uses: DependencyTrack/gh-upload-sbom@v3
-        with:
-          serverHostname: ${{ secrets.DEPENDENCYTRACK_URL }}
-          apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-          projectName: meter-reading-client
-          projectVersion: ${{ steps.extract_branch.outputs.branch }}
-          parent: 6f798505-509e-4a26-83a8-fd54bec81a5c
-          bomFilename: "client/bom.json"
-          autoCreate: true
-
       - run: pnpm build
         working-directory: ./client
         
@@ -99,34 +85,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9.x
+      # - name: Set up .NET Core
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: 9.x
 
-      - name: Extract branch name
-        shell: bash
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: extract_branch
-
-      - name: Create SBOM
-        uses: CycloneDX/gh-dotnet-generate-sbom@v1
-        with:
-          path: ./server/server.sln
-      
-      - name: Upload SBOM
-        uses: DependencyTrack/gh-upload-sbom@v3
-        with:
-          serverHostname: ${{ secrets.DEPENDENCYTRACK_URL }}
-          apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-          projectName: meter-reading-api
-          projectVersion: ${{ steps.extract_branch.outputs.branch }}
-          parent: 6f798505-509e-4a26-83a8-fd54bec81a5c
-          bomFilename: bom.xml
-          autoCreate: true
-
-      - name: Build API
-        run: dotnet build ./server/WebApi/WebApi.csproj -c Release
+      # - name: Build API
+      #   run: dotnet build ./server/WebApi/WebApi.csproj -c Release
 
       # - name: Test API
       #   run: dotnet test ./server/WebApi.Tests/WebApi.Tests.csproj
