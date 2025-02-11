@@ -11,12 +11,12 @@ import { InputIconModule } from 'primeng/inputicon';
 import { MenubarModule } from 'primeng/menubar';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { ChangePasswordDialogComponent } from './components/change-password-dialog/change-password-dialog.component';
 import { NavigationService } from './services/navigation.service';
 import { TranslateService } from './services/translate.service';
 import { DataStore } from './store/data.store';
-import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   standalone: true,

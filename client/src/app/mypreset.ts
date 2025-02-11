@@ -1,5 +1,5 @@
-import Lara from '@primeng/themes/lara';
 import { definePreset } from '@primeng/themes';
+import Lara from '@primeng/themes/lara';
 
 export const MyPreset = definePreset(Lara, {
   primitive: {
