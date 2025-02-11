@@ -12,7 +12,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -23,14 +22,15 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Reading } from '../../api/models';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
+import { DatePickerModule } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-reading-dialog',
   standalone: true,
   imports: [
     ButtonModule,
-    CalendarModule,
     CommonModule,
+    DatePickerModule,
     DialogModule,
     FloatLabelModule,
     FormsModule,

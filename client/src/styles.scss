@@ -58,6 +58,7 @@
     padding: 0;
     overflow: hidden;
     font-size: 14px;
+    background-color: var(--p-surface-950);
     @supports (font: -apple-system-body) {
       font: -apple-system-body;
     }

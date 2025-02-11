@@ -27,7 +27,7 @@
   <div class="flex items-center gap-3 mb-8">
     <span class="i-[mdi--calendar]"></span>
     <p-floatLabel class="w-64">
-      <p-calendar
+      <p-datepicker
         id="readingDate"
         [(ngModel)]="readingDate"
         [touchUI]="true"
@@ -72,6 +72,7 @@
     />
     <p-button
       icon="i-[mdi--content-save]"
+      severity="success"
       [pTooltip]="translations.save()"
       [tooltipPosition]="'bottom'"
       [showDelay]="1000"

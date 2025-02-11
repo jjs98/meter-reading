@@ -8,10 +8,21 @@ import { provideApi } from './api/services';
 import { appRoutes } from './app.routes';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { environment } from '../environments/environment';
+import { providePrimeNG } from 'primeng/config';
+import { MyPreset } from './mypreset';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: MyPreset,
+        options: {
+          // darkModeSelector: '.dark',
+        },
+      },
+    }),
+
     provideExperimentalZonelessChangeDetection(),
     provideRouter(appRoutes),
     provideHttpClient(withInterceptorsFromDi()),

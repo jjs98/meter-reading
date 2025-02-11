@@ -16,6 +16,7 @@ import { ChangePasswordDialogComponent } from './components/change-password-dial
 import { NavigationService } from './services/navigation.service';
 import { TranslateService } from './services/translate.service';
 import { DataStore } from './store/data.store';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   standalone: true,
@@ -32,6 +33,7 @@ import { DataStore } from './store/data.store';
     RouterModule,
     TieredMenuModule,
     ToastModule,
+    TooltipModule,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -45,6 +47,8 @@ export class AppComponent implements OnInit {
   private readonly navigationService = inject(NavigationService);
 
   private readonly changePasswordDialog = viewChild.required(ChangePasswordDialogComponent);
+
+  protected readingDate: Date | undefined = undefined;
 
   protected items: MenuItem[] = [];
 

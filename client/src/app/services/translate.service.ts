@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import { effect, inject, Injectable } from '@angular/core';
 import { BaseTranslateService, TranslateKeys } from '@ngneers/signal-translate';
-import { PrimeNGConfig } from 'primeng/api';
+import { PrimeNG } from 'primeng/config';
 
 import { getLocalStorage, setLocalStorage } from '../utils/local-storage.utils';
 
@@ -25,7 +25,7 @@ export type TranslationKey = TranslateKeys<typeof en, '_'>;
 
 @Injectable({ providedIn: 'root' })
 export class TranslateService extends BaseTranslateService<typeof en> {
-  private readonly _primengConfig = inject(PrimeNGConfig);
+  private readonly _primengConfig = inject(PrimeNG);
 
   constructor() {
     super(['en', 'de'], getLocalStorage(langLocalStorageKey));
