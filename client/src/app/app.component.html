@@ -50,7 +50,7 @@
           pButton
           icon="i-[mdi--cancel]"
           severity="secondary"
-          (click)="cd.reject()"
+          (click)="cd.onReject()"
           [rounded]="true"
           class="justify-center w-8rem"
         ></button>
@@ -58,7 +58,7 @@
           pButton
           icon="i-[mdi--delete]"
           severity="danger"
-          (click)="cd.accept()"
+          (click)="cd.onAccept()"
           [rounded]="true"
           class="justify-center w-8rem"
         ></button>

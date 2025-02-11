@@ -12,7 +12,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -29,8 +29,8 @@ import { DataStore } from '../../store/data.store';
   standalone: true,
   imports: [
     ButtonModule,
-    CalendarModule,
     CommonModule,
+    DatePickerModule,
     DialogModule,
     FloatLabelModule,
     FormsModule,

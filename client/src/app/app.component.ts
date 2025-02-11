@@ -11,6 +11,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { MenubarModule } from 'primeng/menubar';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { ChangePasswordDialogComponent } from './components/change-password-dialog/change-password-dialog.component';
 import { NavigationService } from './services/navigation.service';
@@ -32,6 +33,7 @@ import { DataStore } from './store/data.store';
     RouterModule,
     TieredMenuModule,
     ToastModule,
+    TooltipModule,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -45,6 +47,8 @@ export class AppComponent implements OnInit {
   private readonly navigationService = inject(NavigationService);
 
   private readonly changePasswordDialog = viewChild.required(ChangePasswordDialogComponent);
+
+  protected readingDate: Date | undefined = undefined;
 
   protected items: MenuItem[] = [];
 
