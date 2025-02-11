@@ -8,13 +8,13 @@
     {
       "purpose": "maskable",
       "sizes": "256x256",
-      "src": "icons/counter.png",
+      "src": "icons/counter-dark.png",
       "type": "image/png"
     },
     {
       "purpose": "any",
       "sizes": "256x256",
-      "src": "icons/counter-rounded.png",
+      "src": "icons/counter-dark-rounded.png",
       "type": "image/png"
     }
   ]
