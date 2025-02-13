@@ -1,4 +1,4 @@
-const emojis = [
+export default [
   '(⊙_⊙;)',
   '༼ つ ◕_◕ ༽つ',
   'ᓚᘏᗢ',
@@ -127,6 +127,3 @@ const emojis = [
   '(☆ω☆)',
   '(✪‿✪)ノ',
 ];
-
-
-module.exports = emojis;
