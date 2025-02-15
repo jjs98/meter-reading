@@ -29,6 +29,9 @@ jobs:
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
 
+      - name: replace server url
+        run: sed -i "s|SERVER_URL|${{ secrets.SERVER_URL }}|g" ./client/src/environments/environment.ts
+
       - run: pnpm install
         working-directory: ./client
 
