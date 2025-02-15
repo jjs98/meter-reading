@@ -1,4 +1,4 @@
-name: Build and Test
+name: build, test and deploy
 on:
   push:
     branches: [ main ]
@@ -7,11 +7,11 @@ on:
 
 jobs:
   build-frontend:
-    name: Build client
+    name: build client
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v4
 
       # - run: corepack enable
@@ -24,7 +24,7 @@ jobs:
           cache: pnpm
           cache-dependency-path: ./client/pnpm-lock.yaml
 
-      - name: Extract branch name
+      - name: extract branch name
         shell: bash
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
@@ -55,23 +55,23 @@ jobs:
       #     retention-days: 10
         # working-directory: ./client
 
-      - name: Set up Docker Buildx
+      - name: set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Docker metadata
+      - name: docker metadata
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: ${{ secrets.DOCKER_REGISTRY }}/meter-reading-client
 
-      - name: Log in to Docker Registry
+      - name: log in to Docker Registry
         uses: docker/login-action@v2
         with:
           registry: ${{ secrets.DOCKER_REGISTRY }}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push
+      - name: build and push
         uses: docker/build-push-action@v6
         with:
           context: client
@@ -80,32 +80,34 @@ jobs:
           platforms: linux/arm64
 
   build-backend:
-    name: Build server
+    name: build server
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v4
 
-      # - name: Set up .NET Core
-      #   uses: actions/setup-dotnet@v4
-      #   with:
-      #     dotnet-version: 9.x
+      - name: set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
 
-      # - name: Build API
-      #   run: dotnet build ./server/WebApi/WebApi.csproj -c Release
+      - name: dotnet restore
+        run: dotnet restore ./server/server.sln
 
-      # - name: Test API
-      #   run: dotnet test ./server/WebApi.Tests/WebApi.Tests.csproj
+      - name: dotnet test
+        run: |
+          export ConnectionStrings__AppDbContext="Server=localhost;Port=5432;Database=test;User Id=test;Password=test;"
+          dotnet test ./server/server.sln
 
-      - name: Log in to Docker Registry
+      - name: log in to Docker Registry
         uses: docker/login-action@v2
         with:
           registry: ${{ secrets.DOCKER_REGISTRY }}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push
+      - name: build and push
         uses: docker/build-push-action@v6
         with:
           context: server
@@ -114,12 +116,12 @@ jobs:
           platforms: linux/arm64
 
   deploy:
-    name: Deploy
+    name: deploy
     needs: [build-frontend, build-backend]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Push Watchtower
+      - name: push Watchtower
         id: push_watchtower
         run: 'curl -H "Authorization: Bearer ${{ secrets.WATCHTOWER_TOKEN }}" "${{ secrets.WATCHTOWER_URL }}"'
         if: github.ref == 'refs/heads/main'

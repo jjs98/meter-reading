@@ -59,12 +59,18 @@ public class MeterService : IMeterService
     public async Task<IEnumerable<SharedMeter>> GetSharedByMeterId(int meterId)
     {
         return await _sharedMeterRepository.GetByMeterId(meterId);
-
     }
 
     public async Task<SharedMeter> ShareMeter(int userId, int meterId)
     {
-        return await _sharedMeterRepository.Create(new SharedMeter { UserId = userId, MeterId = meterId, CreateDate = DateTime.UtcNow });
+        return await _sharedMeterRepository.Create(
+            new SharedMeter
+            {
+                UserId = userId,
+                MeterId = meterId,
+                CreateDate = DateTime.UtcNow
+            }
+        );
     }
 
     public async Task RevokeMeter(int userId, int meterId)

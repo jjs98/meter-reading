@@ -36,7 +36,8 @@ public class UserRoleController : ControllerBase
         {
             _logger.LogError(
                 ex,
-                $"An error occurred while getting user role by role id for id {roleId}"
+                "An error occurred while getting user role by role id for id {roleId}",
+                roleId
             );
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
@@ -58,7 +59,8 @@ public class UserRoleController : ControllerBase
         {
             _logger.LogError(
                 ex,
-                $"An error occurred while getting user role by user id for id {userId}"
+                "An error occurred while getting user role by user id for id {userId}",
+                userId
             );
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
@@ -97,7 +99,7 @@ public class UserRoleController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while updating user role for id {id}");
+            _logger.LogError(ex, "An error occurred while updating user role for id {id}", id);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -119,7 +121,7 @@ public class UserRoleController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while deleting user role for id {id}");
+            _logger.LogError(ex, "An error occurred while deleting user role for id {id}", id);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
