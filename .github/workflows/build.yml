@@ -93,7 +93,7 @@ jobs:
       #     dotnet-version: 9.x
 
       - name: Build API
-        run: dotnet restore ./server/server.sln -c Release
+        run: dotnet restore ./server/server.sln
 
       - name: Test API
         run: dotnet test ./server/server.sln
