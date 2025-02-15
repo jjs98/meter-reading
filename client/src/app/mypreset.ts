@@ -1,5 +1,5 @@
-import { definePreset } from '@primeng/themes';
 import Lara from '@primeng/themes/lara';
+import { definePreset } from '@primeng/themes';
 
 export const MyPreset = definePreset(Lara, {
   primitive: {
@@ -408,17 +408,17 @@ export const MyPreset = definePreset(Lara, {
       light: {
         surface: {
           0: '#ffffff',
-          50: '#f9fafb',
-          100: '#e3e7ed',
-          200: '#cdd5e0',
-          300: '#b7c2d2',
-          400: '#a1b0c4',
-          500: '#8b9db6',
-          600: '#76859b',
-          700: '#616e7f',
-          800: '#4c5664',
-          900: '#383f49',
-          950: '#23272e',
+          50: '#f8f9f9',
+          100: '#dde0e4',
+          200: '#c2c7cf',
+          300: '#a6aeba',
+          400: '#8b96a4',
+          500: '#707d8f',
+          600: '#5f6a7a',
+          700: '#4e5864',
+          800: '#3e454f',
+          900: '#2d3239',
+          950: '#1c1f24',
         },
         primary: {
           color: '{primary.500}',
@@ -533,17 +533,17 @@ export const MyPreset = definePreset(Lara, {
       dark: {
         surface: {
           0: '#ffffff',
-          50: '#f7f8fb',
-          100: '#d9ddea',
-          200: '#bbc2da',
-          300: '#9ca8ca',
-          400: '#7e8db9',
-          500: '#6072a9',
-          600: '#526190',
-          700: '#435076',
-          800: '#353f5d',
-          900: '#262e44',
-          950: '#181d2a',
+          50: '#f7f7f9',
+          100: '#d7dae1',
+          200: '#b8bcc9',
+          300: '#999fb1',
+          400: '#798199',
+          500: '#5a6481',
+          600: '#4d556e',
+          700: '#3f465a',
+          800: '#323747',
+          900: '#242834',
+          950: '#171920',
         },
         primary: {
           color: '{primary.400}',
