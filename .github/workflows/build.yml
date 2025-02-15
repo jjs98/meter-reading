@@ -95,6 +95,9 @@ jobs:
       - name: Build API
         run: dotnet restore ./server/server.sln
 
+      - name: Test
+        run: docker ps
+
       - name: Test API
         run: dotnet test ./server/server.sln
 
