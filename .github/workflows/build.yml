@@ -96,12 +96,12 @@ jobs:
           dotnet-version: 9.x
 
       - name: dotnet restore
-        run: dotnet restore ./server/server.sln
+        run: dotnet restore ./server.sln
 
       - name: dotnet test
         run: |
           export ConnectionStrings__AppDbContext="Server=localhost;Port=5432;Database=test;User Id=test;Password=test;"
-          dotnet test ./server/server.sln
+          dotnet test ./server.sln
 
       - name: log in to Docker Registry
         uses: docker/login-action@v2
