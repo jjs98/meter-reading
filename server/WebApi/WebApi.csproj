@@ -25,8 +25,4 @@
 		<ProjectReference Include="..\Domain\Domain.csproj" />
 		<ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
 	</ItemGroup>
-
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Debug'">
-		<Exec Command="xcopy /y $(ProjectDir)obj\WebApi.json $(ProjectDir)" />
-	</Target>
 </Project>
