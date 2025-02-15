@@ -99,7 +99,9 @@ jobs:
         run: docker ps
 
       - name: Test API
-        run: dotnet test ./server/server.sln
+        run: |
+          ConnectionStrings__AppDbContext=Server=localhost;Port=5432;Database=test;User Id=test;Password=test;
+          dotnet test ./server/server.sln
 
       - name: Log in to Docker Registry
         uses: docker/login-action@v2
