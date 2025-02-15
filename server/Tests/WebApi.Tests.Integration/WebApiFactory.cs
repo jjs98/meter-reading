@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -19,6 +18,8 @@ public class WebApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        Console.WriteLine($"ConnectionString: {_dbContainer.GetConnectionString()}");
+
         builder.ConfigureLogging(logging =>
         {
             logging.ClearProviders();
