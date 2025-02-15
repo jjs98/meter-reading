@@ -92,11 +92,11 @@ jobs:
       #   with:
       #     dotnet-version: 9.x
 
-      # - name: Build API
-      #   run: dotnet build ./server/WebApi/WebApi.csproj -c Release
+      - name: Build API
+        run: dotnet restore ./server/server.sln -c Release
 
-      # - name: Test API
-      #   run: dotnet test ./server/WebApi.Tests/WebApi.Tests.csproj
+      - name: Test API
+        run: dotnet test ./server/server.sln
 
       - name: Log in to Docker Registry
         uses: docker/login-action@v2

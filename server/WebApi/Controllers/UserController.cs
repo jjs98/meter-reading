@@ -17,7 +17,11 @@ public class UserController : ControllerBase
     private readonly IUserService _userService;
     private readonly IMeterService _meterService;
 
-    public UserController(ILogger<UserController> logger, IUserService userService, IMeterService meterService)
+    public UserController(
+        ILogger<UserController> logger,
+        IUserService userService,
+        IMeterService meterService
+    )
     {
         _logger = logger;
         _userService = userService;

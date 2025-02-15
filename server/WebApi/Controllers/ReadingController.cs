@@ -62,7 +62,11 @@ public class ReadingController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while getting reading for meter id {meterId}");
+            _logger.LogError(
+                ex,
+                "An error occurred while getting reading for meter id {MeterId}",
+                meterId
+            );
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -92,7 +96,7 @@ public class ReadingController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while getting reading by id for id {id}");
+            _logger.LogError(ex, "An error occurred while getting reading by id for id {Id}", id);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -170,7 +174,7 @@ public class ReadingController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while updating reading by id for id {id}");
+            _logger.LogError(ex, "An error occurred while updating reading by id for id {Id}", id);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -210,7 +214,7 @@ public class ReadingController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while deleting reading by id for id {id}");
+            _logger.LogError(ex, "An error occurred while deleting reading by id for id {Id}", id);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }

@@ -45,7 +45,7 @@ public class RoleController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while getting role by id for id {id}");
+            _logger.LogError(ex, "An error occurred while getting role by id for id {id}", id);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -79,7 +79,7 @@ public class RoleController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while updating role by id for id {id}");
+            _logger.LogError(ex, "An error occurred while updating role by id for id {id}", id);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -101,7 +101,7 @@ public class RoleController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, $"An error occurred while deleting role by id for id {id}");
+            _logger.LogError(ex, "An error occurred while deleting role by id for id {id}", id);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }

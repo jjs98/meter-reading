@@ -17,7 +17,11 @@ public class MeterController : ControllerBase
     private readonly IMeterService _meterService;
     private readonly IUserService _userService;
 
-    public MeterController(ILogger<MeterController> logger, IMeterService meterService, IUserService userService)
+    public MeterController(
+        ILogger<MeterController> logger,
+        IMeterService meterService,
+        IUserService userService
+    )
     {
         _logger = logger;
         _meterService = meterService;
@@ -102,28 +106,31 @@ public class MeterController : ControllerBase
         {
             var meter = await _meterService.GetById(meterId);
 
-
-            if (meter.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1")
-                && !User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin"))
+            if (
+                meter.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1")
+                && !User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin")
+            )
             {
                 return Unauthorized();
             }
 
-            var meterShareDtos = new List<MeterShareDto>();
+            var meterShareDtoList = new List<MeterShareDto>();
             var sharedMeters = await _meterService.GetSharedByMeterId(meterId);
 
             foreach (var sharedMeter in sharedMeters)
             {
                 var user = await _userService.GetById(sharedMeter.UserId);
-                meterShareDtos.Add(new MeterShareDto
-                {
-                    MeterId = sharedMeter.MeterId,
-                    UserId = sharedMeter.UserId,
-                    Username = user.Username
-                });
+                meterShareDtoList.Add(
+                    new MeterShareDto
+                    {
+                        MeterId = sharedMeter.MeterId,
+                        UserId = sharedMeter.UserId,
+                        Username = user.Username
+                    }
+                );
             }
 
-            return Ok(meterShareDtos);
+            return Ok(meterShareDtoList);
         }
         catch (Exception ex)
         {
@@ -157,14 +164,23 @@ public class MeterController : ControllerBase
                 return NotFound();
 
             var createdSharedMeter = await _meterService.ShareMeter(user.Id, meterShareDto.MeterId);
-            return CreatedAtAction(nameof(ShareMeter), new { id = createdSharedMeter.Id }, createdSharedMeter);
+            return CreatedAtAction(
+                nameof(ShareMeter),
+                new { id = createdSharedMeter.Id },
+                createdSharedMeter
+            );
         }
         catch (Exception ex)
         {
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, "An error occurred while sharing meter with id {Id} for user {User}", meterShareDto.MeterId, meterShareDto.Username);
+            _logger.LogError(
+                ex,
+                "An error occurred while sharing meter with id {Id} for user {User}",
+                meterShareDto.MeterId,
+                meterShareDto.Username
+            );
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
@@ -183,16 +199,18 @@ public class MeterController : ControllerBase
             if (
                 meter.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1")
                 && !User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin")
-                && sharedMeter.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1")
+                && sharedMeter.UserId
+                    != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1")
             )
             {
-                var sharedMeterToDelete = await _meterService.GetSharedByMeterId(sharedMeter.MeterId);
+                var sharedMeterToDelete = await _meterService.GetSharedByMeterId(
+                    sharedMeter.MeterId
+                );
                 if (!sharedMeterToDelete.Any(x => x.UserId == sharedMeter.UserId))
                 {
                     return Unauthorized();
                 }
             }
-
 
             await _meterService.RevokeMeter(sharedMeter.UserId, sharedMeter.MeterId);
             return NoContent();
@@ -202,11 +220,15 @@ public class MeterController : ControllerBase
             if (ex is EntityNotFoundException)
                 return NotFound();
 
-            _logger.LogError(ex, "An error occurred while revoking meter with id {Id} for user {User}", sharedMeter.MeterId, sharedMeter.UserId);
+            _logger.LogError(
+                ex,
+                "An error occurred while revoking meter with id {Id} for user {User}",
+                sharedMeter.MeterId,
+                sharedMeter.UserId
+            );
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
-
 
     [HttpPost]
     [ProducesResponseType(typeof(Meter), StatusCodes.Status201Created)]
