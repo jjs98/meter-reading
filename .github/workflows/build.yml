@@ -100,7 +100,7 @@ jobs:
 
       - name: Test API
         run: |
-          ConnectionStrings__AppDbContext="Server=localhost;Port=5432;Database=test;User Id=test;Password=test;"
+          export ConnectionStrings__AppDbContext="Server=localhost;Port=5432;Database=test;User Id=test;Password=test;"
           dotnet test ./server/server.sln
 
       - name: Log in to Docker Registry
