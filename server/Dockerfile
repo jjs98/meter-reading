@@ -17,7 +17,7 @@ RUN dotnet restore Infrastructure/Infrastructure.csproj
 COPY . .
 
 WORKDIR /src/WebApi
-RUN dotnet publish WebApi/WebApi.csproj -c release -o /app/publish
+RUN dotnet publish -c release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
