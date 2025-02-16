@@ -101,9 +101,9 @@ jobs:
       - name: dotnet test
         run: |
           export ConnectionStrings__AppDbContext="Server=localhost;Port=5432;Database=test;User Id=test;Password=test;"
-          export Jwt__Key: ThisIsMySuperSecretKey
-          export Jwt__Issuer: test.de
-          export Jwt__Audience: test.de
+          export Jwt__Key="ThisIsMySuperSecretKey"
+          export Jwt__Issuer="test.de"
+          export Jwt__Audience="test.de"
           dotnet test ./server.sln
 
       - name: log in to Docker Registry
