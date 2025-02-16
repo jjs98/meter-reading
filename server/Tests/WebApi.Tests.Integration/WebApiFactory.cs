@@ -14,9 +14,6 @@ namespace WebApi.Tests.Integration;
 
 public class WebApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
 {
-    private const string _hashedPassword =
-        "$2a$11$kwUkCA36Ea.qMqLiMLA5xer0FqbTZ0w5.3JalL0jZzKmsw3QF7yM.";
-
     public List<TestUser> TestUsers { get; } = [];
 
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
@@ -26,7 +23,7 @@ public class WebApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
     private readonly Faker<TestUser> _userGenerator = new Faker<TestUser>()
         .RuleFor(u => u.Username, f => f.Person.UserName)
         .RuleFor(u => u.Password, f => "password")
-        .RuleFor(u => u.HashedPassword, _hashedPassword)
+        .RuleFor(u => u.HashedPassword, BCrypt.Net.BCrypt.HashPassword("password"))
         .RuleFor(u => u.Role, "User");
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -62,7 +59,7 @@ public class WebApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
         {
             Username = "admin",
             Password = "password",
-            HashedPassword = _hashedPassword,
+            HashedPassword = BCrypt.Net.BCrypt.HashPassword("password"),
             Role = "Admin"
         };
 
