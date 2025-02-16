@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
 
-namespace WebApi.Tests.Integration.AuthController;
+namespace WebApi.Tests.Integration.Auth;
 
 public class HashPasswordTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFactory>
 {

@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using Application.DTOs;
 using FluentAssertions;
 
-namespace WebApi.Tests.Integration.AuthController;
+namespace WebApi.Tests.Integration.Auth;
 
 public class LoginTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFactory>
 {

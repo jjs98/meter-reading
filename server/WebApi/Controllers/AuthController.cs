@@ -83,7 +83,7 @@ public class AuthController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "An error occurred while changing the password");
-            return Unauthorized();
+            return Unauthorized(ex.Message);
         }
     }
 

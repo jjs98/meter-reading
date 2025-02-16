@@ -13,8 +13,6 @@ namespace WebApi.Tests.Integration;
 
 public class WebApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
 {
-    public List<TestUser> TestUsers { get; } = [];
-
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithPortBinding(5432, true)
         .Build();
@@ -60,7 +58,6 @@ public class WebApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
     public TestUser GetTestUser()
     {
         var user = _userGenerator.Generate();
-        TestUsers.Add(user);
         return user;
     }
 
