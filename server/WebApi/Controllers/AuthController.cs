@@ -38,7 +38,7 @@ public class AuthController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "An error occurred while logging in");
-            return Unauthorized();
+            return Unauthorized(ex.Message);
         }
     }
 

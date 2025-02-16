@@ -21,6 +21,8 @@ public class LoginTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFacto
         var response = await _client.PostAsJsonAsync("api/auth/login", login);
 
         // Assert
+        var message = await response.Content.ReadAsStringAsync();
+        message.Should().Be("Invalid credentials");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var token = await response.Content.ReadFromJsonAsync<TokenDto>();
         token.Should().NotBeNull();
@@ -40,6 +42,8 @@ public class LoginTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFacto
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        var message = await response.Content.ReadFromJsonAsync<string>();
+        message.Should().Be("Invalid credentials");
     }
 
     [Fact]
@@ -53,5 +57,7 @@ public class LoginTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFacto
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        var message = await response.Content.ReadFromJsonAsync<string>();
+        message.Should().Be("User with name nonexistent not found");
     }
 }
