@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-          cache-dependency-path: client/pnpm-lock.yaml
+          # cache-dependency-path: client/pnpm-lock.yaml
 
       - name: extract branch name
         shell: bash
