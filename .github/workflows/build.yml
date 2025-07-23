@@ -16,7 +16,7 @@ jobs:
 
       # - run: corepack enable
       ## fix for corepack issue
-      - run: npm i -g --force corepack && corepack enable
+      # - run: npm i -g --force corepack && corepack enable
                 
       - uses: actions/setup-node@v4
         with:
@@ -126,6 +126,7 @@ jobs:
 
   deploy:
     name: deploy
+    if: github.ref == 'refs/heads/main'
     needs: [build-frontend, build-backend]
     runs-on: ubuntu-latest
     timeout-minutes: 10
