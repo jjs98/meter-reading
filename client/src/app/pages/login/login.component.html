@@ -4,10 +4,9 @@
   [visible]="true"
   [draggable]="false"
   [closable]="false"
-  styleClass="w-[23rem]"
->
-  <div class="flex items-center gap-3 mb-8 mt-8">
-    <span class="i-[mdi--account]"></span>
+  styleClass="w-[23rem]">
+  <div class="mt-8 mb-8 flex items-center gap-3">
+    <i class="fa-solid fa-user"></i>
     <p-floatLabel>
       <input
         pInputText
@@ -15,13 +14,14 @@
         class="flex-auto"
         [(ngModel)]="username"
         autocomplete="off"
-        (keypress)="onKeyPress($event)"
-      />
-      <label for="username" class="font-semibold w-6rem">{{ translations.login_username() }}</label>
+        (keypress)="onKeyPress($event)" />
+      <label for="username" class="w-6rem font-semibold">{{
+        translations.login_username()
+      }}</label>
     </p-floatLabel>
   </div>
-  <div class="flex items-center gap-3 mb-8">
-    <span class="i-[mdi--key-variant]"></span>
+  <div class="mb-8 flex items-center gap-3">
+    <i class="fa-solid fa-key"></i>
     <p-floatLabel>
       <p-password
         type="text"
@@ -29,21 +29,25 @@
         class="flex-auto"
         [(ngModel)]="password"
         [feedback]="false"
-        (keypress)="onKeyPress($event)"
-      />
-      <label for="password" class="font-semibold w-6rem">{{ translations.login_password() }}</label>
+        (keypress)="onKeyPress($event)" />
+      <label for="password" class="w-6rem font-semibold">{{
+        translations.login_password()
+      }}</label>
     </p-floatLabel>
   </div>
   <div class="flex justify-end gap-4">
     <p-button
-      icon="{{ loading() ? 'i-[mdi--loading]' : 'i-[mdi--login]' }}"
+      icon="{{
+        loading()
+          ? 'fa-solid fa-spinner fa-spin'
+          : 'fa-solid fa-right-to-bracket'
+      }}"
       class="{{ loading() ? 'animate-spin' : '' }}"
       [pTooltip]="translations.login_login()"
       [tooltipPosition]="'bottom'"
       [showDelay]="1000"
       [rounded]="true"
       [disabled]="!username || !password || loading()"
-      (click)="login()"
-    />
+      (click)="login()" />
   </div>
 </p-dialog>

@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -31,7 +37,7 @@ import { DataStore } from '../../store/data.store';
     TooltipModule,
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  styleUrl: './login.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
@@ -64,7 +70,11 @@ export class LoginComponent implements OnInit {
 
     if (response.status === 200) {
       const token = response.body as TokenDto;
-      if (token.token !== undefined || token.token !== '' || token.token !== null) {
+      if (
+        token.token !== undefined ||
+        token.token !== '' ||
+        token.token !== null
+      ) {
         this.dataStore.setTokenString(token.token ?? undefined);
         const returnUrl = this.navigationService.getReturnUrl();
 

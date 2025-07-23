@@ -8,14 +8,14 @@ import { MeterService } from '../../api/services/meter.service';
 import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
-type SharedMetersState = {
+interface SharedMetersState {
   sharedMeters: SharedMeter[];
-};
+}
 
-export type SharedMeter = {
+export interface SharedMeter {
   meter: Meter;
   owner: string;
-};
+}
 
 const metersState = signalState<SharedMetersState>({
   sharedMeters: [],

@@ -36,7 +36,7 @@ import { DataStore } from '../../store/data.store';
     TooltipModule,
   ],
   templateUrl: './meter-dialog.component.html',
-  styleUrl: './meter-dialog.component.scss',
+  styleUrl: './meter-dialog.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeterDialogComponent {
@@ -87,7 +87,9 @@ export class MeterDialogComponent {
 
   protected async refreshSharedMeter(): Promise<void> {
     if (this.existingMeter?.id) {
-      this.sharedMeters.set(await this.dataStore.getSharedMeter(this.existingMeter.id));
+      this.sharedMeters.set(
+        await this.dataStore.getSharedMeter(this.existingMeter.id)
+      );
     }
   }
 
@@ -118,7 +120,11 @@ export class MeterDialogComponent {
   }
 
   protected async onKeyPress(event: KeyboardEvent): Promise<void> {
-    if (event.key === 'Enter' && this.location !== '' && this.type !== undefined) {
+    if (
+      event.key === 'Enter' &&
+      this.location !== '' &&
+      this.type !== undefined
+    ) {
       await this.onSave();
     }
   }
@@ -130,8 +136,15 @@ export class MeterDialogComponent {
   }
 
   protected async shareMeter(): Promise<void> {
-    if (this.shareUsername && this.shareUsername !== '' && this.existingMeter?.id) {
-      const succeeded = await this.dataStore.shareMeter(this.existingMeter.id, this.shareUsername);
+    if (
+      this.shareUsername &&
+      this.shareUsername !== '' &&
+      this.existingMeter?.id
+    ) {
+      const succeeded = await this.dataStore.shareMeter(
+        this.existingMeter.id,
+        this.shareUsername
+      );
       if (succeeded) {
         this.refreshSharedMeter();
         this.shareUsername = undefined;
@@ -139,7 +152,9 @@ export class MeterDialogComponent {
     }
   }
 
-  protected async confirmRevokeShare(sharedMeter: MeterShareDto): Promise<void> {
+  protected async confirmRevokeShare(
+    sharedMeter: MeterShareDto
+  ): Promise<void> {
     this.confirmationService.confirm({
       header: this.translations.meterShare_confirmDelete_header(),
       message: this.translations.meterShare_confirmDelete_message(),

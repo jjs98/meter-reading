@@ -1,4 +1,4 @@
-export type RevokeMeterShareDto = {
+export interface RevokeMeterShareDto {
     meterId: number;
     userId: number;
-  };
+  }

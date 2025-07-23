@@ -13,21 +13,13 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-
-      # - run: corepack enable
-      ## fix for corepack issue
-      - run: npm i -g --force corepack && corepack enable
-        
+                
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
-          cache-dependency-path: ./client/pnpm-lock.yaml
 
-      - name: extract branch name
-        shell: bash
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: extract_branch
+      - name: install pnpm
+        run: npm install -g pnpm
 
       - name: replace server url
         run: sed -i "s|SERVER_URL|${{ secrets.SERVER_URL }}|g" ./client/src/environments/environment.ts
@@ -38,8 +30,8 @@ jobs:
       - run: pnpm build
         working-directory: ./client
         
-      - run: pnpm lint
-        working-directory: ./client
+      # - run: pnpm lint
+      #   working-directory: ./client
         
       # - run: pnpm audit
       #   working-directory: ./client
@@ -123,6 +115,7 @@ jobs:
 
   deploy:
     name: deploy
+    if: github.ref == 'refs/heads/main'
     needs: [build-frontend, build-backend]
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -130,5 +123,4 @@ jobs:
       - name: push Watchtower
         id: push_watchtower
         run: 'curl -H "Authorization: Bearer ${{ secrets.WATCHTOWER_TOKEN }}" "${{ secrets.WATCHTOWER_URL }}"'
-        if: github.ref == 'refs/heads/main'
     

@@ -8,12 +8,12 @@ import { getLocalStorage, setLocalStorage } from '../utils/local-storage.utils';
 import type en from '../i18n/en.json';
 import type primengEn from '../i18n/primeng.en.json';
 
-type LangType = {
+interface LangType {
   translations: typeof en;
   locale: unknown;
   localeExtra: unknown;
   primengTranslations: typeof primengEn;
-};
+}
 const langs: Record<string, () => Promise<LangType>> = {
   en: () => import('../i18n/en').then(x => x.default),
   de: () => import('../i18n/de').then(x => x.default),

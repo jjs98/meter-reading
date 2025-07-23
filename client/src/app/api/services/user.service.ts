@@ -12,38 +12,38 @@ import type { AbortablePromise } from '../utils/angular-service.utils';
 /**
  * Parameters for operation postApiUser
  */
-type PostApiUserParams = {
+interface PostApiUserParams {
     body?: User;
-  };
+  }
 
 /**
  * Parameters for operation getApiUserId
  */
-type GetApiUserIdParams = {
+interface GetApiUserIdParams {
     id: number;
-  };
+  }
 
 /**
  * Parameters for operation putApiUserId
  */
-type PutApiUserIdParams = {
+interface PutApiUserIdParams {
     id: number;
     body?: User;
-  };
+  }
 
 /**
  * Parameters for operation deleteApiUserId
  */
-type DeleteApiUserIdParams = {
+interface DeleteApiUserIdParams {
     id: number;
-  };
+  }
 
 /**
  * Parameters for operation getApiUserIdName
  */
-type GetApiUserIdNameParams = {
+interface GetApiUserIdNameParams {
     id: number;
-  };
+  }
 
 @Injectable()
 export class UserService extends ApiBaseService {

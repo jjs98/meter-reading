@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -29,7 +35,7 @@ import { DataStore } from '../../store/data.store';
     TooltipModule,
   ],
   templateUrl: './change-password-dialog.component.html',
-  styleUrl: './change-password-dialog.component.scss',
+  styleUrl: './change-password-dialog.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangePasswordDialogComponent {
@@ -38,11 +44,11 @@ export class ChangePasswordDialogComponent {
   private readonly messageService = inject(MessageService);
   private readonly authService = inject(AuthService);
 
-  protected oldPassword: string = '';
-  protected newPassword: string = '';
-  protected repeatNewPassword: string = '';
-  protected repeatNewPasswordValid: boolean = true;
-  protected oldPasswordValid: boolean = true;
+  protected oldPassword = '';
+  protected newPassword = '';
+  protected repeatNewPassword = '';
+  protected repeatNewPasswordValid = true;
+  protected oldPasswordValid = true;
 
   protected dialogVisible = signal(false);
   protected loading = signal(false);
@@ -64,7 +70,12 @@ export class ChangePasswordDialogComponent {
   }
 
   protected async onKeyPress(event: KeyboardEvent): Promise<void> {
-    if (event.key === 'Enter' && this.oldPassword && this.newPassword && this.repeatNewPassword) {
+    if (
+      event.key === 'Enter' &&
+      this.oldPassword &&
+      this.newPassword &&
+      this.repeatNewPassword
+    ) {
       await this.changePassword();
     }
   }

@@ -1,4 +1,4 @@
-<div class="h-full flex flex-col overflow-hidden">
+<div class="flex h-full flex-col overflow-hidden">
   @if (dataStore.isTokenValid()) {
     <p-menubar styleClass="ml-2 mr-2 mt-2 p-4">
       <ng-template pTemplate="start">
@@ -6,27 +6,32 @@
       </ng-template>
       <ng-template pTemplate="end">
         <div class="flex flex-row items-center">
-          <span class="mr-8" (click)="menu.toggle($event)"> {{ dataStore.getUserName() }} </span>
+          <span class="mr-8" (click)="menu.toggle($event)">
+            {{ dataStore.getUserName() }}
+          </span>
           <p-tieredMenu #menu [model]="items" [popup]="true">
             <ng-template pTemplate="item" let-item let-hasSubmenu="hasSubmenu">
               <ng-container>
                 <a class="p-menuitem-link">
-                  <span [class]="item.icon"></span>
-                  <span class="ml-2">{{ translationService.translate(item.label) }}</span>
-                  <span *ngIf="hasSubmenu" class="i-[mdi--chevron-right]"></span>
+                  <i [class]="item.icon"></i>
+                  <span class="ml-2">{{
+                    translationService.translate(item.label)
+                  }}</span>
+                  <span
+                    *ngIf="hasSubmenu"
+                    class="i-[mdi--chevron-right]"></span>
                 </a>
               </ng-container>
             </ng-template>
           </p-tieredMenu>
           <p-button
-            icon="i-[mdi--logout]"
+            icon="fa-solid fa-right-from-bracket"
             styleClass="mr-4"
             [pTooltip]="translations.logout()"
             [tooltipPosition]="'bottom'"
             [showDelay]="1000"
             [rounded]="true"
-            (click)="logOff()"
-          />
+            (click)="logOff()" />
         </div>
       </ng-template>
     </p-menubar>
@@ -41,27 +46,25 @@
 <p-confirmDialog #cd>
   <ng-template pTemplate="headless" let-message>
     <p-card header="{{ message.header }}">
-      <div class="flex flex-row gap-3 m-4">
-        <span class="i-[mdi--alert-circle]"></span>
+      <div class="m-4 flex flex-row gap-3">
+        <i class="fa-solid fa-circle-exclamation"></i>
         <p class="mb-0">{{ message.message }}</p>
       </div>
       <div class="flex justify-end gap-4">
         <button
           pButton
-          icon="i-[mdi--cancel]"
+          icon="fa-solid fa-xmark"
           severity="secondary"
           (click)="cd.onReject()"
           [rounded]="true"
-          class="justify-center w-8rem"
-        ></button>
+          class="w-8rem justify-center"></button>
         <button
           pButton
-          icon="i-[mdi--delete]"
+          icon="fa-solid fa-trash"
           severity="danger"
           (click)="cd.onAccept()"
           [rounded]="true"
-          class="justify-center w-8rem"
-        ></button>
+          class="w-8rem justify-center"></button>
       </div>
     </p-card>
   </ng-template>

@@ -5,8 +5,8 @@ import { waitForResponse } from '../utils/angular-service.utils';
 import { ApiBaseService } from '../utils/api-base-service';
 import { RequestBuilder } from '../utils/request-builder';
 
-import type { MeterShareDto } from '../models/meter-share-dto';
 import type { Meter } from '../models/meter';
+import type { MeterShareDto } from '../models/meter-share-dto';
 import type { DeleteApiMeterIdApiResponse, DeleteApiMeterRevokeApiResponse, GetApiMeterApiResponse, GetApiMeterIdApiResponse, GetApiMeterSharedApiResponse, GetApiMeterSharedMeterIdApiResponse, PostApiMeterApiResponse, PostApiMeterShareApiResponse, PutApiMeterIdApiResponse } from '../models/responses/meter-responses.model';
 import type { RevokeMeterShareDto } from '../models/revoke-meter-share-dto';
 import type { AbortablePromise } from '../utils/angular-service.utils';
@@ -14,52 +14,52 @@ import type { AbortablePromise } from '../utils/angular-service.utils';
 /**
  * Parameters for operation postApiMeter
  */
-type PostApiMeterParams = {
+interface PostApiMeterParams {
     body?: Meter;
-  };
+  }
 
 /**
  * Parameters for operation getApiMeterId
  */
-type GetApiMeterIdParams = {
+interface GetApiMeterIdParams {
     id: number;
-  };
+  }
 
 /**
  * Parameters for operation putApiMeterId
  */
-type PutApiMeterIdParams = {
+interface PutApiMeterIdParams {
     id: number;
     body?: Meter;
-  };
+  }
 
 /**
  * Parameters for operation deleteApiMeterId
  */
-type DeleteApiMeterIdParams = {
+interface DeleteApiMeterIdParams {
     id: number;
-  };
+  }
 
 /**
  * Parameters for operation getApiMeterSharedMeterId
  */
-type GetApiMeterSharedMeterIdParams = {
+interface GetApiMeterSharedMeterIdParams {
     meterId: number;
-  };
+  }
 
 /**
  * Parameters for operation postApiMeterShare
  */
-type PostApiMeterShareParams = {
+interface PostApiMeterShareParams {
     body?: MeterShareDto;
-  };
+  }
 
 /**
  * Parameters for operation deleteApiMeterRevoke
  */
-type DeleteApiMeterRevokeParams = {
+interface DeleteApiMeterRevokeParams {
     body?: RevokeMeterShareDto;
-  };
+  }
 
 @Injectable()
 export class MeterService extends ApiBaseService {

@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
-import type { MeterShareDto } from '../meter-share-dto';
 import type { Meter } from '../meter';
+import type { MeterShareDto } from '../meter-share-dto';
 import type { ProblemDetails } from '../problem-details';
 import type { SharedMeter } from '../shared-meter';
 

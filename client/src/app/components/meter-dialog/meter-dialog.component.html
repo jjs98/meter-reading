@@ -4,10 +4,9 @@
   [(visible)]="dialogVisible"
   [draggable]="false"
   [resizable]="false"
-  styleClass="w-[23rem]"
->
-  <div class="flex items-center gap-3 mb-8 mt-8">
-    <span class="i-[mdi--home-map-marker]"></span>
+  styleClass="w-[23rem]">
+  <div class="mt-8 mb-8 flex items-center gap-3">
+    <i class="fa-solid fa-house"></i>
     <p-floatLabel>
       <input
         pInputText
@@ -15,13 +14,14 @@
         class="flex-auto"
         [(ngModel)]="location"
         autocomplete="off"
-        (keypress)="onKeyPress($event)"
-      />
-      <label for="location" class="font-semibold w-6rem">{{ translations.meter_location() }}</label>
+        (keypress)="onKeyPress($event)" />
+      <label for="location" class="w-6rem font-semibold">{{
+        translations.meter_location()
+      }}</label>
     </p-floatLabel>
   </div>
-  <div class="flex items-center gap-3 mb-8">
-    <span class="i-[mdi--barcode-scan]"></span>
+  <div class="mb-8 flex items-center gap-3">
+    <i class="fa-solid fa-barcode"></i>
     <p-floatLabel>
       <input
         pInputText
@@ -29,15 +29,14 @@
         class="flex-auto"
         [(ngModel)]="meterNumber"
         autocomplete="off"
-        (keypress)="onKeyPress($event)"
-      />
-      <label for="meterNumber" class="font-semibold w-6rem">{{
+        (keypress)="onKeyPress($event)" />
+      <label for="meterNumber" class="w-6rem font-semibold">{{
         translations.meter_number()
       }}</label>
     </p-floatLabel>
   </div>
-  <div class="flex items-center gap-3 mb-8">
-    <span class="i-[mdi--invoice-text-plus]"></span>
+  <div class="mb-8 flex items-center gap-3">
+    <i class="fa-solid fa-file-invoice"></i>
     <p-floatLabel>
       <input
         pInputText
@@ -45,30 +44,45 @@
         class="flex-auto"
         [(ngModel)]="addition"
         autocomplete="off"
-        (keypress)="onKeyPress($event)"
-      />
-      <label for="addition" class="font-semibold w-6rem">{{ translations.meter_addition() }}</label>
+        (keypress)="onKeyPress($event)" />
+      <label for="addition" class="w-6rem font-semibold">{{
+        translations.meter_addition()
+      }}</label>
     </p-floatLabel>
   </div>
-  <div class="flex items-center gap-4 mb-8">
+  <div class="mb-8 flex items-center gap-4">
     <div class="flex items-center">
-      <p-radioButton name="type" [value]="0" [(ngModel)]="type" inputId="electricity" />
-      <label for="electricity" class="ml-2"> {{ translations.meter_type_electricity() }} </label>
+      <p-radioButton
+        name="type"
+        [value]="0"
+        [(ngModel)]="type"
+        inputId="electricity" />
+      <label for="electricity" class="ml-2">
+        {{ translations.meter_type_electricity() }}
+      </label>
     </div>
 
     <div class="flex items-center">
-      <p-radioButton name="type" [value]="1" [(ngModel)]="type" inputId="water" />
-      <label for="water" class="ml-2"> {{ translations.meter_type_water() }} </label>
+      <p-radioButton
+        name="type"
+        [value]="1"
+        [(ngModel)]="type"
+        inputId="water" />
+      <label for="water" class="ml-2">
+        {{ translations.meter_type_water() }}
+      </label>
     </div>
 
     <div class="flex items-center">
       <p-radioButton name="type" [value]="2" [(ngModel)]="type" inputId="gas" />
-      <label for="gas" class="ml-2"> {{ translations.meter_type_gas() }} </label>
+      <label for="gas" class="ml-2">
+        {{ translations.meter_type_gas() }}
+      </label>
     </div>
   </div>
   @if (existingMeter) {
-    <div class="flex items-center gap-3 mb-8">
-      <span class="i-[mdi--account-plus]"></span>
+    <div class="mb-8 flex items-center gap-3">
+      <i class="fa-solid fa-user-plus"></i>
       <p-floatLabel>
         <input
           pInputText
@@ -76,35 +90,36 @@
           class="flex-auto"
           [(ngModel)]="shareUsername"
           autocomplete="off"
-          (keypress)="onShareKeyPress($event)"
-        />
-        <label for="shareUser" class="font-semibold w-6rem">{{
+          (keypress)="onShareKeyPress($event)" />
+        <label for="shareUser" class="w-6rem font-semibold">{{
           translations.meterShare_share()
         }}</label>
       </p-floatLabel>
       <p-button
-        icon="i-[mdi--add]"
+        icon="fa-solid fa-share"
         [pTooltip]="translations.meterShare_share()"
         [tooltipPosition]="'bottom'"
         [showDelay]="1000"
         [rounded]="true"
         [disabled]="!shareUsername || shareUsername === ''"
-        (onClick)="shareMeter()"
-      />
+        (onClick)="shareMeter()" />
     </div>
-    <p-listbox [options]="sharedMeters()" optionLabel="username" [filter]="true" styleClass="mb-8">
+    <p-listbox
+      [options]="sharedMeters()"
+      optionLabel="username"
+      [filter]="true"
+      styleClass="mb-8">
       <ng-template pTemplate="username" let-sharedMeter #item>
         <div class="flex items-center gap-4">
           <div>{{ sharedMeter.username }}</div>
           <p-button
-            icon="i-[mdi--delete]"
+            icon="fa-solid fa-trash"
             severity="danger"
             [pTooltip]="translations.meterShare_revoke()"
             [tooltipPosition]="'bottom'"
             [showDelay]="1000"
             [rounded]="true"
-            (onClick)="confirmRevokeShare(sharedMeter)"
-          />
+            (onClick)="confirmRevokeShare(sharedMeter)" />
         </div>
       </ng-template>
     </p-listbox>
@@ -112,33 +127,30 @@
   <div class="flex justify-end gap-4">
     @if (existingMeter) {
       <p-button
-        icon="i-[mdi--delete]"
+        icon="fa-solid fa-trash"
         severity="danger"
         [pTooltip]="translations.delete()"
         [tooltipPosition]="'bottom'"
         [showDelay]="1000"
         [rounded]="true"
-        (onClick)="confirmDeleteMeter()"
-      />
+        (onClick)="confirmDeleteMeter()" />
     }
     <p-button
-      icon="i-[mdi--cancel]"
+      icon="fa-solid fa-xmark"
       severity="secondary"
       [pTooltip]="translations.cancel()"
       [tooltipPosition]="'bottom'"
       [showDelay]="1000"
       [rounded]="true"
-      (onClick)="onCancel()"
-    />
+      (onClick)="onCancel()" />
     <p-button
-      icon="i-[mdi--content-save]"
+      icon="fa-solid fa-floppy-disk"
       severity="success"
       [pTooltip]="translations.save()"
       [tooltipPosition]="'bottom'"
       [showDelay]="1000"
       [rounded]="true"
       [disabled]="!location || type === undefined || !hasMeterChanged()"
-      (onClick)="onSave()"
-    />
+      (onClick)="onSave()" />
   </div>
 </p-dialog>

@@ -40,7 +40,7 @@ import { DataStore } from '../../store/data.store';
     TooltipModule,
   ],
   templateUrl: './reading-dialog.component.html',
-  styleUrl: './reading-dialog.component.scss',
+  styleUrl: './reading-dialog.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReadingDialogComponent {
@@ -62,8 +62,11 @@ export class ReadingDialogComponent {
     const hasReading =
       this.dataStore
         .readings()
-        .find(r => new Date(r.readingDate).toISOString() === this.readingDate()?.toISOString()) !==
-      undefined;
+        .find(
+          (r) =>
+            new Date(r.readingDate).toISOString() ===
+            this.readingDate()?.toISOString()
+        ) !== undefined;
     return hasReading;
   });
 
@@ -93,7 +96,11 @@ export class ReadingDialogComponent {
     } else {
       const currentDate = new Date();
       this.readingDate.set(
-        new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())
+        new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          currentDate.getDate()
+        )
       );
     }
 
@@ -150,7 +157,8 @@ export class ReadingDialogComponent {
 
     return (
       this.number != Number(reading.number) ||
-      this.readingDate()?.toISOString() != new Date(reading.readingDate).toISOString()
+      this.readingDate()?.toISOString() !=
+        new Date(reading.readingDate).toISOString()
     );
   }
 

@@ -1,11 +1,10 @@
 import type { EasyNetworkStub } from 'easy-network-stub';
-
 import type { ErrorResponse, HttpMethod, RouteResponseCallback } from 'easy-network-stub';
 
 /**
  * Options for the `EasyNetworkStubWrapper`.
  */
-export type EasyNetworkStubWrapperOptions = {
+export interface EasyNetworkStubWrapperOptions {
   /**
    * Delay in milliseconds before responding.
    * @default 0
@@ -37,12 +36,12 @@ export type EasyNetworkStubWrapperOptions = {
    * @default /api/
    */
   logUrlPrefix: string;
-};
+}
 
 /**
  * Represents a request intercepted by the `EasyNetworkStubWrapper`.
  */
-export type StubRequestItem = {
+export interface StubRequestItem {
   /**
    * The HTTP method of the request.
    */
@@ -55,7 +54,7 @@ export type StubRequestItem = {
    * The request information provided by `easy-network-stub`.
    */
   request: StubRequestInfo;
-};
+}
 
 /**
  * Represents the request information provided by `easy-network-stub`.
@@ -102,7 +101,7 @@ export class EasyNetworkStubWrapper {
   /**
    * The requests that have been intercepted by the wrapper.
    */
-  public get requests(): ReadonlyArray<StubRequestItem> {
+  public get requests(): readonly StubRequestItem[] {
     return this._requests;
   }
 
@@ -227,14 +226,10 @@ export class EasyNetworkStubBase {
   }
 }
 
-export type EasyNetworkStubGroup<Group, GroupContainer> = Group & {
-  (stubActions: (stubs: Group) => void): GroupContainer;
-};
+export type EasyNetworkStubGroup<Group, GroupContainer> = Group & ((stubActions: (stubs: Group) => void) => GroupContainer);
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-declare interface GroupType<T> extends Function {
-  new (stubWrapper: EasyNetworkStubWrapper): T;
-}
+type GroupType<T> = new (stubWrapper: EasyNetworkStubWrapper) => T;
 
 export function createEasyNetworkStubGroup<GroupContainer, Group>(
   container: GroupContainer,

@@ -1,7 +1,7 @@
 import type { Meter } from './meter';
 import type { UserRole } from './user-role';
 
-export type User = {
+export interface User {
     id?: number;
     createDate?: string;
     updateDate?: (string) | (null);
@@ -12,4 +12,4 @@ export type User = {
     email?: (string) | (null);
     roles?: ((UserRole)[]) | (null);
     meters?: ((Meter)[]) | (null);
-  };
+  }

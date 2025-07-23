@@ -12,38 +12,38 @@ import type { AbortablePromise } from '../utils/angular-service.utils';
 /**
  * Parameters for operation getApiUserRoleRoleRoleId
  */
-type GetApiUserRoleRoleRoleIdParams = {
+interface GetApiUserRoleRoleRoleIdParams {
     roleId: number;
-  };
+  }
 
 /**
  * Parameters for operation getApiUserRoleUserUserId
  */
-type GetApiUserRoleUserUserIdParams = {
+interface GetApiUserRoleUserUserIdParams {
     userId: number;
-  };
+  }
 
 /**
  * Parameters for operation postApiUserRole
  */
-type PostApiUserRoleParams = {
+interface PostApiUserRoleParams {
     body?: UserRole;
-  };
+  }
 
 /**
  * Parameters for operation putApiUserRoleId
  */
-type PutApiUserRoleIdParams = {
+interface PutApiUserRoleIdParams {
     id: number;
     body?: UserRole;
-  };
+  }
 
 /**
  * Parameters for operation deleteApiUserRoleId
  */
-type DeleteApiUserRoleIdParams = {
+interface DeleteApiUserRoleIdParams {
     id: number;
-  };
+  }
 
 @Injectable()
 export class UserRoleService extends ApiBaseService {

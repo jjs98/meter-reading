@@ -9,7 +9,7 @@ import { ApiConfiguration } from './api-configuration';
 export abstract class ApiBaseService {
   protected config = inject(ApiConfiguration);
   protected http = inject(HttpClient);
-  private _rootUrl: string = '';
+  private _rootUrl = '';
 
   /**
    * Gets or sets the root URL for API operations provided by this service.

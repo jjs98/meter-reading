@@ -7,7 +7,7 @@ import { ReadingService } from '../../api/services';
 import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
-type ReadingsState = { readings: Reading[] };
+interface ReadingsState { readings: Reading[] }
 
 const readingsState = signalState<ReadingsState>({
   readings: [],

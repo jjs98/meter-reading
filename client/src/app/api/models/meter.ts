@@ -1,7 +1,7 @@
 import type { MeterType } from './meter-type';
 import type { Reading } from './reading';
 
-export type Meter = {
+export interface Meter {
     id?: number;
     createDate?: string;
     updateDate?: (string) | (null);
@@ -11,4 +11,4 @@ export type Meter = {
     addition?: (string) | (null);
     type?: MeterType;
     readings?: ((Reading)[]) | (null);
-  };
+  }
