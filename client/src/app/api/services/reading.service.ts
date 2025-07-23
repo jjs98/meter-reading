@@ -12,38 +12,38 @@ import type { AbortablePromise } from '../utils/angular-service.utils';
 /**
  * Parameters for operation getApiReading
  */
-type GetApiReadingParams = {
+interface GetApiReadingParams {
     meterId?: number;
-  };
+  }
 
 /**
  * Parameters for operation postApiReading
  */
-type PostApiReadingParams = {
+interface PostApiReadingParams {
     body?: Reading;
-  };
+  }
 
 /**
  * Parameters for operation getApiReadingId
  */
-type GetApiReadingIdParams = {
+interface GetApiReadingIdParams {
     id: number;
-  };
+  }
 
 /**
  * Parameters for operation putApiReadingId
  */
-type PutApiReadingIdParams = {
+interface PutApiReadingIdParams {
     id: number;
     body?: Reading;
-  };
+  }
 
 /**
  * Parameters for operation deleteApiReadingId
  */
-type DeleteApiReadingIdParams = {
+interface DeleteApiReadingIdParams {
     id: number;
-  };
+  }
 
 @Injectable()
 export class ReadingService extends ApiBaseService {

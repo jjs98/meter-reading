@@ -4,10 +4,9 @@
   [(visible)]="dialogVisible"
   [draggable]="false"
   [resizable]="false"
-  styleClass="w-[23rem]"
->
-  <div class="flex items-center gap-3 mb-8 mt-8">
-    <span class="i-[mdi--counter]"></span>
+  styleClass="w-[23rem]">
+  <div class="mt-8 mb-8 flex items-center gap-3">
+    <i class="fa-solid fa-gauge"></i>
     <p-floatLabel class="w-64">
       <p-inputNumber
         pInputNumber
@@ -19,13 +18,14 @@
         locale="de-de"
         [useGrouping]="false"
         [minFractionDigits]="0"
-        [maxFractionDigits]="3"
-      />
-      <label for="number" class="font-semibold w-6rem">{{ translations.reading_reading() }}</label>
+        [maxFractionDigits]="3" />
+      <label for="number" class="w-6rem font-semibold">{{
+        translations.reading_reading()
+      }}</label>
     </p-floatLabel>
   </div>
-  <div class="flex items-center gap-3 mb-8">
-    <span class="i-[mdi--calendar]"></span>
+  <div class="mb-8 flex items-center gap-3">
+    <i class="fa-solid fa-calendar-days"></i>
     <p-floatLabel class="w-64">
       <p-datepicker
         id="readingDate"
@@ -35,51 +35,51 @@
         [showOnFocus]="false"
         [maxDate]="currentDate"
         appendTo="body"
-        dateFormat="dd.mm.yy"
-      />
-      <label for="readingDate" class="font-semibold w-6rem">{{
+        dateFormat="dd.mm.yy" />
+      <label for="readingDate" class="w-6rem font-semibold">{{
         translations.reading_readingDate()
       }}</label>
     </p-floatLabel>
   </div>
   @if (hasReadingForDate()) {
-    <div class="flex items-center gap-3 mb-8">
-      <span class="i-[mdi--alert-circle]"></span>
+    <div class="mb-8 flex items-center gap-3">
+      <i class="fa-solid fa-circle-exclamation"></i>
       <p-floatLabel>
-        <span class="text-red-500">{{ translations.reading_error_alreadyExists() }}</span>
+        <span class="text-red-500">{{
+          translations.reading_error_alreadyExists()
+        }}</span>
       </p-floatLabel>
     </div>
   }
   <div class="flex justify-end gap-4">
     @if (existingReading) {
       <p-button
-        icon="i-[mdi--delete]"
+        icon="fa-solid fa-trash"
         severity="danger"
         [pTooltip]="translations.delete()"
         [tooltipPosition]="'bottom'"
         [showDelay]="1000"
         [rounded]="true"
-        (onClick)="confirmDeleteReading()"
-      />
+        (onClick)="confirmDeleteReading()" />
     }
     <p-button
-      icon="i-[mdi--cancel]"
+      icon="fa-solid fa-xmark"
       severity="secondary"
       [pTooltip]="translations.cancel()"
       [tooltipPosition]="'bottom'"
       [showDelay]="1000"
       [rounded]="true"
-      (onClick)="onCancel()"
-    />
+      (onClick)="onCancel()" />
     <p-button
-      icon="i-[mdi--content-save]"
+      icon="fa-solid fa-floppy-disk"
       severity="success"
       [pTooltip]="translations.save()"
       [tooltipPosition]="'bottom'"
       [showDelay]="1000"
       [rounded]="true"
-      [disabled]="!number || !readingDate() || !hasReadingChanged() || hasReadingForDate()"
-      (onClick)="onSave()"
-    />
+      [disabled]="
+        !number || !readingDate() || !hasReadingChanged() || hasReadingForDate()
+      "
+      (onClick)="onSave()" />
   </div>
 </p-dialog>

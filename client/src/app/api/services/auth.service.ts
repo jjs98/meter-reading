@@ -13,23 +13,23 @@ import type { AbortablePromise } from '../utils/angular-service.utils';
 /**
  * Parameters for operation postApiAuthLogin
  */
-type PostApiAuthLoginParams = {
+interface PostApiAuthLoginParams {
     body?: UserLoginDto;
-  };
+  }
 
 /**
  * Parameters for operation postApiAuthChangePassword
  */
-type PostApiAuthChangePasswordParams = {
+interface PostApiAuthChangePasswordParams {
     body?: ChangePasswordDto;
-  };
+  }
 
 /**
  * Parameters for operation postApiAuthHash
  */
-type PostApiAuthHashParams = {
+interface PostApiAuthHashParams {
     body?: string;
-  };
+  }
 
 @Injectable()
 export class AuthService extends ApiBaseService {

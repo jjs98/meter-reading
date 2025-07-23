@@ -9,7 +9,7 @@ import { Token } from '../../models/Token.type';
 import { patch } from '../../utils/data-store.utils';
 import { getLocalStorage, setLocalStorage } from '../../utils/local-storage.utils';
 
-type TokenState = { token: Token | undefined };
+interface TokenState { token: Token | undefined }
 
 const tokenState = signalState<TokenState>({
   token: undefined,

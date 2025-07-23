@@ -1,36 +1,41 @@
 <p-card [styleClass]="'overflow-hidden h-full flex flex-col'">
   <div class="h-full">
-    <div class="h-2/5 flex flex-col">
-      <div class="flex justify-between mb-4 items-center">
+    <div class="flex h-2/5 flex-col">
+      <div class="mb-4 flex items-center justify-between">
         <p-button
           (onClick)="navigateBack()"
-          icon="i-[mdi--arrow-left]"
+          icon="fa-solid fa-arrow-left"
           [pTooltip]="translations.back()"
           [tooltipPosition]="'bottom'"
           [showDelay]="1000"
-          [rounded]="true"
-        ></p-button>
+          [rounded]="true"></p-button>
         @if (meter()) {
           <div class="flex flex-row items-center">
-            <span
+            <i
               class="{{
                 meter()?.type === 0
-                  ? 'i-[mdi--lightning-bolt]'
+                  ? 'fa-solid fa-bolt'
                   : meter()?.type === 1
-                    ? 'i-[mdi--water]'
-                    : 'i-[mdi--gas-cylinder]'
-              }}"
-            ></span>
+                    ? 'fa-solid fa-droplet'
+                    : 'fa-solid fa-fire-extinguisher'
+              }}"></i>
             <span>
-              {{ meter()?.location }}{{ meter()?.addition ? ' - ' + meter()?.addition : '' }}
+              {{ meter()?.location
+              }}{{ meter()?.addition ? ' - ' + meter()?.addition : '' }}
               {{ translations.reading_readingDelta() }}</span
             >
           </div>
         }
-        <p-dropdown [options]="valuesCountOptions" [(ngModel)]="valuesCount" />
+        <p-autocomplete
+          [suggestions]="valuesCountOptions"
+          [(ngModel)]="valuesCount" />
       </div>
       <div class="flex-1">
-        <p-chart type="line" [data]="chartData()" [options]="chartOptions" [height]="'100%'" />
+        <p-chart
+          type="line"
+          [data]="chartData()"
+          [options]="chartOptions"
+          [height]="'100%'" />
       </div>
     </div>
     <div class="h-3/5">
@@ -38,21 +43,19 @@
         [value]="dataStore.readings()"
         [scrollable]="true"
         scrollHeight="flex"
-        class="h-full"
-      >
+        class="h-full">
         <ng-template pTemplate="caption">
-          <div class="hidden md:flex justify-between items-center">
+          <div class="hidden items-center justify-between md:flex">
             <span>{{ translations.reading_readings() }}</span>
 
             @if (dataStore.readings().length > 0) {
               <p-button
-                icon="i-[mdi--export]"
+                icon="fa-solid fa-file-export"
                 [pTooltip]="translations.export()"
                 [tooltipPosition]="'bottom'"
                 [showDelay]="1000"
                 [rounded]="true"
-                (onClick)="exportExcel()"
-              />
+                (onClick)="exportExcel()" />
             }
           </div>
         </ng-template>
@@ -62,13 +65,12 @@
             <th>{{ translations.reading_readingDate() }}</th>
             <th style="width: 5rem">
               <p-button
-                icon="i-[mdi--plus]"
+                icon="fa-solid fa-plus"
                 [rounded]="true"
                 [pTooltip]="translations.add()"
                 [tooltipPosition]="'bottom'"
                 [showDelay]="1000"
-                (onClick)="showNewDialog()"
-              />
+                (onClick)="showNewDialog()" />
             </th>
           </tr>
         </ng-template>
@@ -82,13 +84,12 @@
             </td>
             <td>
               <p-button
-                icon="i-[mdi--pencil]"
+                icon="fa-solid fa-pencil"
                 [rounded]="true"
                 [pTooltip]="translations.edit()"
                 [tooltipPosition]="'bottom'"
                 [showDelay]="1000"
-                (onClick)="showEditDialog(reading)"
-              ></p-button>
+                (onClick)="showEditDialog(reading)"></p-button>
             </td>
           </tr>
         </ng-template>

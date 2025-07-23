@@ -3,7 +3,7 @@ import { getState, signalState, signalStoreFeature, withMethods, withState } fro
 import { User } from '../../api/models';
 import { patch } from '../../utils/data-store.utils';
 
-type UserState = { user: User | undefined };
+interface UserState { user: User | undefined }
 
 const userState = signalState<UserState>({
   user: {

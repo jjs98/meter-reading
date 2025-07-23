@@ -42,7 +42,7 @@ import { SharedMeter } from '../../store/features/shared-meters.feature';
     TooltipModule,
   ],
   templateUrl: './meter-list.component.html',
-  styleUrl: './meter-list.component.scss',
+  styleUrl: './meter-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeterComponent implements OnInit {

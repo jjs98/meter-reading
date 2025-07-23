@@ -4,6 +4,4 @@ export type ProblemDetails = ({
       status?: (number) | (null);
       detail?: (string) | (null);
       instance?: (string) | (null);
-    }) & ({
-      [key: string]: unknown;
-    });
+    }) & (Record<string, unknown>);

@@ -5,5 +5,5 @@ import { Injectable } from '@angular/core';
  */
 @Injectable()
 export class ApiConfiguration {
-  public rootUrl: string = '/';
+  public rootUrl = '/';
 }

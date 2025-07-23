@@ -1,7 +1,7 @@
 import { EasyNetworkStubBase, getStubResponder } from '../utils/easy-network-stub.utils';
 
-import type { MeterShareDto } from '../models/meter-share-dto';
 import type { Meter } from '../models/meter';
+import type { MeterShareDto } from '../models/meter-share-dto';
 import type { ProblemDetails } from '../models/problem-details';
 import type { RevokeMeterShareDto } from '../models/revoke-meter-share-dto';
 import type { SharedMeter } from '../models/shared-meter';

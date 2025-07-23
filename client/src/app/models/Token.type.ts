@@ -1,4 +1,4 @@
-export type Token = {
+export interface Token {
   nameid: string;
   unique_name: string;
   email: string;
@@ -11,4 +11,4 @@ export type Token = {
   iss: string;
   aud: string;
   tokenString: string;
-};
+}

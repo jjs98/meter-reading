@@ -6,8 +6,7 @@
       (onRowSelect)="onMeterSelect($event)"
       class="h-full"
       [scrollable]="true"
-      scrollHeight="flex"
-    >
+      scrollHeight="flex">
       <ng-template pTemplate="caption">
         <span>{{ translations.meter_meters() }}</span>
       </ng-template>
@@ -18,28 +17,26 @@
           <th style="width: auto">{{ translations.meter_addition() }}</th>
           <th style="width: 5rem">
             <p-button
-              icon="i-[mdi--plus]"
+              icon="fa-solid fa-plus"
               [pTooltip]="translations.add()"
               [tooltipPosition]="'bottom'"
               [showDelay]="1000"
               [rounded]="true"
-              (onClick)="showNewDialog()"
-            />
+              (onClick)="showNewDialog()" />
           </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-meter>
         <tr [pSelectableRow]="meter">
           <td>
-            <span
+            <i
               class="{{
                 meter.type === 0
-                  ? 'i-[mdi--lightning-bolt]'
+                  ? 'fa-solid fa-bolt'
                   : meter.type === 1
-                    ? 'i-[mdi--water]'
-                    : 'i-[mdi--gas-cylinder]'
-              }}"
-            ></span>
+                    ? 'fa-solid fa-droplet'
+                    : 'fa-solid fa-fire-extinguisher'
+              }}"></i>
           </td>
           <td>
             <span>{{ meter.location }}</span>
@@ -49,13 +46,12 @@
           </td>
           <td>
             <p-button
-              icon="i-[mdi--pencil]"
+              icon="fa-solid fa-pencil"
               [pTooltip]="translations.edit()"
               [tooltipPosition]="'bottom'"
               [showDelay]="1000"
               [rounded]="true"
-              (onClick)="showEditDialog(meter)"
-            ></p-button>
+              (onClick)="showEditDialog(meter)"></p-button>
           </td>
         </tr>
       </ng-template>
@@ -72,8 +68,7 @@
         (onRowSelect)="onSharedMeterSelect($event)"
         class="h-full"
         [scrollable]="true"
-        scrollHeight="flex"
-      >
+        scrollHeight="flex">
         <ng-template pTemplate="caption">
           <span>{{ translations.meter_sharedMeters() }}</span>
         </ng-template>
@@ -92,12 +87,11 @@
               <span
                 class="{{
                   sharedMeter.meter.type === 0
-                    ? 'i-[mdi--lightning-bolt]'
+                    ? 'fa-solid fa-bolt'
                     : sharedMeter.meter.type === 1
-                      ? 'i-[mdi--water]'
-                      : 'i-[mdi--gas-cylinder]'
-                }}"
-              ></span>
+                      ? 'fa-solid fa-droplet'
+                      : 'fa-solid fa-fire-extinguisher'
+                }}"></span>
             </td>
             <td>
               <span>{{ sharedMeter.meter.location }}</span>
@@ -110,14 +104,13 @@
             </td>
             <td>
               <p-button
-                icon="i-[mdi--account-cancel]"
+                icon="fa-solid fa-link-slash"
                 severity="danger"
                 [pTooltip]="translations.meterShare_revoke()"
                 [tooltipPosition]="'bottom'"
                 [showDelay]="1000"
                 [rounded]="true"
-                (onClick)="confirmRevokeShare(sharedMeter)"
-              ></p-button>
+                (onClick)="confirmRevokeShare(sharedMeter)"></p-button>
             </td>
           </tr>
         </ng-template>

@@ -7,9 +7,9 @@ import { MeterService } from '../../api/services/meter.service';
 import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
-type MetersState = {
+interface MetersState {
   meters: Meter[];
-};
+}
 
 const metersState = signalState<MetersState>({
   meters: [],
