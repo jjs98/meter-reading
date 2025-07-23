@@ -18,6 +18,9 @@ jobs:
       ## fix for corepack issue
       - run: npm i -g --force corepack && corepack enable
         
+      - name: debug files
+        run: ls -la ./client
+        
       - uses: actions/setup-node@v4
         with:
           node-version: 22
