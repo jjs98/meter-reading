@@ -34,5 +34,5 @@ The server uses xUnit for testing. Also TestContainers is used to run the tests 
 
 ## Shoutouts
 
-- Thanks to [NGneers](https://github.com/NGneers) for the eslint, jest and prettier configuration.
+- Thanks to [NGneers](https://github.com/NGneers) for [signal-translate](https://github.com/NGneers/signal-translate).
 - Thanks to [MaSch0212](https://github.com/MaSch0212) for creating the [gOAst](https://github.com/MaSch0212/goast) tooling to create api code out of an openapi file.
