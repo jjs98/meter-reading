@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  inject,
   OnInit,
+  inject,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -41,16 +41,16 @@ import { DataStore } from '../../store/data.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
-  private readonly dataStore = inject(DataStore);
   protected readonly translations = inject(TranslateService).translations;
-  private readonly navigationService = inject(NavigationService);
-  private readonly authService = inject(AuthService);
-  private readonly messageService = inject(MessageService);
-
   protected username = '';
   protected password = '';
 
   protected loading = signal(false);
+
+  private readonly dataStore = inject(DataStore);
+  private readonly navigationService = inject(NavigationService);
+  private readonly authService = inject(AuthService);
+  private readonly messageService = inject(MessageService);
 
   public ngOnInit(): void {
     if (this.dataStore.isTokenValid()) {

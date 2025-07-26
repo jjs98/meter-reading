@@ -41,8 +41,6 @@ import { DataStore } from '../../store/data.store';
 export class ChangePasswordDialogComponent {
   protected readonly dataStore = inject(DataStore);
   protected readonly translations = inject(TranslateService).translations;
-  private readonly messageService = inject(MessageService);
-  private readonly authService = inject(AuthService);
 
   protected oldPassword = '';
   protected newPassword = '';
@@ -53,8 +51,11 @@ export class ChangePasswordDialogComponent {
   protected dialogVisible = signal(false);
   protected loading = signal(false);
 
-  constructor() {
-    effect(() => {
+  private readonly messageService = inject(MessageService);
+  private readonly authService = inject(AuthService);
+
+  public constructor() {
+    effect((): void => {
       if (!this.dialogVisible()) {
         this.resetDialog();
       }

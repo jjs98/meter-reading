@@ -17,7 +17,15 @@
   "dateFormat": "mm/dd/yy",
   "dateIs": "Date is",
   "dateIsNot": "Date is not",
-  "dayNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  "dayNames": [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ],
   "dayNamesMin": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
   "dayNamesShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   "emptyFilterMessage": "No results found",

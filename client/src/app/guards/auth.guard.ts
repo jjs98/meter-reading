@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -20,10 +20,16 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   private readonly messageService = inject(MessageService);
   private readonly translations = inject(TranslateService).translations;
 
-  public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  public canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
     return this.checkUserLogin(next, state.url);
   }
-  public canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  public canActivateChild(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
     return this.canActivate(next, state);
   }
 

@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import {
-  Component,
-  inject,
-  OnInit,
   ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
   signal,
   viewChild,
 } from '@angular/core';
@@ -48,11 +48,12 @@ import { SharedMeter } from '../../store/features/shared-meters.feature';
 export class MeterComponent implements OnInit {
   protected readonly dataStore = inject(DataStore);
   protected readonly translations = inject(TranslateService).translations;
+  protected dialogVisible = signal(false);
+
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly confirmationService = inject(ConfirmationService);
 
-  protected dialogVisible = signal(false);
   private readonly newDialog = viewChild.required(MeterDialogComponent);
   private readonly editDialog = viewChild.required(MeterDialogComponent);
 
@@ -89,10 +90,12 @@ export class MeterComponent implements OnInit {
       acceptIcon: 'none',
       rejectIcon: 'none',
 
-      accept: () => {
+      accept: (): void => {
         this.revokeMeterShare(sharedMeter);
       },
-      reject: () => {},
+      reject: (): void => {
+        // intentionally left blank
+      },
     });
   }
 

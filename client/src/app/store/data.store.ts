@@ -17,10 +17,10 @@ export const DataStore = signalStore(
   withReadings(),
   withSharedMeters(),
   withHooks({
-    onInit(store) {
+    onInit(store): void {
       store.loadToken();
       effect(
-        () => {
+        (): void => {
           const token = store.token();
           const user = mapTokenToUser(token);
           store.setUser(user);

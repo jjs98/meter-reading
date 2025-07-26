@@ -1,15 +1,26 @@
 import { inject } from '@angular/core';
-import { signalState, signalStoreFeature, withHooks, withMethods, withState } from '@ngrx/signals';
+import {
+  signalState,
+  signalStoreFeature,
+  withHooks,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { jwtDecode } from 'jwt-decode';
-import { timer, mergeMap } from 'rxjs';
+import { mergeMap, timer } from 'rxjs';
 
 import { TokenDto } from '../../api/models';
 import { AuthService } from '../../api/services';
 import { Token } from '../../models/Token.type';
 import { patch } from '../../utils/data-store.utils';
-import { getLocalStorage, setLocalStorage } from '../../utils/local-storage.utils';
+import {
+  getLocalStorage,
+  setLocalStorage,
+} from '../../utils/local-storage.utils';
 
-interface TokenState { token: Token | undefined }
+interface TokenState {
+  token: Token | undefined;
+}
 
 const tokenState = signalState<TokenState>({
   token: undefined,
@@ -19,9 +30,10 @@ const tokenState = signalState<TokenState>({
 export function withToken() {
   return signalStoreFeature(
     withState(tokenState),
-    withMethods(store => ({
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    withMethods((store) => ({
       setToken(token: Token | undefined): void {
-        patch(store, draft => {
+        patch(store, (draft): void => {
           draft.token = token;
         });
       },
@@ -56,21 +68,20 @@ export function withToken() {
       },
     })),
     withHooks({
-      onInit: (store, authService = inject(AuthService)) => {
+      onInit: (store, authService = inject(AuthService)): void => {
         store.loadToken();
 
         timer(0, 14 * 1000 * 60)
           .pipe(
-            mergeMap(_ => {
+            mergeMap(async (): Promise<void> => {
               if (!store.isTokenValid()) {
                 return Promise.resolve();
               }
-              return authService.postApiAuthRefresh().then(response => {
-                if (response.status === 200) {
-                  const token = response.body as TokenDto;
-                  store.setTokenString(token.token ?? undefined);
-                }
-              });
+              const response = await authService.postApiAuthRefresh();
+              if (response.status === 200) {
+                const token = response.body as TokenDto;
+                store.setTokenString(token.token ?? undefined);
+              }
             })
           )
           .subscribe();

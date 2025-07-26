@@ -14,10 +14,10 @@ module.exports = tseslint.config(
       ...tseslint.configs.stylistic,
       ...angular.configs.tsRecommended,
     ],
+    ignores: ['src/app/api/**'],
     processor: angular.processInlineTemplates,
     plugins: { import: importPlugin },
     rules: {
-      // Import-Sortierung
       'import/order': [
         'error',
         {
@@ -79,14 +79,18 @@ module.exports = tseslint.config(
           ],
         },
       ],
+      'prefer-const': [
+        'error',
+        {
+          destructuring: 'any',
+          ignoreReadBeforeAssign: false,
+        },
+      ],
     },
   },
   {
     files: ['**/*.html'],
-    extends: [
-      ...angular.configs.templateRecommended,
-      ...angular.configs.templateAccessibility,
-    ],
+    extends: [...angular.configs.templateRecommended],
     rules: {},
-  },
+  }
 );

@@ -6,5 +6,6 @@ export function patch<TState extends object>(
   stateSignal: WritableStateSource<TState>,
   func: (draft: Draft<Prettify<TState>>) => void
 ): void {
-  patchState(stateSignal, x => produce(x, func));
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  patchState(stateSignal, (x) => produce(x, func));
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Route } from '@angular/router';
 
 import { AuthGuard } from './guards/auth.guard';
@@ -12,12 +13,16 @@ export const appRoutes: Route[] = [
       {
         path: '',
         loadComponent: () =>
-          import('./pages/meter-list/meter-list.component').then(m => m.MeterComponent),
+          import('./pages/meter-list/meter-list.component').then(
+            (m) => m.MeterComponent
+          ),
       },
       {
         path: ':id',
         loadComponent: () =>
-          import('./pages/reading-list/reading-list.component').then(m => m.ReadingListComponent),
+          import('./pages/reading-list/reading-list.component').then(
+            (m) => m.ReadingListComponent
+          ),
       },
     ],
   },

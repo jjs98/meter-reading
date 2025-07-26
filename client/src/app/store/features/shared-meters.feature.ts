@@ -1,5 +1,10 @@
 import { inject } from '@angular/core';
-import { signalState, signalStoreFeature, withMethods, withState } from '@ngrx/signals';
+import {
+  signalState,
+  signalStoreFeature,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { MessageService } from 'primeng/api';
 
 import { Meter, MeterShareDto } from '../../api/models';
@@ -32,9 +37,10 @@ export function withSharedMeters() {
         userService = inject(UserService),
         messageService = inject(MessageService),
         translations = inject(TranslateService).translations
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       ) => ({
         setSharedMeters(sharedMeters: SharedMeter[]): void {
-          patch(store, draft => {
+          patch(store, (draft): void => {
             draft.sharedMeters = sharedMeters;
           });
         },
@@ -44,9 +50,10 @@ export function withSharedMeters() {
             const meters = response.body as Meter[];
             const sharedMeters: SharedMeter[] = [];
 
-            for (let index = 0; index < meters.length; index++) {
-              const meter = meters[index];
-              const response = await userService.getApiUserIdName({ id: meter.userId });
+            for (const meter of meters) {
+              const response = await userService.getApiUserIdName({
+                id: meter.userId,
+              });
               if (response.status === 200) {
                 const owner = response.body as string;
                 const sharedMeter: SharedMeter = { meter, owner: owner || '' };
@@ -58,7 +65,9 @@ export function withSharedMeters() {
           }
         },
         async shareMeter(meterId: number, username: string): Promise<boolean> {
-          const response = await meterService.postApiMeterShare({ body: { meterId, username } });
+          const response = await meterService.postApiMeterShare({
+            body: { meterId, username },
+          });
           if (response.status === 201) {
             messageService.add({
               severity: 'success',
@@ -82,8 +91,13 @@ export function withSharedMeters() {
           });
           return false;
         },
-        async revokeMeterShare(meterId: number, userId: number): Promise<boolean> {
-          const response = await meterService.deleteApiMeterRevoke({ body: { meterId, userId } });
+        async revokeMeterShare(
+          meterId: number,
+          userId: number
+        ): Promise<boolean> {
+          const response = await meterService.deleteApiMeterRevoke({
+            body: { meterId, userId },
+          });
           if (response.status === 204) {
             messageService.add({
               severity: 'success',
@@ -100,7 +114,9 @@ export function withSharedMeters() {
           return false;
         },
         async getSharedMeter(meterId: number): Promise<MeterShareDto[]> {
-          const response = await meterService.getApiMeterSharedMeterId({ meterId });
+          const response = await meterService.getApiMeterSharedMeterId({
+            meterId,
+          });
           if (response.status === 200) {
             return response.body as MeterShareDto[];
           }

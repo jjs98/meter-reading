@@ -1,9 +1,17 @@
-import { getState, signalState, signalStoreFeature, withMethods, withState } from '@ngrx/signals';
+import {
+  getState,
+  signalState,
+  signalStoreFeature,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 
 import { User } from '../../api/models';
 import { patch } from '../../utils/data-store.utils';
 
-interface UserState { user: User | undefined }
+interface UserState {
+  user: User | undefined;
+}
 
 const userState = signalState<UserState>({
   user: {
@@ -16,9 +24,10 @@ const userState = signalState<UserState>({
 export function withUser() {
   return signalStoreFeature(
     withState(userState),
-    withMethods(store => ({
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    withMethods((store) => ({
       setUser(user: User | undefined): void {
-        patch(store, draft => {
+        patch(store, (draft): void => {
           draft.user = user;
         });
       },

@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common';
-import { effect, inject, Injectable } from '@angular/core';
+import { Injectable, effect, inject } from '@angular/core';
 import { BaseTranslateService, TranslateKeys } from '@ngneers/signal-translate';
 import { PrimeNG } from 'primeng/config';
 
@@ -15,8 +15,10 @@ interface LangType {
   primengTranslations: typeof primengEn;
 }
 const langs: Record<string, () => Promise<LangType>> = {
-  en: () => import('../i18n/en').then(x => x.default),
-  de: () => import('../i18n/de').then(x => x.default),
+  en: (): Promise<LangType> =>
+    import('../i18n/en').then((x): LangType => x.default),
+  de: (): Promise<LangType> =>
+    import('../i18n/de').then((x): LangType => x.default),
 };
 
 const langLocalStorageKey = 'lang';
@@ -27,10 +29,10 @@ export type TranslationKey = TranslateKeys<typeof en, '_'>;
 export class TranslateService extends BaseTranslateService<typeof en> {
   private readonly _primengConfig = inject(PrimeNG);
 
-  constructor() {
+  public constructor() {
     super(['en', 'de'], getLocalStorage(langLocalStorageKey));
 
-    effect(() => {
+    effect((): void => {
       if (this.isLanguage(null)) {
         setLocalStorage(langLocalStorageKey, null);
       } else {
@@ -52,7 +54,8 @@ export class TranslateService extends BaseTranslateService<typeof en> {
   }
 
   protected override async loadTranslations(lang: string): Promise<typeof en> {
-    const { translations, locale, localeExtra, primengTranslations } = await langs[lang]();
+    const { translations, locale, localeExtra, primengTranslations } =
+      await langs[lang]();
     registerLocaleData(locale, lang, localeExtra);
     this._primengConfig.setTranslation(primengTranslations);
     return translations;

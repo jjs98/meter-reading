@@ -1,5 +1,10 @@
 import { inject } from '@angular/core';
-import { signalState, signalStoreFeature, withMethods, withState } from '@ngrx/signals';
+import {
+  signalState,
+  signalStoreFeature,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { MessageService } from 'primeng/api';
 
 import { Meter } from '../../api/models';
@@ -25,9 +30,10 @@ export function withMeters() {
         meterService = inject(MeterService),
         messageService = inject(MessageService),
         translations = inject(TranslateService).translations
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       ) => ({
         setMeters(meters: Meter[]): void {
-          patch(store, draft => {
+          patch(store, (draft): void => {
             draft.meters = meters;
           });
         },
@@ -83,7 +89,10 @@ export function withMeters() {
             });
             return false;
           }
-          const response = await meterService.putApiMeterId({ id: meter.id, body: meter });
+          const response = await meterService.putApiMeterId({
+            id: meter.id,
+            body: meter,
+          });
           if (response.status === 204) {
             await this.refreshMeters();
             messageService.add({

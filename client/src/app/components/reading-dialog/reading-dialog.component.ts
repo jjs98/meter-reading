@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  WritableSignal,
   computed,
   effect,
   inject,
   input,
   signal,
-  WritableSignal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -44,40 +44,39 @@ import { DataStore } from '../../store/data.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReadingDialogComponent {
-  protected readonly dataStore = inject(DataStore);
-  protected readonly translations = inject(TranslateService).translations;
-  private readonly messageService = inject(MessageService);
-  private readonly confirmationService = inject(ConfirmationService);
-
   public readonly meterId = input<number>();
   public readonly currentDate = new Date();
+  public existingReading: Reading | undefined = undefined;
+
+  protected readonly dataStore = inject(DataStore);
+  protected readonly translations = inject(TranslateService).translations;
 
   protected number: number | undefined = undefined;
   protected readingDate: WritableSignal<Date | undefined> = signal(undefined);
 
   protected dialogVisible = signal(false);
-  protected hasReadingForDate = computed(() => {
+  protected hasReadingForDate = computed((): boolean => {
     if (this.readingDate() === this.lastReadingDate) return false;
 
     const hasReading =
       this.dataStore
         .readings()
         .find(
-          (r) =>
+          (r): boolean =>
             new Date(r.readingDate).toISOString() ===
             this.readingDate()?.toISOString()
         ) !== undefined;
     return hasReading;
   });
 
+  private readonly messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
   private isEdit = false;
   private lastReadingDate: Date | undefined = undefined;
 
-  public existingReading: Reading | undefined = undefined;
-
-  constructor() {
+  public constructor() {
     effect(
-      () => {
+      (): void => {
         if (!this.dialogVisible()) {
           this.resetDialog();
         }
@@ -172,10 +171,12 @@ export class ReadingDialogComponent {
       acceptIcon: 'none',
       rejectIcon: 'none',
 
-      accept: () => {
+      accept: (): void => {
         this.deleteReading();
       },
-      reject: () => {},
+      reject: (): void => {
+        // Do nothing on reject
+      },
     });
   }
 

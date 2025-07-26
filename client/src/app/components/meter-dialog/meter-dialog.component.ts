@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  WritableSignal,
   effect,
   inject,
   signal,
-  WritableSignal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -40,10 +40,10 @@ import { DataStore } from '../../store/data.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeterDialogComponent {
+  public existingMeter: Meter | undefined = undefined;
+
   protected readonly dataStore = inject(DataStore);
   protected readonly translations = inject(TranslateService).translations;
-  private readonly messageService = inject(MessageService);
-  private readonly confirmationService = inject(ConfirmationService);
 
   protected location: string | undefined = undefined;
   protected meterNumber: string | undefined = undefined;
@@ -55,12 +55,12 @@ export class MeterDialogComponent {
 
   protected dialogVisible = signal(false);
 
+  private readonly messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
   private isEdit = false;
 
-  public existingMeter: Meter | undefined = undefined;
-
-  constructor() {
-    effect(() => {
+  public constructor() {
+    effect((): void => {
       if (!this.dialogVisible()) {
         this.resetDialog();
       }
@@ -164,23 +164,13 @@ export class MeterDialogComponent {
       acceptIcon: 'none',
       rejectIcon: 'none',
 
-      accept: () => {
+      accept: (): void => {
         this.revokeShare(sharedMeter);
       },
-      reject: () => {},
+      reject: (): void => {
+        // Do nothing on reject
+      },
     });
-  }
-
-  private async revokeShare(sharedMeter: MeterShareDto): Promise<void> {
-    if (sharedMeter && sharedMeter.userId && this.existingMeter?.id) {
-      const succeeded = await this.dataStore.revokeMeterShare(
-        this.existingMeter.id,
-        sharedMeter.userId
-      );
-      if (succeeded) {
-        this.refreshSharedMeter();
-      }
-    }
   }
 
   protected hasMeterChanged(): boolean {
@@ -207,11 +197,25 @@ export class MeterDialogComponent {
       acceptIcon: 'none',
       rejectIcon: 'none',
 
-      accept: () => {
+      accept: (): void => {
         this.deleteMeter();
       },
-      reject: () => {},
+      reject: (): void => {
+        // Do nothing on reject
+      },
     });
+  }
+
+  private async revokeShare(sharedMeter: MeterShareDto): Promise<void> {
+    if (sharedMeter && sharedMeter.userId && this.existingMeter?.id) {
+      const succeeded = await this.dataStore.revokeMeterShare(
+        this.existingMeter.id,
+        sharedMeter.userId
+      );
+      if (succeeded) {
+        this.refreshSharedMeter();
+      }
+    }
   }
 
   private async deleteMeter(): Promise<void> {

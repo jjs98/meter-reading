@@ -30,11 +30,11 @@ jobs:
       - run: pnpm build
         working-directory: ./client
         
-      # - run: pnpm lint
-      #   working-directory: ./client
+      - run: pnpm lint
+        working-directory: ./client
         
-      # - run: pnpm audit
-      #   working-directory: ./client
+      - run: pnpm audit
+        working-directory: ./client
 
       # - run: pnpm pw:install
         # working-directory: ./client

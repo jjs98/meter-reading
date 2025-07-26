@@ -17,7 +17,15 @@
   "dateFormat": "dd.mm.yy",
   "dateIs": "Datum ist",
   "dateIsNot": "Datum ist nicht",
-  "dayNames": ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+  "dayNames": [
+    "Sonntag",
+    "Montag",
+    "Dienstag",
+    "Mittwoch",
+    "Donnerstag",
+    "Freitag",
+    "Samstag"
+  ],
   "dayNamesMin": ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
   "dayNamesShort": ["Son", "Mon", "Die", "Mit", "Don", "Fre", "Sam"],
   "emptyFilterMessage": "Keine Ergebnisse gefunden",
