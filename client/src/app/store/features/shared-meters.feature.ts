@@ -5,11 +5,11 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { MessageService } from 'primeng/api';
 
 import { Meter, MeterShareDto } from '../../api/models';
 import { UserService } from '../../api/services';
 import { MeterService } from '../../api/services/meter.service';
+import { ToastService } from '../../services/toast.service';
 import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
@@ -35,7 +35,7 @@ export function withSharedMeters() {
         store,
         meterService = inject(MeterService),
         userService = inject(UserService),
-        messageService = inject(MessageService),
+        toastService = inject(ToastService),
         translations = inject(TranslateService).translations
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       ) => ({
@@ -69,7 +69,7 @@ export function withSharedMeters() {
             body: { meterId, username },
           });
           if (response.status === 201) {
-            messageService.add({
+            toastService.add({
               severity: 'success',
               summary: translations.success(),
               detail: translations.meterShare_success_add(),
@@ -77,14 +77,14 @@ export function withSharedMeters() {
             return true;
           }
           if (response.status === 404) {
-            messageService.add({
+            toastService.add({
               severity: 'error',
               summary: translations.error(),
               detail: translations.meterShare_error_notFound(),
             });
             return false;
           }
-          messageService.add({
+          toastService.add({
             severity: 'error',
             summary: translations.error(),
             detail: translations.meterShare_error_add(),
@@ -99,14 +99,14 @@ export function withSharedMeters() {
             body: { meterId, userId },
           });
           if (response.status === 204) {
-            messageService.add({
+            toastService.add({
               severity: 'success',
               summary: translations.success(),
               detail: translations.meterShare_success_delete(),
             });
             return true;
           }
-          messageService.add({
+          toastService.add({
             severity: 'error',
             summary: translations.error(),
             detail: translations.meterShare_error_delete(),

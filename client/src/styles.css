@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+@plugin "daisyui" {
+  themes: dark, light;
+}
 
 html,
 body {
@@ -10,6 +13,11 @@ body {
   font-size: 14px;
   @supports (font: -apple-system-body) {
     font: -apple-system-body;
+  }
+
+  input:focus {
+    outline: none;
+    outline-offset: 0;
   }
 }
 

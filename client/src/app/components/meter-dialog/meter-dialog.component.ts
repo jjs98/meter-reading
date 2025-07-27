@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -18,6 +18,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { Meter, MeterShareDto, MeterType } from '../../api/models';
+import { ToastService } from '../../services/toast.service';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 
@@ -55,7 +56,7 @@ export class MeterDialogComponent {
 
   protected dialogVisible = signal(false);
 
-  private readonly messageService = inject(MessageService);
+  private readonly toastService = inject(ToastService);
   private readonly confirmationService = inject(ConfirmationService);
   private isEdit = false;
 
@@ -96,7 +97,7 @@ export class MeterDialogComponent {
   protected async onSave(): Promise<void> {
     const userId = this.dataStore.user()?.id;
     if (!userId) {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: 'Error',
         detail: 'Could not determine User',
@@ -104,7 +105,7 @@ export class MeterDialogComponent {
       return;
     }
     if (!this.location || this.type === undefined) {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: 'Error',
         detail: 'Please fill out all fields',
@@ -221,7 +222,7 @@ export class MeterDialogComponent {
   private async deleteMeter(): Promise<void> {
     const meterId = this.existingMeter?.id;
     if (!meterId) {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: this.translations.error(),
         detail: this.translations.meter_error_determine(),
@@ -263,7 +264,7 @@ export class MeterDialogComponent {
   private async editMeter(): Promise<void> {
     const meter = this.existingMeter;
     if (!meter) {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: this.translations.error(),
         detail: this.translations.meter_error_determine(),

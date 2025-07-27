@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 
 import { environment } from '../environments/environment';
@@ -40,7 +40,6 @@ export const appConfig: ApplicationConfig = {
       multi: true,
     },
     provideApi({ rootUrl: environment.api.baseUrl }),
-    { provide: MessageService },
     { provide: ConfirmationService },
   ],
 };

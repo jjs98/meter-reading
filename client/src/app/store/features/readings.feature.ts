@@ -5,10 +5,10 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { MessageService } from 'primeng/api';
 
 import { Reading } from '../../api/models';
 import { ReadingService } from '../../api/services';
+import { ToastService } from '../../services/toast.service';
 import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
@@ -28,7 +28,7 @@ export function withReadings() {
       (
         store,
         readingService = inject(ReadingService),
-        messageService = inject(MessageService),
+        toastService = inject(ToastService),
         translations = inject(TranslateService).translations
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       ) => ({
@@ -56,14 +56,14 @@ export function withReadings() {
           });
           if (response.status === 201) {
             await this.refreshReadings(reading.meterId);
-            messageService.add({
+            toastService.add({
               severity: 'success',
               summary: translations.success(),
               detail: translations.reading_success_add(),
             });
             return true;
           }
-          messageService.add({
+          toastService.add({
             severity: 'error',
             summary: translations.error(),
             detail: translations.reading_error_add(),
@@ -79,14 +79,14 @@ export function withReadings() {
           });
           if (response.status === 204) {
             await this.refreshReadings(meterId);
-            messageService.add({
+            toastService.add({
               severity: 'success',
               summary: translations.success(),
               detail: translations.reading_success_delete(),
             });
             return true;
           }
-          messageService.add({
+          toastService.add({
             severity: 'error',
             summary: translations.error(),
             detail: translations.reading_error_delete(),
@@ -95,7 +95,7 @@ export function withReadings() {
         },
         async updateReading(reading: Reading): Promise<boolean> {
           if (!reading.id) {
-            messageService.add({
+            toastService.add({
               severity: 'error',
               summary: translations.error(),
               detail: translations.reading_error_readingIdMissing(),
@@ -108,14 +108,14 @@ export function withReadings() {
           });
           if (response.status === 204) {
             await this.refreshReadings(reading.meterId);
-            messageService.add({
+            toastService.add({
               severity: 'success',
               summary: translations.success(),
               detail: translations.reading_success_update(),
             });
             return true;
           }
-          messageService.add({
+          toastService.add({
             severity: 'error',
             summary: translations.error(),
             detail: translations.reading_error_update(),

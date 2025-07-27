@@ -16,10 +16,10 @@ import { DialogModule } from 'primeng/dialog';
 import { InputIconModule } from 'primeng/inputicon';
 import { MenubarModule } from 'primeng/menubar';
 import { TieredMenuModule } from 'primeng/tieredmenu';
-import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { ChangePasswordDialogComponent } from './components/change-password-dialog/change-password-dialog.component';
+import { ToastComponent } from './components/toast/toast.component';
 import { NavigationService } from './services/navigation.service';
 import { TranslateService } from './services/translate.service';
 import { DataStore } from './store/data.store';
@@ -38,8 +38,8 @@ import { DataStore } from './store/data.store';
     MenubarModule,
     RouterModule,
     TieredMenuModule,
-    ToastModule,
     TooltipModule,
+    ToastComponent,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',

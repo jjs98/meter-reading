@@ -1,3 +1,4 @@
+<app-toast></app-toast>
 <div class="flex h-full flex-col overflow-hidden">
   @if (dataStore.isTokenValid()) {
     <p-menubar styleClass="ml-2 mr-2 mt-2 p-4">
@@ -41,7 +42,6 @@
   </div>
 </div>
 
-<p-toast />
 <app-change-password-dialog></app-change-password-dialog>
 <p-confirmDialog #cd>
   <ng-template pTemplate="headless" let-message>

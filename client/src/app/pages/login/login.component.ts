@@ -7,35 +7,18 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { TooltipModule } from 'primeng/tooltip';
 
 import { TokenDto } from '../../api/models';
 import { AuthService } from '../../api/services/auth.service';
 import { NavigationService } from '../../services/navigation.service';
+import { ToastService } from '../../services/toast.service';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    ButtonModule,
-    CommonModule,
-    DialogModule,
-    FloatLabelModule,
-    FormsModule,
-    InputTextModule,
-    PasswordModule,
-    ProgressSpinnerModule,
-    TooltipModule,
-  ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,7 +33,7 @@ export class LoginComponent implements OnInit {
   private readonly dataStore = inject(DataStore);
   private readonly navigationService = inject(NavigationService);
   private readonly authService = inject(AuthService);
-  private readonly messageService = inject(MessageService);
+  private readonly toastService = inject(ToastService);
 
   public ngOnInit(): void {
     if (this.dataStore.isTokenValid()) {
@@ -90,7 +73,8 @@ export class LoginComponent implements OnInit {
       }
     }
     this.loading.set(false);
-    this.messageService.add({
+
+    this.toastService.add({
       severity: 'error',
       summary: this.translations.login_loginFailed(),
       detail: this.translations.login_loginInvalid(),

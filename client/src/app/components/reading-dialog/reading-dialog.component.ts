@@ -10,7 +10,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
@@ -21,6 +21,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { Reading } from '../../api/models';
+import { ToastService } from '../../services/toast.service';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 
@@ -69,7 +70,7 @@ export class ReadingDialogComponent {
     return hasReading;
   });
 
-  private readonly messageService = inject(MessageService);
+  private readonly toastService = inject(ToastService);
   private readonly confirmationService = inject(ConfirmationService);
   private isEdit = false;
   private lastReadingDate: Date | undefined = undefined;
@@ -113,7 +114,7 @@ export class ReadingDialogComponent {
   protected async onSave(): Promise<void> {
     const meterId = this.meterId();
     if (!meterId) {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: 'Error',
         detail: 'Could not determine Meter',
@@ -122,7 +123,7 @@ export class ReadingDialogComponent {
     }
     const readingDate = this.readingDate();
     if (this.number === undefined || !readingDate) {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: 'Error',
         detail: 'Please fill out all fields',
@@ -183,7 +184,7 @@ export class ReadingDialogComponent {
   private async deleteReading(): Promise<void> {
     const readingId = this.existingReading?.id;
     if (!readingId) {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: this.translations.error(),
         detail: this.translations.reading_error_determine(),
@@ -192,7 +193,7 @@ export class ReadingDialogComponent {
     }
     const meterId = this.meterId();
     if (!meterId) {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: this.translations.error(),
         detail: this.translations.meter_error_determine(),
@@ -227,7 +228,7 @@ export class ReadingDialogComponent {
   private async editReading(): Promise<void> {
     const reading = this.existingReading;
     if (!reading) {
-      this.messageService.add({
+      this.toastService.add({
         severity: 'error',
         summary: this.translations.error(),
         detail: this.translations.meter_error_determine(),

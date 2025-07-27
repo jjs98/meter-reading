@@ -5,10 +5,10 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { MessageService } from 'primeng/api';
 
 import { Meter } from '../../api/models';
 import { MeterService } from '../../api/services/meter.service';
+import { ToastService } from '../../services/toast.service';
 import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
@@ -28,7 +28,7 @@ export function withMeters() {
       (
         store,
         meterService = inject(MeterService),
-        messageService = inject(MessageService),
+        toastService = inject(ToastService),
         translations = inject(TranslateService).translations
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       ) => ({
@@ -48,14 +48,14 @@ export function withMeters() {
           const response = await meterService.postApiMeter({ body: meter });
           if (response.status === 201) {
             await this.refreshMeters();
-            messageService.add({
+            toastService.add({
               severity: 'success',
               summary: translations.success(),
               detail: translations.meter_success_add(),
             });
             return true;
           }
-          messageService.add({
+          toastService.add({
             severity: 'error',
             summary: translations.error(),
             detail: translations.meter_error_add(),
@@ -66,14 +66,14 @@ export function withMeters() {
           const response = await meterService.deleteApiMeterId({ id: meterId });
           if (response.status === 204) {
             await this.refreshMeters();
-            messageService.add({
+            toastService.add({
               severity: 'success',
               summary: translations.success(),
               detail: translations.meter_success_delete(),
             });
             return true;
           }
-          messageService.add({
+          toastService.add({
             severity: 'error',
             summary: translations.error(),
             detail: translations.meter_error_delete(),
@@ -82,7 +82,7 @@ export function withMeters() {
         },
         async updateMeter(meter: Meter): Promise<boolean> {
           if (!meter.id) {
-            messageService.add({
+            toastService.add({
               severity: 'error',
               summary: translations.error(),
               detail: translations.meter_error_meterIdMissing(),
@@ -95,14 +95,14 @@ export function withMeters() {
           });
           if (response.status === 204) {
             await this.refreshMeters();
-            messageService.add({
+            toastService.add({
               severity: 'success',
               summary: translations.success(),
               detail: translations.meter_success_update(),
             });
             return true;
           }
-          messageService.add({
+          toastService.add({
             severity: 'error',
             summary: translations.error(),
             detail: translations.meter_error_update(),
