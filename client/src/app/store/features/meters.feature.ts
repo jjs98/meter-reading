@@ -5,10 +5,10 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
+import { ToastService, ToastSeverity } from 'daisyui-toaster';
 
 import { Meter } from '../../api/models';
 import { MeterService } from '../../api/services/meter.service';
-import { ToastService } from '../../services/toast.service';
 import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
@@ -49,14 +49,14 @@ export function withMeters() {
           if (response.status === 201) {
             await this.refreshMeters();
             toastService.add({
-              severity: 'success',
+              severity: ToastSeverity.Success,
               summary: translations.success(),
               detail: translations.meter_success_add(),
             });
             return true;
           }
           toastService.add({
-            severity: 'error',
+            severity: ToastSeverity.Error,
             summary: translations.error(),
             detail: translations.meter_error_add(),
           });
@@ -67,14 +67,14 @@ export function withMeters() {
           if (response.status === 204) {
             await this.refreshMeters();
             toastService.add({
-              severity: 'success',
+              severity: ToastSeverity.Success,
               summary: translations.success(),
               detail: translations.meter_success_delete(),
             });
             return true;
           }
           toastService.add({
-            severity: 'error',
+            severity: ToastSeverity.Error,
             summary: translations.error(),
             detail: translations.meter_error_delete(),
           });
@@ -83,7 +83,7 @@ export function withMeters() {
         async updateMeter(meter: Meter): Promise<boolean> {
           if (!meter.id) {
             toastService.add({
-              severity: 'error',
+              severity: ToastSeverity.Error,
               summary: translations.error(),
               detail: translations.meter_error_meterIdMissing(),
             });
@@ -96,14 +96,14 @@ export function withMeters() {
           if (response.status === 204) {
             await this.refreshMeters();
             toastService.add({
-              severity: 'success',
+              severity: ToastSeverity.Success,
               summary: translations.success(),
               detail: translations.meter_success_update(),
             });
             return true;
           }
           toastService.add({
-            severity: 'error',
+            severity: ToastSeverity.Error,
             summary: translations.error(),
             detail: translations.meter_error_update(),
           });

@@ -5,10 +5,10 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
+import { ToastService, ToastSeverity } from 'daisyui-toaster';
 
 import { Reading } from '../../api/models';
 import { ReadingService } from '../../api/services';
-import { ToastService } from '../../services/toast.service';
 import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
@@ -57,14 +57,14 @@ export function withReadings() {
           if (response.status === 201) {
             await this.refreshReadings(reading.meterId);
             toastService.add({
-              severity: 'success',
+              severity: ToastSeverity.Success,
               summary: translations.success(),
               detail: translations.reading_success_add(),
             });
             return true;
           }
           toastService.add({
-            severity: 'error',
+            severity: ToastSeverity.Error,
             summary: translations.error(),
             detail: translations.reading_error_add(),
           });
@@ -80,14 +80,14 @@ export function withReadings() {
           if (response.status === 204) {
             await this.refreshReadings(meterId);
             toastService.add({
-              severity: 'success',
+              severity: ToastSeverity.Success,
               summary: translations.success(),
               detail: translations.reading_success_delete(),
             });
             return true;
           }
           toastService.add({
-            severity: 'error',
+            severity: ToastSeverity.Error,
             summary: translations.error(),
             detail: translations.reading_error_delete(),
           });
@@ -96,7 +96,7 @@ export function withReadings() {
         async updateReading(reading: Reading): Promise<boolean> {
           if (!reading.id) {
             toastService.add({
-              severity: 'error',
+              severity: ToastSeverity.Error,
               summary: translations.error(),
               detail: translations.reading_error_readingIdMissing(),
             });
@@ -109,14 +109,14 @@ export function withReadings() {
           if (response.status === 204) {
             await this.refreshReadings(reading.meterId);
             toastService.add({
-              severity: 'success',
+              severity: ToastSeverity.Success,
               summary: translations.success(),
               detail: translations.reading_success_update(),
             });
             return true;
           }
           toastService.add({
-            severity: 'error',
+            severity: ToastSeverity.Error,
             summary: translations.error(),
             detail: translations.reading_error_update(),
           });

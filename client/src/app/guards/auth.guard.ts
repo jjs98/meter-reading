@@ -5,9 +5,10 @@ import {
   CanActivateChild,
   RouterStateSnapshot,
 } from '@angular/router';
+import { ToastSeverity } from 'daisyui-toaster';
+import { ToastService } from 'daisyui-toaster';
 
 import { NavigationService } from '../services/navigation.service';
-import { ToastService } from '../services/toast.service';
 import { TranslateService } from '../services/translate.service';
 import { DataStore } from '../store/data.store';
 
@@ -39,7 +40,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       if (route.data['role'] && userRoles.indexOf(route.data['role']) === -1) {
         this.dataStore.deleteToken();
         this.toastService.add({
-          severity: 'error',
+          severity: ToastSeverity.Error,
           summary: this.translations.error(),
           detail: this.translations.login_error_noRights(),
         });

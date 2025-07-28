@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
+import { provideToastService } from 'daisyui-toaster';
 import { ConfirmationService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 
@@ -41,5 +42,6 @@ export const appConfig: ApplicationConfig = {
     },
     provideApi({ rootUrl: environment.api.baseUrl }),
     { provide: ConfirmationService },
+    provideToastService(),
   ],
 };

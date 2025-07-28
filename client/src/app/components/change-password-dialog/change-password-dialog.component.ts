@@ -7,6 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ToastService, ToastSeverity } from 'daisyui-toaster';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -16,7 +17,6 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { AuthService } from '../../api/services';
-import { ToastService } from '../../services/toast.service';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 
@@ -89,7 +89,7 @@ export class ChangePasswordDialogComponent {
 
     if (this.newPassword !== this.repeatNewPassword) {
       this.toastService.add({
-        severity: 'error',
+        severity: ToastSeverity.Error,
         summary: this.translations.login_passwordChangeFailed(),
         detail: this.translations.login_passwordRepeatInvalid(),
       });
@@ -107,7 +107,7 @@ export class ChangePasswordDialogComponent {
 
     if (response.status === 200) {
       this.toastService.add({
-        severity: 'success',
+        severity: ToastSeverity.Success,
         summary: this.translations.success(),
         detail: this.translations.login_passwordChangeSuccess(),
       });
@@ -117,7 +117,7 @@ export class ChangePasswordDialogComponent {
     this.oldPasswordValid = false;
     this.loading.set(false);
     this.toastService.add({
-      severity: 'error',
+      severity: ToastSeverity.Error,
       summary: this.translations.login_passwordChangeFailed(),
       detail: this.translations.login_passwordChangeInvalid(),
     });

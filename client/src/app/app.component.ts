@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { DaisyUiToasterComponent } from 'daisyui-toaster';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -19,7 +20,6 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { ChangePasswordDialogComponent } from './components/change-password-dialog/change-password-dialog.component';
-import { ToastComponent } from './components/toast/toast.component';
 import { NavigationService } from './services/navigation.service';
 import { TranslateService } from './services/translate.service';
 import { DataStore } from './store/data.store';
@@ -39,7 +39,7 @@ import { DataStore } from './store/data.store';
     RouterModule,
     TieredMenuModule,
     TooltipModule,
-    ToastComponent,
+    DaisyUiToasterComponent,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',

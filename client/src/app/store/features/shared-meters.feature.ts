@@ -5,11 +5,11 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
+import { ToastService, ToastSeverity } from 'daisyui-toaster';
 
 import { Meter, MeterShareDto } from '../../api/models';
 import { UserService } from '../../api/services';
 import { MeterService } from '../../api/services/meter.service';
-import { ToastService } from '../../services/toast.service';
 import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
@@ -70,7 +70,7 @@ export function withSharedMeters() {
           });
           if (response.status === 201) {
             toastService.add({
-              severity: 'success',
+              severity: ToastSeverity.Success,
               summary: translations.success(),
               detail: translations.meterShare_success_add(),
             });
@@ -78,14 +78,14 @@ export function withSharedMeters() {
           }
           if (response.status === 404) {
             toastService.add({
-              severity: 'error',
+              severity: ToastSeverity.Error,
               summary: translations.error(),
               detail: translations.meterShare_error_notFound(),
             });
             return false;
           }
           toastService.add({
-            severity: 'error',
+            severity: ToastSeverity.Error,
             summary: translations.error(),
             detail: translations.meterShare_error_add(),
           });
@@ -100,14 +100,14 @@ export function withSharedMeters() {
           });
           if (response.status === 204) {
             toastService.add({
-              severity: 'success',
+              severity: ToastSeverity.Success,
               summary: translations.success(),
               detail: translations.meterShare_success_delete(),
             });
             return true;
           }
           toastService.add({
-            severity: 'error',
+            severity: ToastSeverity.Error,
             summary: translations.error(),
             detail: translations.meterShare_error_delete(),
           });

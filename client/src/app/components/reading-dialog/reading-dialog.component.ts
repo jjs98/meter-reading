@@ -10,6 +10,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ToastService, ToastSeverity } from 'daisyui-toaster';
 import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -21,7 +22,6 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { Reading } from '../../api/models';
-import { ToastService } from '../../services/toast.service';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 
@@ -115,7 +115,7 @@ export class ReadingDialogComponent {
     const meterId = this.meterId();
     if (!meterId) {
       this.toastService.add({
-        severity: 'error',
+        severity: ToastSeverity.Error,
         summary: 'Error',
         detail: 'Could not determine Meter',
       });
@@ -124,7 +124,7 @@ export class ReadingDialogComponent {
     const readingDate = this.readingDate();
     if (this.number === undefined || !readingDate) {
       this.toastService.add({
-        severity: 'error',
+        severity: ToastSeverity.Error,
         summary: 'Error',
         detail: 'Please fill out all fields',
       });
@@ -185,7 +185,7 @@ export class ReadingDialogComponent {
     const readingId = this.existingReading?.id;
     if (!readingId) {
       this.toastService.add({
-        severity: 'error',
+        severity: ToastSeverity.Error,
         summary: this.translations.error(),
         detail: this.translations.reading_error_determine(),
       });
@@ -194,7 +194,7 @@ export class ReadingDialogComponent {
     const meterId = this.meterId();
     if (!meterId) {
       this.toastService.add({
-        severity: 'error',
+        severity: ToastSeverity.Error,
         summary: this.translations.error(),
         detail: this.translations.meter_error_determine(),
       });
@@ -229,7 +229,7 @@ export class ReadingDialogComponent {
     const reading = this.existingReading;
     if (!reading) {
       this.toastService.add({
-        severity: 'error',
+        severity: ToastSeverity.Error,
         summary: this.translations.error(),
         detail: this.translations.meter_error_determine(),
       });

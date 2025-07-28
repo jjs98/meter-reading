@@ -8,6 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ToastService, ToastSeverity } from 'daisyui-toaster';
 import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -18,7 +19,6 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { Meter, MeterShareDto, MeterType } from '../../api/models';
-import { ToastService } from '../../services/toast.service';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 
@@ -98,7 +98,7 @@ export class MeterDialogComponent {
     const userId = this.dataStore.user()?.id;
     if (!userId) {
       this.toastService.add({
-        severity: 'error',
+        severity: ToastSeverity.Error,
         summary: 'Error',
         detail: 'Could not determine User',
       });
@@ -106,7 +106,7 @@ export class MeterDialogComponent {
     }
     if (!this.location || this.type === undefined) {
       this.toastService.add({
-        severity: 'error',
+        severity: ToastSeverity.Error,
         summary: 'Error',
         detail: 'Please fill out all fields',
       });
@@ -223,7 +223,7 @@ export class MeterDialogComponent {
     const meterId = this.existingMeter?.id;
     if (!meterId) {
       this.toastService.add({
-        severity: 'error',
+        severity: ToastSeverity.Error,
         summary: this.translations.error(),
         detail: this.translations.meter_error_determine(),
       });
@@ -265,7 +265,7 @@ export class MeterDialogComponent {
     const meter = this.existingMeter;
     if (!meter) {
       this.toastService.add({
-        severity: 'error',
+        severity: ToastSeverity.Error,
         summary: this.translations.error(),
         detail: this.translations.meter_error_determine(),
       });
