@@ -54,8 +54,8 @@ importers:
         specifier: ^4.5.0
         version: 4.5.0
       daisyui-toaster:
-        specifier: ^0.0.5
-        version: 0.0.5(@angular/common@20.1.6(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.2)(zone.js@0.15.1))(daisyui@5.0.50)(tailwindcss@4.1.11)
+        specifier: ^0.0.7
+        version: 0.0.7(@angular/common@20.1.6(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.2)(zone.js@0.15.1))(daisyui@5.0.50)(tailwindcss@4.1.11)
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
@@ -2001,8 +2001,8 @@ packages:
     resolution: {integrity: sha512-u/O3vwbptzhMs3L1fQE82ZSLHQQfto5gyZzwteVIEyeaY5Fc7R4dapF/BvRoSYFeqfBk4m0V1Vafq5Pjv25wvA==}
     engines: {node: '>= 6'}
 
-  daisyui-toaster@0.0.5:
-    resolution: {integrity: sha512-hD/SbRHkphEjwpcQ70P5rp+4ALD1mJliNiUmd2HLKU38Pxb3+q4rTmyP97PRc5ZUZm+6xLDaXReq9dFkS1n+Vg==}
+  daisyui-toaster@0.0.7:
+    resolution: {integrity: sha512-dlNY/38Emg6MSd5hcI4tPVWkPVAhTa6qHk4KHuqY3/8rNY2AoDXgbtLpMsn87d6KzGg1+fYxDA1CyYSTBKde6g==}
     peerDependencies:
       '@angular/common': ^20.1.0
       '@angular/core': ^20.1.0
@@ -5955,7 +5955,7 @@ snapshots:
 
   css-what@6.2.2: {}
 
-  daisyui-toaster@0.0.5(@angular/common@20.1.6(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.2)(zone.js@0.15.1))(daisyui@5.0.50)(tailwindcss@4.1.11):
+  daisyui-toaster@0.0.7(@angular/common@20.1.6(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.2)(zone.js@0.15.1))(daisyui@5.0.50)(tailwindcss@4.1.11):
     dependencies:
       '@angular/common': 20.1.6(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       '@angular/core': 20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.2)(zone.js@0.15.1)
