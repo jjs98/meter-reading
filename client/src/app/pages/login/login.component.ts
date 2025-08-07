@@ -78,6 +78,7 @@ export class LoginComponent implements OnInit {
       severity: ToastSeverity.Error,
       summary: this.translations.login_loginFailed(),
       detail: this.translations.login_loginInvalid(),
+      closeOnClick: true,
     });
   }
 
