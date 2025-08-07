@@ -1,1 +1,0 @@
-node ./hooks/add-emoji-to-commit-message.js "$@"
