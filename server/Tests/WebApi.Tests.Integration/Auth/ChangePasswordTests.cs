@@ -5,11 +5,12 @@ using FluentAssertions;
 
 namespace WebApi.Tests.Integration.Auth;
 
-public class ChangePasswordTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFactory>
+[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
+public class ChangePasswordTests(WebApiFactory webApiFactory)
 {
     private readonly HttpClient _client = webApiFactory.CreateClient();
 
-    [Fact]
+    [Test]
     public async Task ChangePassword_ReturnsOk_WhenUserExistAndPasswordIsCorrect()
     {
         // Arrange
@@ -26,7 +27,7 @@ public class ChangePasswordTests(WebApiFactory webApiFactory) : IClassFixture<We
         var changePassword = new ChangePasswordDto
         {
             OldPassword = user.Password,
-            NewPassword = newPassword
+            NewPassword = newPassword,
         };
 
         // Act
@@ -42,7 +43,7 @@ public class ChangePasswordTests(WebApiFactory webApiFactory) : IClassFixture<We
         token.Token.Should().NotBeNullOrEmpty();
     }
 
-    [Fact]
+    [Test]
     public async Task ChangePassword_ReturnsUnauthorized_WhenUserExistAndPasswordIsIncorrect()
     {
         // Arrange
@@ -57,7 +58,7 @@ public class ChangePasswordTests(WebApiFactory webApiFactory) : IClassFixture<We
         var changePassword = new ChangePasswordDto
         {
             OldPassword = "wrongPassword",
-            NewPassword = "newPassword"
+            NewPassword = "newPassword",
         };
 
         // Act
@@ -69,14 +70,14 @@ public class ChangePasswordTests(WebApiFactory webApiFactory) : IClassFixture<We
         message.Should().Be("Invalid credentials");
     }
 
-    [Fact]
+    [Test]
     public async Task ChangePassword_ReturnsUnauthorized_WhenNoBearerTokenExist()
     {
         // Arrange
         var changePassword = new ChangePasswordDto
         {
             OldPassword = "wrongPassword",
-            NewPassword = "newPassword"
+            NewPassword = "newPassword",
         };
 
         // Act

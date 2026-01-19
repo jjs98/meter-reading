@@ -5,11 +5,12 @@ using FluentAssertions;
 
 namespace WebApi.Tests.Integration.Auth;
 
-public class LoginTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFactory>
+[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
+public class LoginTests(WebApiFactory webApiFactory)
 {
     private readonly HttpClient _client = webApiFactory.CreateClient();
 
-    [Fact]
+    [Test]
     public async Task Login_ReturnsToken_WhenUserExist()
     {
         // Arrange
@@ -27,7 +28,7 @@ public class LoginTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFacto
         token.Token.Should().NotBeNullOrEmpty();
     }
 
-    [Fact]
+    [Test]
     public async Task Login_ReturnsUnauthorized_WhenWrongPasswordIsUsed()
     {
         // Arrange
@@ -44,7 +45,7 @@ public class LoginTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFacto
         message.Should().Be("Invalid credentials");
     }
 
-    [Fact]
+    [Test]
     public async Task Login_ReturnsUnauthorized_WhenUserDoesNotExist()
     {
         // Arrange

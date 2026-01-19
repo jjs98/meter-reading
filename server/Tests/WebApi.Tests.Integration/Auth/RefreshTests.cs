@@ -5,11 +5,12 @@ using FluentAssertions;
 
 namespace WebApi.Tests.Integration.Auth;
 
-public class RefreshTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFactory>
+[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
+public class RefreshTests(WebApiFactory webApiFactory)
 {
     private readonly HttpClient _client = webApiFactory.CreateClient();
 
-    [Fact]
+    [Test]
     public async Task Refresh_ReturnsToken_WhenUserExist()
     {
         // Arrange
@@ -31,7 +32,7 @@ public class RefreshTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFac
         token.Token.Should().NotBeNullOrEmpty();
     }
 
-    [Fact]
+    [Test]
     public async Task Refresh_ReturnsUnauthorized_WhenNoBearerTokenExist()
     {
         // Act

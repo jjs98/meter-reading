@@ -4,11 +4,12 @@ using FluentAssertions;
 
 namespace WebApi.Tests.Integration.Auth;
 
-public class HashPasswordTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFactory>
+[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
+public class HashPasswordTests(WebApiFactory webApiFactory)
 {
     private readonly HttpClient _client = webApiFactory.CreateClient();
 
-    [Fact]
+    [Test]
     public async Task HashPassword_ReturnsHashedPassword()
     {
         // Arrange

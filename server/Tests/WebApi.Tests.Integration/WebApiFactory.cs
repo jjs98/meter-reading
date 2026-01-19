@@ -1,19 +1,20 @@
 using Bogus;
 using Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Npgsql;
 using Testcontainers.PostgreSql;
+using TUnit.AspNetCore;
+using TUnit.Core.Interfaces;
 
 namespace WebApi.Tests.Integration;
 
-public class WebApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
+public class WebApiFactory : TestWebApplicationFactory<Program>, IAsyncInitializer, IAsyncDisposable
 {
-    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
+    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder("postgres")
         .WithPortBinding(5432, true)
         .Build();
 
@@ -52,7 +53,7 @@ public class WebApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
             Username = "admin",
             Password = "password",
             HashedPassword = BCrypt.Net.BCrypt.HashPassword("password"),
-            Role = "Admin"
+            Role = "Admin",
         };
 
     public TestUser GetTestUser()
