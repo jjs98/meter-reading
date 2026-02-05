@@ -19,5 +19,8 @@ public class SharedMetersConfig : IEntityTypeConfiguration<SharedMeter>
         builder.Property(m => m.UserId).IsRequired();
 
         builder.HasIndex(m => new { m.MeterId, m.UserId }).IsUnique();
+
+        builder.HasOne(m => m.Meter).WithMany(m => m.SharedMeters).HasForeignKey(m => m.MeterId);
+        builder.HasOne(m => m.User).WithMany(u => u.SharedMeters).HasForeignKey(m => m.UserId);
     }
 }

@@ -5,18 +5,14 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Npgsql;
-using Testcontainers.PostgreSql;
 using TUnit.AspNetCore;
-using TUnit.Core.Interfaces;
 
 namespace WebApi.Tests.Integration;
 
-public class WebApiFactory : TestWebApplicationFactory<Program>, IAsyncInitializer, IAsyncDisposable
+public class WebApiFactory : TestWebApplicationFactory<Program>
 {
-    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder("postgres")
-        .WithPortBinding(5432, true)
-        .Build();
+    [ClassDataSource<TestDatabase>(Shared = SharedType.PerTestSession)]
+    public required TestDatabase Database { get; init; } = null!;
 
     private readonly Faker<TestUser> _userGenerator = new Faker<TestUser>()
         .RuleFor(u => u.Username, f => f.Person.UserName)
@@ -28,23 +24,13 @@ public class WebApiFactory : TestWebApplicationFactory<Program>, IAsyncInitializ
     {
         builder.ConfigureTestServices(services =>
         {
-            services.RemoveAll<AppDbContext>();
+            services.RemoveAll<IDbContextFactory<AppDbContext>>();
 
-            services.AddPooledDbContextFactory<AppDbContext>(options =>
+            services.AddDbContextFactory<AppDbContext>(options =>
             {
-                options.UseNpgsql(_dbContainer.GetConnectionString());
+                options.UseNpgsql(Database.DbContainer.GetConnectionString());
             });
         });
-    }
-
-    public async Task InitializeAsync()
-    {
-        await _dbContainer.StartAsync();
-    }
-
-    public new async Task DisposeAsync()
-    {
-        await _dbContainer.DisposeAsync();
     }
 
     public static TestUser GetAdminUser() =>
@@ -60,34 +46,6 @@ public class WebApiFactory : TestWebApplicationFactory<Program>, IAsyncInitializ
     {
         var user = _userGenerator.Generate();
         return user;
-    }
-
-    public async Task CreateTestUserAsync(TestUser user)
-    {
-        await using var dataSource = NpgsqlDataSource.Create(_dbContainer.GetConnectionString());
-        await using var command = dataSource.CreateCommand();
-        command.CommandText = $"""
-            INSERT INTO "Users" ("Username", "Password", "CreateDate")
-            SELECT '{user.Username}', '{user.HashedPassword}', NOW()
-            WHERE NOT EXISTS (SELECT 1 FROM "Users" WHERE "Username" = '{user.Username}');
-
-            INSERT INTO "Roles" ("Name", "CreateDate")
-            SELECT '{user.Role}', NOW()
-            WHERE NOT EXISTS (SELECT 1 FROM "Roles" WHERE "Name" = '{user.Role}');
-
-            DO $$
-            DECLARE
-                RoleId integer = "Id" FROM "Roles" WHERE "Name" = '{user.Role}';
-                UserId integer = "Id" FROM "Users" WHERE "Username" = '{user.Username}';
-
-            BEGIN
-                INSERT INTO "UserRoles" ("RoleId", "UserId", "CreateDate")
-                SELECT RoleId, UserId, NOW()
-                WHERE NOT EXISTS (SELECT 1 FROM "UserRoles" WHERE "RoleId" = RoleId AND "UserId" = UserId);
-            END $$;
-            """;
-
-        await command.ExecuteNonQueryAsync();
     }
 
     public class TestUser

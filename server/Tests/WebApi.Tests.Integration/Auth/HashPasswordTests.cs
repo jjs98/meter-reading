@@ -7,16 +7,15 @@ namespace WebApi.Tests.Integration.Auth;
 [ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
 public class HashPasswordTests(WebApiFactory webApiFactory)
 {
-    private readonly HttpClient _client = webApiFactory.CreateClient();
-
     [Test]
     public async Task HashPassword_ReturnsHashedPassword()
     {
         // Arrange
+        using var client = webApiFactory.CreateClient();
         var password = "password";
 
         // Act
-        var response = await _client.PostAsJsonAsync("api/auth/hash", password);
+        var response = await client.PostAsJsonAsync("api/auth/hash", password);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);

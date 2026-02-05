@@ -8,18 +8,17 @@ namespace WebApi.Tests.Integration.Auth;
 [ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
 public class LoginTests(WebApiFactory webApiFactory)
 {
-    private readonly HttpClient _client = webApiFactory.CreateClient();
-
     [Test]
     public async Task Login_ReturnsToken_WhenUserExist()
     {
         // Arrange
+        using var client = webApiFactory.CreateClient();
         var user = webApiFactory.GetTestUser();
-        await webApiFactory.CreateTestUserAsync(user);
+        await webApiFactory.Database.CreateTestUserAsync(user);
         var login = new UserLoginDto { Username = user.Username, Password = user.Password };
 
         // Act
-        var response = await _client.PostAsJsonAsync("api/auth/login", login);
+        var response = await client.PostAsJsonAsync("api/auth/login", login);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -32,12 +31,13 @@ public class LoginTests(WebApiFactory webApiFactory)
     public async Task Login_ReturnsUnauthorized_WhenWrongPasswordIsUsed()
     {
         // Arrange
+        using var client = webApiFactory.CreateClient();
         var user = webApiFactory.GetTestUser();
-        await webApiFactory.CreateTestUserAsync(user);
+        await webApiFactory.Database.CreateTestUserAsync(user);
         var login = new UserLoginDto { Username = user.Username, Password = "wrongpassword" };
 
         // Act
-        var response = await _client.PostAsJsonAsync("api/auth/login", login);
+        var response = await client.PostAsJsonAsync("api/auth/login", login);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
@@ -49,10 +49,11 @@ public class LoginTests(WebApiFactory webApiFactory)
     public async Task Login_ReturnsUnauthorized_WhenUserDoesNotExist()
     {
         // Arrange
+        using var client = webApiFactory.CreateClient();
         var login = new UserLoginDto { Username = "nonexistent", Password = "nonexistent" };
 
         // Act
-        var response = await _client.PostAsJsonAsync("api/auth/login", login);
+        var response = await client.PostAsJsonAsync("api/auth/login", login);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);

@@ -8,19 +8,18 @@ namespace WebApi.Tests.Integration.Auth;
 [ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
 public class ChangePasswordTests(WebApiFactory webApiFactory)
 {
-    private readonly HttpClient _client = webApiFactory.CreateClient();
-
     [Test]
     public async Task ChangePassword_ReturnsOk_WhenUserExistAndPasswordIsCorrect()
     {
         // Arrange
+        using var client = webApiFactory.CreateClient();
         var user = webApiFactory.GetTestUser();
-        await webApiFactory.CreateTestUserAsync(user);
+        await webApiFactory.Database.CreateTestUserAsync(user);
         var login = new UserLoginDto { Username = user.Username, Password = user.Password };
-        var loginResponse = await _client.PostAsJsonAsync("api/auth/login", login);
+        var loginResponse = await client.PostAsJsonAsync("api/auth/login", login);
         var loginToken = await loginResponse.Content.ReadFromJsonAsync<TokenDto>();
 
-        _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
 
         var newPassword = "newPassword";
 
@@ -31,13 +30,13 @@ public class ChangePasswordTests(WebApiFactory webApiFactory)
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("api/auth/changePassword", changePassword);
+        var response = await client.PostAsJsonAsync("api/auth/changePassword", changePassword);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var newLogin = new UserLoginDto { Username = user.Username, Password = newPassword };
-        var newLoginResponse = await _client.PostAsJsonAsync("api/auth/login", newLogin);
+        var newLoginResponse = await client.PostAsJsonAsync("api/auth/login", newLogin);
         var token = await newLoginResponse.Content.ReadFromJsonAsync<TokenDto>();
         token.Should().NotBeNull();
         token.Token.Should().NotBeNullOrEmpty();
@@ -47,13 +46,14 @@ public class ChangePasswordTests(WebApiFactory webApiFactory)
     public async Task ChangePassword_ReturnsUnauthorized_WhenUserExistAndPasswordIsIncorrect()
     {
         // Arrange
+        using var client = webApiFactory.CreateClient();
         var user = webApiFactory.GetTestUser();
-        await webApiFactory.CreateTestUserAsync(user);
+        await webApiFactory.Database.CreateTestUserAsync(user);
         var login = new UserLoginDto { Username = user.Username, Password = user.Password };
-        var loginResponse = await _client.PostAsJsonAsync("api/auth/login", login);
+        var loginResponse = await client.PostAsJsonAsync("api/auth/login", login);
         var loginToken = await loginResponse.Content.ReadFromJsonAsync<TokenDto>();
 
-        _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
 
         var changePassword = new ChangePasswordDto
         {
@@ -62,7 +62,7 @@ public class ChangePasswordTests(WebApiFactory webApiFactory)
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("api/auth/changePassword", changePassword);
+        var response = await client.PostAsJsonAsync("api/auth/changePassword", changePassword);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
@@ -74,6 +74,7 @@ public class ChangePasswordTests(WebApiFactory webApiFactory)
     public async Task ChangePassword_ReturnsUnauthorized_WhenNoBearerTokenExist()
     {
         // Arrange
+        using var client = webApiFactory.CreateClient();
         var changePassword = new ChangePasswordDto
         {
             OldPassword = "wrongPassword",
@@ -81,7 +82,7 @@ public class ChangePasswordTests(WebApiFactory webApiFactory)
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("api/auth/changePassword", changePassword);
+        var response = await client.PostAsJsonAsync("api/auth/changePassword", changePassword);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);

@@ -8,22 +8,21 @@ namespace WebApi.Tests.Integration.Auth;
 [ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
 public class RefreshTests(WebApiFactory webApiFactory)
 {
-    private readonly HttpClient _client = webApiFactory.CreateClient();
-
     [Test]
     public async Task Refresh_ReturnsToken_WhenUserExist()
     {
         // Arrange
+        using var client = webApiFactory.CreateClient();
         var user = webApiFactory.GetTestUser();
-        await webApiFactory.CreateTestUserAsync(user);
+        await webApiFactory.Database.CreateTestUserAsync(user);
         var login = new UserLoginDto { Username = user.Username, Password = user.Password };
-        var loginResponse = await _client.PostAsJsonAsync("api/auth/login", login);
+        var loginResponse = await client.PostAsJsonAsync("api/auth/login", login);
         var loginToken = await loginResponse.Content.ReadFromJsonAsync<TokenDto>();
 
-        _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
 
         // Act
-        var response = await _client.PostAsync("api/auth/refresh", null);
+        var response = await client.PostAsync("api/auth/refresh", null);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -35,8 +34,11 @@ public class RefreshTests(WebApiFactory webApiFactory)
     [Test]
     public async Task Refresh_ReturnsUnauthorized_WhenNoBearerTokenExist()
     {
+        // Arrange
+        using var client = webApiFactory.CreateClient();
+
         // Act
-        var response = await _client.PostAsync("api/auth/refresh", null);
+        var response = await client.PostAsync("api/auth/refresh", null);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);

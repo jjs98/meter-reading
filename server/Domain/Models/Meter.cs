@@ -10,4 +10,5 @@ public class Meter : DbEntity
     public string? Addition { get; set; }
     public MeterType Type { get; set; }
     public IEnumerable<Reading>? Readings { get; set; }
+    public IEnumerable<SharedMeter>? SharedMeters { get; set; }
 }

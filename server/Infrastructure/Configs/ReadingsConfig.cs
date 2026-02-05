@@ -20,5 +20,7 @@ public class ReadingsConfig : IEntityTypeConfiguration<Reading>
         builder.Property(m => m.ReadingDate).IsRequired();
 
         builder.HasIndex(m => new { m.MeterId, m.ReadingDate }).IsUnique();
+
+        builder.HasOne(m => m.Meter).WithMany(m => m.Readings).HasForeignKey(m => m.MeterId);
     }
 }
