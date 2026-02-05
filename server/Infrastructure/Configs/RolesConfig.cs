@@ -10,11 +10,13 @@ public class RolesConfig : IEntityTypeConfiguration<Role>
     {
         builder.ToTable("Roles");
 
-        builder.HasKey(m => new { m.Id, m.Name, });
-        builder.Property(m => m.Id).UseIdentityColumn();
-        builder.Property(m => m.CreateDate);
-        builder.Property(m => m.UpdateDate);
+        builder.HasKey(role => role.Id);
+        builder.Property(role => role.Id).UseIdentityColumn();
+        builder.Property(role => role.CreateDate);
+        builder.Property(role => role.UpdateDate);
 
-        builder.Property(m => m.Name).IsRequired();
+        builder.HasIndex(role => role.Name).IsUnique();
+
+        builder.Property(role => role.Name).IsRequired();
     }
 }

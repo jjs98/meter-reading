@@ -10,14 +10,17 @@ public class SharedMetersConfig : IEntityTypeConfiguration<SharedMeter>
     {
         builder.ToTable("SharedMeters");
 
-        builder.HasKey(m => m.Id);
-        builder.Property(m => m.Id).UseIdentityColumn();
-        builder.Property(m => m.CreateDate);
-        builder.Property(m => m.UpdateDate);
+        builder.HasKey(sharedMeter => sharedMeter.Id);
+        builder.Property(sharedMeter => sharedMeter.Id).UseIdentityColumn();
+        builder.Property(sharedMeter => sharedMeter.CreateDate);
+        builder.Property(sharedMeter => sharedMeter.UpdateDate);
 
-        builder.Property(m => m.MeterId).IsRequired();
-        builder.Property(m => m.UserId).IsRequired();
+        builder.Property(sharedMeter => sharedMeter.MeterId).IsRequired();
+        builder.Property(sharedMeter => sharedMeter.UserId).IsRequired();
 
-        builder.HasIndex(m => new { m.MeterId, m.UserId }).IsUnique();
+        builder.HasIndex(sharedMeter => new { sharedMeter.MeterId, sharedMeter.UserId }).IsUnique();
+
+        builder.HasOne(sharedMeter => sharedMeter.Meter).WithMany(meter => meter.SharedMeters).HasForeignKey(sharedMeter => sharedMeter.MeterId);
+        builder.HasOne(sharedMeter => sharedMeter.User).WithMany(user => user.SharedMeters).HasForeignKey(sharedMeter => sharedMeter.UserId);
     }
 }

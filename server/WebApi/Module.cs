@@ -3,7 +3,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace WebApi;
 
@@ -71,17 +71,10 @@ public static class Module
                 Description = "Enter 'Bearer' [space] and then your valid token",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
-                Scheme = "Bearer"
+                Scheme = "Bearer",
             };
 
             c.AddSecurityDefinition("Bearer", securitySchema);
-
-            var securityRequirement = new OpenApiSecurityRequirement
-            {
-                { securitySchema, ["Bearer"] }
-            };
-
-            c.AddSecurityRequirement(securityRequirement);
         });
 
         services.AddAuthorization();

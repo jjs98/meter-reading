@@ -2,27 +2,31 @@
 using System.Net.Http.Json;
 using Application.DTOs;
 using FluentAssertions;
+using WebApi.Tests.Integration.Builder;
 
 namespace WebApi.Tests.Integration.Auth;
 
-public class RefreshTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFactory>
+[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
+public class RefreshTests(WebApiFactory webApiFactory)
 {
-    private readonly HttpClient _client = webApiFactory.CreateClient();
-
-    [Fact]
+    [Test]
     public async Task Refresh_ReturnsToken_WhenUserExist()
     {
         // Arrange
+        using var client = webApiFactory.CreateClient();
         var user = webApiFactory.GetTestUser();
-        await webApiFactory.CreateTestUserAsync(user);
+        var dbContext = webApiFactory.CreateDbContext();
+        var userBuilder = new UserBuilder(dbContext);
+        var userData = userBuilder.WithUser(user).Build();
+
         var login = new UserLoginDto { Username = user.Username, Password = user.Password };
-        var loginResponse = await _client.PostAsJsonAsync("api/auth/login", login);
+        var loginResponse = await client.PostAsJsonAsync("api/auth/login", login);
         var loginToken = await loginResponse.Content.ReadFromJsonAsync<TokenDto>();
 
-        _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
 
         // Act
-        var response = await _client.PostAsync("api/auth/refresh", null);
+        var response = await client.PostAsync("api/auth/refresh", null);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -31,11 +35,14 @@ public class RefreshTests(WebApiFactory webApiFactory) : IClassFixture<WebApiFac
         token.Token.Should().NotBeNullOrEmpty();
     }
 
-    [Fact]
+    [Test]
     public async Task Refresh_ReturnsUnauthorized_WhenNoBearerTokenExist()
     {
+        // Arrange
+        using var client = webApiFactory.CreateClient();
+
         // Act
-        var response = await _client.PostAsync("api/auth/refresh", null);
+        var response = await client.PostAsync("api/auth/refresh", null);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);

@@ -10,16 +10,16 @@ public class UsersConfig : IEntityTypeConfiguration<User>
     {
         builder.ToTable("Users");
 
-        builder.HasKey(m => m.Id);
-        builder.Property(m => m.Id).UseIdentityColumn();
-        builder.Property(m => m.CreateDate);
-        builder.Property(m => m.UpdateDate);
+        builder.HasKey(user => user.Id);
+        builder.Property(user => user.Id).UseIdentityColumn();
+        builder.Property(user => user.CreateDate);
+        builder.Property(user => user.UpdateDate);
 
-        builder.Property(m => m.Username).IsRequired();
-        builder.Property(m => m.Password).IsRequired();
+        builder.Property(user => user.Username).IsRequired();
+        builder.Property(user => user.Password).IsRequired();
 
-        builder.Property(m => m.FirstName);
-        builder.Property(m => m.LastName);
-        builder.Property(m => m.Email);
+        builder.Property(user => user.FirstName);
+        builder.Property(user => user.LastName);
+        builder.Property(user => user.Email);
     }
 }

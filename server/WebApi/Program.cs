@@ -1,11 +1,12 @@
 using Application;
 using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApi;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,12 @@ public class Program
         if (app.Environment.IsDevelopment()) { }
         app.UseSwagger();
         app.UseSwaggerUI();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                await db.Database.MigrateAsync();
+            }
 
         app.Run();
     }
