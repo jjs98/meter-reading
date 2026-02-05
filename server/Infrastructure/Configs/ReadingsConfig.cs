@@ -10,17 +10,17 @@ public class ReadingsConfig : IEntityTypeConfiguration<Reading>
     {
         builder.ToTable("Readings");
 
-        builder.HasKey(m => m.Id);
-        builder.Property(m => m.Id).UseIdentityColumn();
-        builder.Property(m => m.CreateDate);
-        builder.Property(m => m.UpdateDate);
+        builder.HasKey(reading => reading.Id);
+        builder.Property(reading => reading.Id).UseIdentityColumn();
+        builder.Property(reading => reading.CreateDate);
+        builder.Property(reading => reading.UpdateDate);
 
-        builder.Property(m => m.MeterId).IsRequired();
-        builder.Property(m => m.Number).IsRequired();
-        builder.Property(m => m.ReadingDate).IsRequired();
+        builder.Property(reading => reading.MeterId).IsRequired();
+        builder.Property(reading => reading.Number).IsRequired();
+        builder.Property(reading => reading.ReadingDate).IsRequired();
 
-        builder.HasIndex(m => new { m.MeterId, m.ReadingDate }).IsUnique();
+        builder.HasIndex(reading => new { reading.MeterId, reading.ReadingDate }).IsUnique();
 
-        builder.HasOne(m => m.Meter).WithMany(m => m.Readings).HasForeignKey(m => m.MeterId);
+        builder.HasOne(reading => reading.Meter).WithMany(meter => meter.Readings).HasForeignKey(reading => reading.MeterId);
     }
 }

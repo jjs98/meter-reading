@@ -10,15 +10,18 @@ public class UserRolesConfig : IEntityTypeConfiguration<UserRole>
     {
         builder.ToTable("UserRoles");
 
-        builder.HasKey(m => new { m.UserId, m.RoleId });
-        builder.Property(m => m.Id).UseIdentityColumn();
-        builder.Property(m => m.CreateDate);
-        builder.Property(m => m.UpdateDate);
+        builder.HasKey(userRole => new { userRole.UserId, userRole.RoleId });
+        builder.Property(userRole => userRole.Id).UseIdentityColumn();
+        builder.Property(userRole => userRole.CreateDate);
+        builder.Property(userRole => userRole.UpdateDate);
 
         builder
             .HasOne(userRole => userRole.Role)
             .WithMany(role => role.UserRoles)
             .HasForeignKey(userRole => userRole.RoleId);
-        builder.HasOne(m => m.User).WithMany(m => m.UserRoles).HasForeignKey(m => m.UserId);
+        builder
+            .HasOne(userRole => userRole.User)
+            .WithMany(user => user.UserRoles)
+            .HasForeignKey(userRole => userRole.UserId);
     }
 }

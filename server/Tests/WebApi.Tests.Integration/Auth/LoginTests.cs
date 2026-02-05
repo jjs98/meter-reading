@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using Application.DTOs;
 using FluentAssertions;
+using WebApi.Tests.Integration.Builder;
 
 namespace WebApi.Tests.Integration.Auth;
 
@@ -14,7 +15,9 @@ public class LoginTests(WebApiFactory webApiFactory)
         // Arrange
         using var client = webApiFactory.CreateClient();
         var user = webApiFactory.GetTestUser();
-        await webApiFactory.Database.CreateTestUserAsync(user);
+        var dbContext = webApiFactory.CreateDbContext();
+        var userBuilder = new UserBuilder(dbContext);
+        var userData = userBuilder.WithUser(user).Build();
         var login = new UserLoginDto { Username = user.Username, Password = user.Password };
 
         // Act
@@ -33,7 +36,9 @@ public class LoginTests(WebApiFactory webApiFactory)
         // Arrange
         using var client = webApiFactory.CreateClient();
         var user = webApiFactory.GetTestUser();
-        await webApiFactory.Database.CreateTestUserAsync(user);
+        var dbContext = webApiFactory.CreateDbContext();
+        var userBuilder = new UserBuilder(dbContext);
+        var userData = userBuilder.WithUser(user).Build();
         var login = new UserLoginDto { Username = user.Username, Password = "wrongpassword" };
 
         // Act

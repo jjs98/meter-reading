@@ -17,8 +17,7 @@ public class WebApiFactory : TestWebApplicationFactory<Program>
     private readonly Faker<TestUser> _userGenerator = new Faker<TestUser>()
         .RuleFor(u => u.Username, f => f.Person.UserName)
         .RuleFor(u => u.Password, f => "password")
-        .RuleFor(u => u.HashedPassword, BCrypt.Net.BCrypt.HashPassword("password"))
-        .RuleFor(u => u.Role, "User");
+        .RuleFor(u => u.HashedPassword, BCrypt.Net.BCrypt.HashPassword("password"));
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -45,7 +44,17 @@ public class WebApiFactory : TestWebApplicationFactory<Program>
     public TestUser GetTestUser()
     {
         var user = _userGenerator.Generate();
+        user.Role = $"{Guid.NewGuid()}_role";
         return user;
+    }
+
+    public AppDbContext CreateDbContext()
+    {
+        return new AppDbContext(
+            new DbContextOptionsBuilder<AppDbContext>()
+                .UseNpgsql(Database.DbContainer.GetConnectionString())
+                .Options
+        );
     }
 
     public class TestUser
