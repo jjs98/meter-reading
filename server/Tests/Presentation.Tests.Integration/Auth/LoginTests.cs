@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Net.Http.Json;
 using FastEndpoints;
 using Presentation.Endpoints.Auth;
 using Presentation.Tests.Integration.Builder;

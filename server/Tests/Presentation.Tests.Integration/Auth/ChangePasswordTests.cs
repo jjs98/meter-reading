@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Net.Http.Json;
 using Domain.Models;
 using FastEndpoints;
 using Presentation.Endpoints.Auth;

@@ -16,10 +16,4 @@
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Endpoints\Meter\" />
-    <Folder Include="Endpoints\User\" />
-    <Folder Include="Endpoints\Reading\" />
-  </ItemGroup>
 </Project>
