@@ -1,6 +1,6 @@
 using System.Net;
-using System.Net.Http.Json;
-using FluentAssertions;
+using FastEndpoints;
+using Presentation.Endpoints.Auth;
 
 namespace Presentation.Tests.Integration.Auth;
 
@@ -13,14 +13,19 @@ public class HashPasswordTests(WebApiFactory webApiFactory)
         // Arrange
         using var client = webApiFactory.CreateClient();
         var password = "password";
+        var request = new HashEndpointRequest(password);
 
         // Act
-        var response = await client.PostAsJsonAsync("api/auth/hash", password);
+        var response = await client.POSTAsync<
+            HashEndpoint,
+            HashEndpointRequest,
+            HashEndpointResponse
+        >(request);
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var hashedPassword = await response.Content.ReadFromJsonAsync<string>();
-        hashedPassword.Should().NotBeNullOrEmpty();
-        hashedPassword.Should().NotBe(password);
+        await Assert.That(response.Response.StatusCode).IsEqualTo(HttpStatusCode.OK);
+        var hashedPassword = response.Result.HashedPassword;
+        await Assert.That(hashedPassword).IsNotNull();
+        await Assert.That(hashedPassword).IsNotEqualTo(password);
     }
 }

@@ -48,14 +48,14 @@ public class UserService : IUserService
         await _userRepository.Update(user);
     }
 
-    public async Task ChangePassword(int id, ChangePasswordDto changePasswordDto)
+    public async Task ChangePassword(int id, PasswordChange passwordChange)
     {
         var user = await _userRepository.GetById(id);
-        if (user == null || !BCrypt.Net.BCrypt.Verify(changePasswordDto.OldPassword, user.Password))
+        if (user == null || !BCrypt.Net.BCrypt.Verify(passwordChange.OldPassword, user.Password))
         {
             throw new UnauthorizedAccessException("Invalid credentials");
         }
-        var hashedPassword = _authService.HashPassword(changePasswordDto.NewPassword);
+        var hashedPassword = _authService.HashPassword(passwordChange.NewPassword);
         await _userRepository.UpdatePassword(id, hashedPassword);
     }
 

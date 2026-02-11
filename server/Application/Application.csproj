@@ -16,12 +16,8 @@
       Include="Microsoft.Extensions.DependencyInjection.Abstractions"
       Version="10.0.3"
     />
+    <PackageReference Include="FastEndpoints.Security" Version="7.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.3" />
-    <PackageReference Include="Microsoft.IdentityModel.Abstractions" Version="8.15.0" />
-    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.15.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Logging" Version="8.15.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.15.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
   </ItemGroup>
 
   <ItemGroup>
