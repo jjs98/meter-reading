@@ -42,35 +42,6 @@ public class MeterController : ControllerBase
         return Ok(meters);
     }
 
-    [HttpGet("{id}")]
-    [ProducesResponseType(typeof(Meter), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Get(int id)
-    {
-        try
-        {
-            var meter = await _meterService.GetById(id);
-
-            if (
-                meter.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1")
-                && !User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin")
-            )
-                return Unauthorized();
-
-            return Ok(meter);
-        }
-        catch (Exception ex)
-        {
-            if (ex is EntityNotFoundException)
-                return NotFound();
-
-            _logger.LogError(ex, "An error occurred while getting meter by id for id {Id}", id);
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
-    }
-
     [HttpGet("shared")]
     [ProducesResponseType(typeof(IEnumerable<Meter>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
