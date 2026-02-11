@@ -4,11 +4,13 @@ WORKDIR /app
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
+COPY Bootstrap/Bootstrap.csproj Bootstrap/
 COPY WebApi/WebApi.csproj WebApi/
 COPY Application/Application.csproj Application/
 COPY Domain/Domain.csproj Domain/
 COPY Infrastructure/Infrastructure.csproj Infrastructure/
 
+RUN dotnet restore Bootstrap/Bootstrap.csproj
 RUN dotnet restore WebApi/WebApi.csproj
 RUN dotnet restore Application/Application.csproj
 RUN dotnet restore Domain/Domain.csproj
@@ -16,10 +18,10 @@ RUN dotnet restore Infrastructure/Infrastructure.csproj
 
 COPY . .
 
-WORKDIR /src/WebApi
+WORKDIR /src/Bootstrap
 RUN dotnet publish -c release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
-ENTRYPOINT ["dotnet", "WebApi.dll"]
+ENTRYPOINT ["dotnet", "Bootstrap.dll"]

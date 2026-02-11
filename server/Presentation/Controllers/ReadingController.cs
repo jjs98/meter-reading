@@ -3,10 +3,12 @@ using Application.Services;
 using Domain.Exceptions;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
-namespace WebApi.Controllers;
+namespace Presentation.Controllers;
 
 [Authorize(Roles = "User")]
 [ApiController]

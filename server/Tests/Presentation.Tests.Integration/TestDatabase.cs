@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Testcontainers.PostgreSql;
 using TUnit.Core.Interfaces;
 
-namespace WebApi.Tests.Integration;
+namespace Presentation.Tests.Integration;
 
 public class TestDatabase : IAsyncInitializer, IAsyncDisposable
 {

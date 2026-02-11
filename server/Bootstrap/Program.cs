@@ -1,8 +1,9 @@
 using Application;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Presentation;
 
-namespace WebApi;
+namespace Bootstrap;
 
 public class Program
 {
@@ -10,7 +11,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.RegisterWebApiModule(builder.Configuration);
+        builder.Services.RegisterPresentationModule(builder.Configuration);
         builder.Services.RegisterInfrastructureModule(builder.Configuration);
         builder.Services.RegisterApplicationModule();
 
@@ -32,11 +33,11 @@ public class Program
         app.UseSwagger();
         app.UseSwaggerUI();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                await db.Database.MigrateAsync();
-            }
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            await db.Database.MigrateAsync();
+        }
 
         app.Run();
     }

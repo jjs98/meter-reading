@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using Infrastructure;
 
-namespace WebApi.Tests.Integration.Builder;
+namespace Presentation.Tests.Integration.Builder;
 
 public class MeterBuilder(AppDbContext dbContext)
 {

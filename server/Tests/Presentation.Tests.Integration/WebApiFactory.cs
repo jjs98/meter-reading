@@ -1,4 +1,5 @@
 using Bogus;
+using Bootstrap;
 using Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TUnit.AspNetCore;
 
-namespace WebApi.Tests.Integration;
+namespace Presentation.Tests.Integration;
 
 public class WebApiFactory : TestWebApplicationFactory<Program>
 {

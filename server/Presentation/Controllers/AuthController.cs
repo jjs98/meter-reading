@@ -2,9 +2,11 @@
 using Application.DTOs;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
-namespace WebApi.Controllers;
+namespace Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

@@ -2,9 +2,9 @@
 using System.Net.Http.Json;
 using Application.DTOs;
 using FluentAssertions;
-using WebApi.Tests.Integration.Builder;
+using Presentation.Tests.Integration.Builder;
 
-namespace WebApi.Tests.Integration.Auth;
+namespace Presentation.Tests.Integration.Auth;
 
 [ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
 public class LoginTests(WebApiFactory webApiFactory)

@@ -2,14 +2,16 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 
-namespace WebApi;
+namespace Presentation;
 
 public static class Module
 {
-    public static IServiceCollection RegisterWebApiModule(
+    public static IServiceCollection RegisterPresentationModule(
         this IServiceCollection services,
         IConfiguration configuration
     )

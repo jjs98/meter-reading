@@ -1,8 +1,8 @@
 ﻿using Domain.Models;
 using Infrastructure;
-using static WebApi.Tests.Integration.WebApiFactory;
+using static Presentation.Tests.Integration.WebApiFactory;
 
-namespace WebApi.Tests.Integration.Builder;
+namespace Presentation.Tests.Integration.Builder;
 
 public class UserBuilder(AppDbContext dbContext)
 {
