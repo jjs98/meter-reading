@@ -29,13 +29,8 @@ public class UserRoleService : IUserRoleService
         return await _userRoleRepository.Create(userRole);
     }
 
-    public async Task Update(UserRole userRole)
+    public async Task Delete(UserRole userRole)
     {
-        await _userRoleRepository.Update(userRole);
-    }
-
-    public async Task Delete(int id)
-    {
-        await _userRoleRepository.Delete(id);
+        await _userRoleRepository.Delete(userRole);
     }
 }

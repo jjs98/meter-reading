@@ -1,19 +1,16 @@
-﻿using Domain.Models;
+﻿using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configs;
 
-public class UserRolesConfig : IEntityTypeConfiguration<UserRole>
+public class UserRolesConfig : IEntityTypeConfiguration<UserRoleEntity>
 {
-    public void Configure(EntityTypeBuilder<UserRole> builder)
+    public void Configure(EntityTypeBuilder<UserRoleEntity> builder)
     {
         builder.ToTable("UserRoles");
 
         builder.HasKey(userRole => new { userRole.UserId, userRole.RoleId });
-        builder.Property(userRole => userRole.Id).UseIdentityColumn();
-        builder.Property(userRole => userRole.CreateDate);
-        builder.Property(userRole => userRole.UpdateDate);
 
         builder
             .HasOne(userRole => userRole.Role)

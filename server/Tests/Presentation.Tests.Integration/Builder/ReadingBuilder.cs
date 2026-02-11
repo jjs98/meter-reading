@@ -1,11 +1,11 @@
-﻿using Domain.Models;
-using Infrastructure;
+﻿using Infrastructure;
+using Infrastructure.Entities;
 
 namespace Presentation.Tests.Integration.Builder;
 
 public class ReadingBuilder(AppDbContext dbContext)
 {
-    private readonly List<Reading> _readings = [];
+    private readonly List<ReadingEntity> _readings = [];
 
     public ReadingData Result()
     {
@@ -18,9 +18,9 @@ public class ReadingBuilder(AppDbContext dbContext)
         return Result();
     }
 
-    public ReadingBuilder WithReading(string number, DateTime readingDate, Meter meter)
+    public ReadingBuilder WithReading(string number, DateTime readingDate, MeterEntity meter)
     {
-        var reading = new Reading
+        var reading = new ReadingEntity
         {
             Number = number,
             ReadingDate = readingDate,
@@ -33,4 +33,4 @@ public class ReadingBuilder(AppDbContext dbContext)
     }
 }
 
-public record ReadingData(List<Reading> Readings);
+public record ReadingData(List<ReadingEntity> Readings);

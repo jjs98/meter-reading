@@ -139,7 +139,7 @@ public class MeterController : ControllerBase
             var createdSharedMeter = await _meterService.ShareMeter(user.Id, meterShareDto.MeterId);
             return CreatedAtAction(
                 nameof(ShareMeter),
-                new { id = createdSharedMeter.Id },
+                new { createdSharedMeter.MeterId, createdSharedMeter.UserId },
                 createdSharedMeter
             );
         }

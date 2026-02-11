@@ -1,6 +1,6 @@
-using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Models;
+using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -16,58 +16,38 @@ public class UserRoleRepository : IUserRoleRepository
 
     public async Task<IEnumerable<UserRole>> GetByUserId(int userId)
     {
-        var context = _contextFactory.CreateDbContext();
-        return await context.UserRoles.AsNoTracking().Where(x => x.UserId == userId).ToListAsync();
+        using var context = _contextFactory.CreateDbContext();
+        var userRoles = await context
+            .UserRoles.AsNoTracking()
+            .Where(x => x.UserId == userId)
+            .ToListAsync();
+        return userRoles.Select(x => x.ToDomainModel());
     }
 
     public async Task<IEnumerable<UserRole>> GetByRoleId(int roleId)
     {
-        var context = _contextFactory.CreateDbContext();
-        return await context.UserRoles.AsNoTracking().Where(x => x.RoleId == roleId).ToListAsync();
+        using var context = _contextFactory.CreateDbContext();
+        var userRoles = await context
+            .UserRoles.AsNoTracking()
+            .Where(x => x.RoleId == roleId)
+            .ToListAsync();
+        return userRoles.Select(x => x.ToDomainModel());
     }
 
     public async Task<UserRole> Create(UserRole userRole)
     {
-        var context = _contextFactory.CreateDbContext();
-        userRole.UpdateDate = null;
-        userRole.CreateDate = DateTime.UtcNow;
-        var result = await context.UserRoles.AddAsync(userRole);
+        using var context = _contextFactory.CreateDbContext();
+        var userRoleEntity = UserRoleEntity.FromDomainModel(userRole);
+        var result = await context.UserRoles.AddAsync(userRoleEntity);
         await context.SaveChangesAsync();
-        return result.Entity;
+        return result.Entity.ToDomainModel();
     }
 
-    public async Task Update(UserRole userRole)
+    public async Task Delete(UserRole userRole)
     {
-        var context = _contextFactory.CreateDbContext();
-        var existingUserRole = await GetByIdWithTracking(userRole.Id);
-
+        using var context = _contextFactory.CreateDbContext();
         await context
-            .UserRoles.Where(x => x.Id == userRole.Id)
-            .ExecuteUpdateAsync(x =>
-                x.SetProperty(ur => ur.RoleId, userRole.RoleId)
-                    .SetProperty(ur => ur.UserId, userRole.UserId)
-                    .SetProperty(ur => ur.UpdateDate, DateTime.UtcNow)
-            );
-
-        context.ChangeTracker.Clear();
-    }
-
-    public async Task Delete(int id)
-    {
-        var context = _contextFactory.CreateDbContext();
-        var existingUserRole = await GetByIdWithTracking(id);
-
-        context.UserRoles.Remove(existingUserRole);
-        await context.SaveChangesAsync();
-    }
-
-    private async Task<UserRole> GetByIdWithTracking(int id)
-    {
-        var context = _contextFactory.CreateDbContext();
-        var userRole = await context.UserRoles.FindAsync(id);
-        if (userRole is null)
-            throw new EntityNotFoundException($"UserRole for id {id} not found");
-
-        return userRole;
+            .UserRoles.Where(x => x.UserId == userRole.UserId && x.RoleId == userRole.RoleId)
+            .ExecuteDeleteAsync();
     }
 }

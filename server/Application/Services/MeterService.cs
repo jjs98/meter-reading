@@ -64,12 +64,7 @@ public class MeterService : IMeterService
     public async Task<SharedMeter> ShareMeter(int userId, int meterId)
     {
         return await _sharedMeterRepository.Create(
-            new SharedMeter
-            {
-                UserId = userId,
-                MeterId = meterId,
-                CreateDate = DateTime.UtcNow
-            }
+            new SharedMeter { UserId = userId, MeterId = meterId }
         );
     }
 

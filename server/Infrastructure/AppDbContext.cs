@@ -1,17 +1,17 @@
-﻿using Domain.Models;
-using Infrastructure.Configs;
+﻿using Infrastructure.Configs;
+using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
 
 public class AppDbContext : DbContext
 {
-    public DbSet<Meter> Meters { get; set; }
-    public DbSet<Reading> Readings { get; set; }
-    public DbSet<Role> Roles { get; set; }
-    public DbSet<User> Users { get; set; }
-    public DbSet<UserRole> UserRoles { get; set; }
-    public DbSet<SharedMeter> SharedMeters { get; set; }
+    public DbSet<MeterEntity> Meters { get; set; }
+    public DbSet<ReadingEntity> Readings { get; set; }
+    public DbSet<RoleEntity> Roles { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
+    public DbSet<UserRoleEntity> UserRoles { get; set; }
+    public DbSet<SharedMeterEntity> SharedMeters { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options) { }

@@ -1,6 +1,7 @@
 using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Models;
+using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -16,45 +17,45 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<User>> GetAll()
     {
-        var context = _contextFactory.CreateDbContext();
-        return await context.Users.AsNoTracking().ToListAsync();
+        using var context = _contextFactory.CreateDbContext();
+        var users = await context.Users.AsNoTracking().ToListAsync();
+        return users.Select(x => x.ToDomainModel());
     }
 
     public async Task<User> GetById(int id)
     {
-        var context = _contextFactory.CreateDbContext();
+        using var context = _contextFactory.CreateDbContext();
         var user = await context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         if (user is null)
             throw new EntityNotFoundException($"User for id {id} not found");
 
-        return user;
+        return user.ToDomainModel();
     }
 
     public async Task<User> GetByUsername(string username)
     {
-        var context = _contextFactory.CreateDbContext();
+        using var context = _contextFactory.CreateDbContext();
         var user = await context
             .Users.AsNoTracking()
             .FirstOrDefaultAsync(x => x.Username == username);
         if (user is null)
             throw new EntityNotFoundException($"User with name {username} not found");
 
-        return user;
+        return user.ToDomainModel();
     }
 
     public async Task<User> Create(User user)
     {
-        var context = _contextFactory.CreateDbContext();
-        user.UpdateDate = null;
-        user.CreateDate = DateTime.UtcNow;
-        var result = await context.Users.AddAsync(user);
+        using var context = _contextFactory.CreateDbContext();
+        var userEntity = UserEntity.FromDomainModel(user);
+        var result = await context.Users.AddAsync(userEntity);
         await context.SaveChangesAsync();
-        return result.Entity;
+        return result.Entity.ToDomainModel();
     }
 
     public async Task Update(User user)
     {
-        var context = _contextFactory.CreateDbContext();
+        using var context = _contextFactory.CreateDbContext();
         var existingUser = await GetByIdWithTracking(user.Id);
 
         await context
@@ -65,7 +66,6 @@ public class UserRepository : IUserRepository
                     .SetProperty(u => u.FirstName, user.FirstName)
                     .SetProperty(u => u.LastName, user.LastName)
                     .SetProperty(u => u.Email, user.Email)
-                    .SetProperty(u => u.UpdateDate, DateTime.UtcNow)
             );
 
         context.ChangeTracker.Clear();
@@ -73,7 +73,7 @@ public class UserRepository : IUserRepository
 
     public async Task UpdatePassword(int id, string password)
     {
-        var context = _contextFactory.CreateDbContext();
+        using var context = _contextFactory.CreateDbContext();
         var existingUser = await GetById(id);
 
         await context
@@ -85,16 +85,16 @@ public class UserRepository : IUserRepository
 
     public async Task Delete(int id)
     {
-        var context = _contextFactory.CreateDbContext();
+        using var context = _contextFactory.CreateDbContext();
         var existingUser = await GetByIdWithTracking(id);
 
         context.Users.Remove(existingUser);
         await context.SaveChangesAsync();
     }
 
-    private async Task<User> GetByIdWithTracking(int id)
+    private async Task<UserEntity> GetByIdWithTracking(int id)
     {
-        var context = _contextFactory.CreateDbContext();
+        using var context = _contextFactory.CreateDbContext();
         var user = await context.Users.FindAsync(id);
         if (user is null)
             throw new EntityNotFoundException($"User for id {id} not found");

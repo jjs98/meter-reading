@@ -1,14 +1,14 @@
-﻿using Domain.Models;
-using Infrastructure;
+﻿using Infrastructure;
+using Infrastructure.Entities;
 using static Presentation.Tests.Integration.WebApiFactory;
 
 namespace Presentation.Tests.Integration.Builder;
 
 public class UserBuilder(AppDbContext dbContext)
 {
-    private readonly List<User> _users = [];
-    private readonly List<Role> _roles = [];
-    private readonly List<UserRole> _userRoles = [];
+    private readonly List<UserEntity> _users = [];
+    private readonly List<RoleEntity> _roles = [];
+    private readonly List<UserRoleEntity> _userRoles = [];
 
     public UserData Result()
     {
@@ -40,7 +40,7 @@ public class UserBuilder(AppDbContext dbContext)
 
     public UserBuilder WithUser(string username, string password, string[] roles)
     {
-        var user = new User
+        var user = new UserEntity
         {
             Username = username,
             Password = BCrypt.Net.BCrypt.HashPassword(password),
@@ -50,8 +50,8 @@ public class UserBuilder(AppDbContext dbContext)
 
         foreach (var role in roles)
         {
-            var roleEntity = new Role { Name = role };
-            var userRole = new UserRole { User = user, Role = roleEntity };
+            var roleEntity = new RoleEntity { Name = role };
+            var userRole = new UserRoleEntity { User = user, Role = roleEntity };
             dbContext.Roles.Add(roleEntity);
             dbContext.UserRoles.Add(userRole);
             _roles.Add(roleEntity);
@@ -62,4 +62,8 @@ public class UserBuilder(AppDbContext dbContext)
     }
 }
 
-public record UserData(List<User> Users, List<Role> Roles, List<UserRole> UserRoles);
+public record UserData(
+    List<UserEntity> Users,
+    List<RoleEntity> Roles,
+    List<UserRoleEntity> UserRoles
+);

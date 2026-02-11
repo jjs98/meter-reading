@@ -4,7 +4,7 @@ This is a simple project to track the meter readings of a house. You can add rea
 
 You can also see the usage of the utilities in a graph. This way you can see how much you are using and if you are using more or less than before.
 
-Also you can download the readings in a .xlsx file, so that you can use the data in other applicationso or share them with your landlord.
+Also you can download the readings in a .xlsx file, so that you can use the data in other applications or share them with your landlord.
 
 ## How to run the project
 
@@ -18,7 +18,7 @@ This project uses pnpm as the package manager.
 
 ### Build the server
 
-The server uses net9 so just open the Solution and run the project.
+The server uses .NET 10 so just open the Solution and run the project.
 
 ## Tests
 
@@ -30,7 +30,7 @@ The client uses Jest and playwright for testing.
 
 ### Server
 
-The server uses xUnit for testing. Also TestContainers is used to run the tests in a real database.
+The server uses TUnit for testing. Also TestContainers is used to run the tests in a real database.
 
 ## Shoutouts
 

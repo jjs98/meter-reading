@@ -1,19 +1,17 @@
-﻿using Domain.Models;
+﻿using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configs;
 
-public class RolesConfig : IEntityTypeConfiguration<Role>
+public class RolesConfig : IEntityTypeConfiguration<RoleEntity>
 {
-    public void Configure(EntityTypeBuilder<Role> builder)
+    public void Configure(EntityTypeBuilder<RoleEntity> builder)
     {
         builder.ToTable("Roles");
 
         builder.HasKey(role => role.Id);
         builder.Property(role => role.Id).UseIdentityColumn();
-        builder.Property(role => role.CreateDate);
-        builder.Property(role => role.UpdateDate);
 
         builder.HasIndex(role => role.Name).IsUnique();
 

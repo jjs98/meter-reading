@@ -1,7 +1,8 @@
 ﻿namespace Domain.Models;
 
-public class Reading : DbEntity
+public class Reading
 {
+    public int Id { get; set; }
     public int MeterId { get; set; }
     public required string Number { get; set; }
     public required DateTime ReadingDate { get; set; }

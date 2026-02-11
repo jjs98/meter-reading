@@ -1,19 +1,17 @@
-﻿using Domain.Models;
+﻿using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configs;
 
-public class UsersConfig : IEntityTypeConfiguration<User>
+public class UsersConfig : IEntityTypeConfiguration<UserEntity>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<UserEntity> builder)
     {
         builder.ToTable("Users");
 
         builder.HasKey(user => user.Id);
         builder.Property(user => user.Id).UseIdentityColumn();
-        builder.Property(user => user.CreateDate);
-        builder.Property(user => user.UpdateDate);
 
         builder.Property(user => user.Username).IsRequired();
         builder.Property(user => user.Password).IsRequired();

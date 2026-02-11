@@ -1,6 +1,7 @@
 ﻿using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Models;
+using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -16,46 +17,48 @@ public class ReadingRepository : IReadingRepository
 
     public async Task<IEnumerable<Reading>> GetAll()
     {
-        var context = _contextFactory.CreateDbContext();
-        return await context
+        using var context = _contextFactory.CreateDbContext();
+        var readings = await context
             .Readings.AsNoTracking()
             .OrderByDescending(x => x.ReadingDate)
             .ToListAsync();
+
+        return readings.Select(x => x.ToDomainModel());
     }
 
     public async Task<Reading> GetById(int id)
     {
-        var context = _contextFactory.CreateDbContext();
+        using var context = _contextFactory.CreateDbContext();
         var reading = await context.Readings.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         if (reading is null)
             throw new EntityNotFoundException($"Reading for id {id} not found");
 
-        return reading;
+        return reading.ToDomainModel();
     }
 
     public async Task<IEnumerable<Reading>> GetAllByMeterId(int meterId)
     {
-        var context = _contextFactory.CreateDbContext();
-        return await context
+        using var context = _contextFactory.CreateDbContext();
+        var readings = await context
             .Readings.AsNoTracking()
             .Where(x => x.MeterId == meterId)
             .OrderByDescending(x => x.ReadingDate)
             .ToListAsync();
+        return readings.Select(x => x.ToDomainModel());
     }
 
     public async Task<Reading> Create(Reading reading)
     {
-        var context = _contextFactory.CreateDbContext();
-        reading.UpdateDate = null;
-        reading.CreateDate = DateTime.UtcNow;
-        var result = await context.Readings.AddAsync(reading);
+        using var context = _contextFactory.CreateDbContext();
+        var readingEntity = ReadingEntity.FromDomainModel(reading);
+        var result = await context.Readings.AddAsync(readingEntity);
         await context.SaveChangesAsync();
-        return result.Entity;
+        return result.Entity.ToDomainModel();
     }
 
     public async Task Update(Reading reading)
     {
-        var context = _contextFactory.CreateDbContext();
+        using var context = _contextFactory.CreateDbContext();
         var existingReading = await GetByIdWithTracking(reading.Id);
 
         await context
@@ -64,7 +67,6 @@ public class ReadingRepository : IReadingRepository
                 x.SetProperty(r => r.MeterId, reading.MeterId)
                     .SetProperty(r => r.Number, reading.Number)
                     .SetProperty(r => r.ReadingDate, reading.ReadingDate)
-                    .SetProperty(r => r.UpdateDate, DateTime.UtcNow)
             );
 
         context.ChangeTracker.Clear();
@@ -72,7 +74,7 @@ public class ReadingRepository : IReadingRepository
 
     public async Task DeleteByMeterId(int meterId)
     {
-        var context = _contextFactory.CreateDbContext();
+        using var context = _contextFactory.CreateDbContext();
         var readings = await context.Readings.Where(x => x.MeterId == meterId).ToArrayAsync();
         context.Readings.RemoveRange(readings);
         await context.SaveChangesAsync();
@@ -80,16 +82,16 @@ public class ReadingRepository : IReadingRepository
 
     public async Task Delete(int id)
     {
-        var context = _contextFactory.CreateDbContext();
+        using var context = _contextFactory.CreateDbContext();
         var existingReading = await GetByIdWithTracking(id);
 
         context.Readings.Remove(existingReading);
         await context.SaveChangesAsync();
     }
 
-    private async Task<Reading> GetByIdWithTracking(int id)
+    private async Task<ReadingEntity> GetByIdWithTracking(int id)
     {
-        var context = _contextFactory.CreateDbContext();
+        using var context = _contextFactory.CreateDbContext();
         var reading = await context.Readings.FindAsync(id);
         if (reading is null)
             throw new EntityNotFoundException($"Reading for id {id} not found");

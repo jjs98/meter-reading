@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models;
 
-public class SharedMeter : DbEntity
+public class SharedMeter
 {
     public int MeterId { get; set; }
     public int UserId { get; set; }

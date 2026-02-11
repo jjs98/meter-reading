@@ -2,8 +2,9 @@
 
 namespace Domain.Models;
 
-public class Meter : DbEntity
+public class Meter
 {
+    public int Id { get; set; }
     public int UserId { get; set; }
     public required string Location { get; set; }
     public string? MeterNumber { get; set; }
