@@ -5,7 +5,6 @@ using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Presentation.Controllers;
@@ -104,8 +103,8 @@ public class ReadingController : ControllerBase
         }
         catch (Exception ex)
         {
-            if (ex is DbUpdateException)
-                return BadRequest("Reading for this date already exists");
+            //if (ex is DbUpdateException)
+            //    return BadRequest("Reading for this date already exists");
 
             _logger.LogError(ex, "An error occurred while creating reading");
             return StatusCode(StatusCodes.Status500InternalServerError);
