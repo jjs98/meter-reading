@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace Presentation.Endpoints.Readings;
 
 public record UpdateReadingEndpointRequest(
-    int Id,
+    [property: RouteParam] int Id,
     int MeterId,
     string Number,
     DateTime ReadingDate
@@ -23,14 +23,12 @@ public class UpdateReadingEndpoint(
 {
     public override void Configure()
     {
-        Put("/api/reading/{id}");
+        Put("/api/reading/{Id}");
         Roles("User");
     }
 
     public override async Task HandleAsync(UpdateReadingEndpointRequest req, CancellationToken ct)
     {
-        var id = Route<int>("id");
-
         try
         {
             var meter = await meterService.GetById(req.MeterId);
@@ -57,7 +55,7 @@ public class UpdateReadingEndpoint(
             }
             var reading = new Reading
             {
-                Id = id,
+                Id = req.Id,
                 MeterId = req.MeterId,
                 Number = req.Number,
                 ReadingDate = req.ReadingDate,
@@ -73,7 +71,11 @@ public class UpdateReadingEndpoint(
                 return;
             }
 
-            logger.LogError(ex, "An error occurred while updating reading by id for id {Id}", id);
+            logger.LogError(
+                ex,
+                "An error occurred while updating reading by id for id {Id}",
+                req.Id
+            );
             await Send.StringAsync(
                 string.Empty,
                 StatusCodes.Status500InternalServerError,

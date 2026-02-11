@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace Presentation.Endpoints.Meters;
 
 public record UpdateMeterEndpointRequest(
-    int Id,
+    [property: RouteParam] int Id,
     int UserId,
     string Location,
     string? MeterNumber,
@@ -23,23 +23,12 @@ public class UpdateMeterEndpoint(IMeterService meterService, ILogger<UpdateMeter
 {
     public override void Configure()
     {
-        Put("/api/meter/{id}");
+        Put("/api/meter/{Id}");
         Roles("User");
     }
 
     public override async Task HandleAsync(UpdateMeterEndpointRequest req, CancellationToken ct)
     {
-        var id = Route<int>("id");
-        if (id != req.Id)
-        {
-            await Send.StringAsync(
-                "Meter ID mismatch",
-                StatusCodes.Status400BadRequest,
-                cancellation: ct
-            );
-            return;
-        }
-
         if (
             req.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "-1")
             && !User.FindAll(ClaimTypes.Role).Any(x => x?.Value == "Admin")

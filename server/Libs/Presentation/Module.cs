@@ -25,7 +25,10 @@ public static class Module
             })
             .AddAuthorization()
             .AddFastEndpoints()
-            .SwaggerDocument();
+            .SwaggerDocument(o =>
+            {
+                o.AutoTagPathSegmentIndex = 2;
+            });
 
         return services;
     }
