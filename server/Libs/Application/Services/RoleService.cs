@@ -1,51 +1,44 @@
-﻿using Domain.Interfaces;
-using Domain.Models;
+﻿using Domain.Models;
+using Infrastructure.Repositories.Interfaces;
 using InterfaceGenerator;
 
 namespace Application.Services;
 
 [GenerateAutoInterface]
-public class RoleService : IRoleService
+public class RoleService(IRoleRepository roleRepository) : IRoleService
 {
-    private readonly IRoleRepository _roleRepository;
-
-    public RoleService(IRoleRepository roleRepository)
-    {
-        _roleRepository = roleRepository;
-    }
-
     public async Task<IEnumerable<Role>> GetAll()
     {
-        return await _roleRepository.GetAll();
+        return await roleRepository.GetAll();
     }
 
     public async Task<Role> GetById(int id)
     {
-        return await _roleRepository.GetById(id);
+        return await roleRepository.GetById(id);
     }
 
     public async Task<IEnumerable<Role>> GetByIds(IEnumerable<int> ids)
     {
-        return await _roleRepository.GetByIds(ids);
+        return await roleRepository.GetByIds(ids);
     }
 
     public async Task<Role> GetByName(string name)
     {
-        return await _roleRepository.GetByName(name);
+        return await roleRepository.GetByName(name);
     }
 
     public async Task<Role> Create(Role role)
     {
-        return await _roleRepository.Create(role);
+        return await roleRepository.Create(role);
     }
 
     public async Task Update(Role role)
     {
-        await _roleRepository.Update(role);
+        await roleRepository.Update(role);
     }
 
-    public Task Delete(int id)
+    public async Task Delete(int id)
     {
-        return _roleRepository.Delete(id);
+        await roleRepository.Delete(id);
     }
 }

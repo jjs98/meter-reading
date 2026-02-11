@@ -1,36 +1,29 @@
-﻿using Domain.Interfaces;
-using Domain.Models;
+﻿using Domain.Models;
+using Infrastructure.Repositories.Interfaces;
 using InterfaceGenerator;
 
 namespace Application.Services;
 
 [GenerateAutoInterface]
-public class UserRoleService : IUserRoleService
+public class UserRoleService(IUserRoleRepository userRoleRepository) : IUserRoleService
 {
-    private readonly IUserRoleRepository _userRoleRepository;
-
-    public UserRoleService(IUserRoleRepository userRoleRepository)
+    public async Task<IEnumerable<UserRole>> GetByUserId(int userId)
     {
-        _userRoleRepository = userRoleRepository;
+        return await userRoleRepository.GetByUserId(userId);
     }
 
-    public Task<IEnumerable<UserRole>> GetByUserId(int userId)
+    public async Task<IEnumerable<UserRole>> GetByRoleId(int roleId)
     {
-        return _userRoleRepository.GetByUserId(userId);
-    }
-
-    public Task<IEnumerable<UserRole>> GetByRoleId(int roleId)
-    {
-        return _userRoleRepository.GetByRoleId(roleId);
+        return await userRoleRepository.GetByRoleId(roleId);
     }
 
     public async Task<UserRole> Create(UserRole userRole)
     {
-        return await _userRoleRepository.Create(userRole);
+        return await userRoleRepository.Create(userRole);
     }
 
     public async Task Delete(UserRole userRole)
     {
-        await _userRoleRepository.Delete(userRole);
+        await userRoleRepository.Delete(userRole);
     }
 }

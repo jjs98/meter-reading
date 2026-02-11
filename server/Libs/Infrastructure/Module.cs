@@ -1,5 +1,5 @@
-﻿using Domain.Interfaces;
-using Infrastructure.Repositories;
+﻿using Infrastructure.Repositories;
+using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

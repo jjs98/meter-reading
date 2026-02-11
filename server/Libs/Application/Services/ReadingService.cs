@@ -1,51 +1,44 @@
-﻿using Domain.Interfaces;
-using Domain.Models;
+﻿using Domain.Models;
+using Infrastructure.Repositories.Interfaces;
 using InterfaceGenerator;
 
 namespace Application.Services;
 
 [GenerateAutoInterface]
-public class ReadingService : IReadingService
+public class ReadingService(IReadingRepository readingRepository) : IReadingService
 {
-    private readonly IReadingRepository _readingRepository;
-
-    public ReadingService(IReadingRepository readingRepository)
-    {
-        _readingRepository = readingRepository;
-    }
-
     public async Task<IEnumerable<Reading>> GetAll()
     {
-        return await _readingRepository.GetAll();
+        return await readingRepository.GetAll();
     }
 
     public async Task<Reading> GetById(int id)
     {
-        return await _readingRepository.GetById(id);
+        return await readingRepository.GetById(id);
     }
 
     public async Task<IEnumerable<Reading>> GetByMeterId(int meterId)
     {
-        return await _readingRepository.GetAllByMeterId(meterId);
+        return await readingRepository.GetAllByMeterId(meterId);
     }
 
     public async Task<Reading> Create(Reading reading)
     {
-        return await _readingRepository.Create(reading);
+        return await readingRepository.Create(reading);
     }
 
     public async Task Update(Reading reading)
     {
-        await _readingRepository.Update(reading);
+        await readingRepository.Update(reading);
     }
 
     public async Task DeleteByMeterId(int meterId)
     {
-        await _readingRepository.DeleteByMeterId(meterId);
+        await readingRepository.DeleteByMeterId(meterId);
     }
 
     public async Task Delete(int id)
     {
-        await _readingRepository.Delete(id);
+        await readingRepository.Delete(id);
     }
 }

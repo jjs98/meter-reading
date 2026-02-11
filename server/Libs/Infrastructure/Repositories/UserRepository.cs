@@ -1,7 +1,7 @@
 using Domain.Exceptions;
-using Domain.Interfaces;
 using Domain.Models;
 using Infrastructure.Entities;
+using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;

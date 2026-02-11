@@ -1,33 +1,20 @@
 ﻿using System.Security.Claims;
-using Domain.Interfaces;
 using Domain.Models;
 using FastEndpoints.Security;
+using Infrastructure.Repositories.Interfaces;
 using InterfaceGenerator;
 using Microsoft.Extensions.Configuration;
 
 namespace Application.Services;
 
 [GenerateAutoInterface]
-public class AuthService : IAuthService
+public class AuthService(
+    IUserRoleRepository userRoleRepository,
+    IUserRepository userRepository,
+    IRoleService roleService,
+    IConfiguration configuration
+) : IAuthService
 {
-    private readonly IUserRoleRepository _userRoleRepository;
-    private readonly IUserRepository _userRepository;
-    private readonly IRoleService _roleService;
-    private readonly IConfiguration _configuration;
-
-    public AuthService(
-        IUserRoleRepository userRoleRepository,
-        IUserRepository userRepository,
-        IRoleService roleService,
-        IConfiguration configuration
-    )
-    {
-        _userRoleRepository = userRoleRepository;
-        _userRepository = userRepository;
-        _roleService = roleService;
-        _configuration = configuration;
-    }
-
     public string HashPassword(string password)
     {
         return BCrypt.Net.BCrypt.HashPassword(password);
@@ -35,7 +22,7 @@ public class AuthService : IAuthService
 
     public async Task<AuthToken> Login(LoginRequest loginRequest)
     {
-        var user = await _userRepository.GetByUsername(loginRequest.Username);
+        var user = await userRepository.GetByUsername(loginRequest.Username);
         if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.Password))
         {
             throw new UnauthorizedAccessException("Invalid credentials");
@@ -60,18 +47,18 @@ public class AuthService : IAuthService
             new(ClaimTypes.Surname, user.LastName ?? string.Empty),
         };
 
-        var userRoles = await _userRoleRepository.GetByUserId(user.Id);
-        var roles = await _roleService.GetByIds(userRoles.Select(x => x.RoleId));
+        var userRoles = await userRoleRepository.GetByUserId(user.Id);
+        var roles = await roleService.GetByIds(userRoles.Select(x => x.RoleId));
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
 
         var jwtToken = JwtBearer.CreateToken(o =>
         {
             o.SigningKey =
-                _configuration["Jwt:Key"]
+                configuration["Jwt:Key"]
                 ?? throw new InvalidOperationException("Jwt:Key not found.");
             o.ExpireAt = DateTime.Now.AddMinutes(15);
-            o.Issuer = _configuration["Jwt:Issuer"];
-            o.Audience = _configuration["Jwt:Audience"];
+            o.Issuer = configuration["Jwt:Issuer"];
+            o.Audience = configuration["Jwt:Audience"];
             o.User.Roles.AddRange(roles.Select(r => r.Name));
             o.User.Claims.AddRange(claims);
         });

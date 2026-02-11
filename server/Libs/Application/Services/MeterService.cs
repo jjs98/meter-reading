@@ -1,56 +1,44 @@
-﻿using Application.DTOs;
-using Domain.Interfaces;
-using Domain.Models;
+﻿using Domain.Models;
+using Infrastructure.Repositories.Interfaces;
 using InterfaceGenerator;
 
 namespace Application.Services;
 
 [GenerateAutoInterface]
-public class MeterService : IMeterService
+public class MeterService(
+    IMeterRepository meterRepository,
+    IReadingService readingService,
+    ISharedMeterRepository sharedMeterRepository
+) : IMeterService
 {
-    private readonly IMeterRepository _meterRepository;
-    private readonly IReadingService _readingService;
-    private readonly ISharedMeterRepository _sharedMeterRepository;
-
-    public MeterService(
-        IMeterRepository meterRepository,
-        IReadingService readingService,
-        ISharedMeterRepository sharedMeterRepository
-    )
-    {
-        _meterRepository = meterRepository;
-        _readingService = readingService;
-        _sharedMeterRepository = sharedMeterRepository;
-    }
-
     public async Task<IEnumerable<Meter>> GetAll()
     {
-        return await _meterRepository.GetAll();
+        return await meterRepository.GetAll();
     }
 
     public async Task<Meter> GetById(int id)
     {
-        return await _meterRepository.GetById(id);
+        return await meterRepository.GetById(id);
     }
 
     public async Task<IEnumerable<Meter>> GetByUserId(int userId)
     {
-        return await _meterRepository.GetByUserId(userId);
+        return await meterRepository.GetByUserId(userId);
     }
 
     public async Task<Meter> GetBy(int userId, int meterId)
     {
-        return await _meterRepository.GetBy(userId, meterId);
+        return await meterRepository.GetBy(userId, meterId);
     }
 
     public async Task<IEnumerable<Meter>> GetShared(int userId)
     {
-        var sharedMeters = await _sharedMeterRepository.GetByUserId(userId);
+        var sharedMeters = await sharedMeterRepository.GetByUserId(userId);
 
         var meters = new List<Meter>();
         foreach (var sharedMeter in sharedMeters)
         {
-            meters.Add(await _meterRepository.GetById(sharedMeter.MeterId));
+            meters.Add(await meterRepository.GetById(sharedMeter.MeterId));
         }
 
         return meters;
@@ -58,35 +46,35 @@ public class MeterService : IMeterService
 
     public async Task<IEnumerable<SharedMeter>> GetSharedByMeterId(int meterId)
     {
-        return await _sharedMeterRepository.GetByMeterId(meterId);
+        return await sharedMeterRepository.GetByMeterId(meterId);
     }
 
     public async Task<SharedMeter> ShareMeter(int userId, int meterId)
     {
-        return await _sharedMeterRepository.Create(
+        return await sharedMeterRepository.Create(
             new SharedMeter { UserId = userId, MeterId = meterId }
         );
     }
 
     public async Task RevokeMeter(int userId, int meterId)
     {
-        await _sharedMeterRepository.DeleteByUserId(userId, meterId);
+        await sharedMeterRepository.DeleteByUserId(userId, meterId);
     }
 
     public async Task<Meter> Create(Meter meter)
     {
-        return await _meterRepository.Create(meter);
+        return await meterRepository.Create(meter);
     }
 
     public async Task Update(Meter meter)
     {
-        await _meterRepository.Update(meter);
+        await meterRepository.Update(meter);
     }
 
     public async Task Delete(int id)
     {
-        await _readingService.DeleteByMeterId(id);
-        await _sharedMeterRepository.DeleteByMeterId(id);
-        await _meterRepository.Delete(id);
+        await readingService.DeleteByMeterId(id);
+        await sharedMeterRepository.DeleteByMeterId(id);
+        await meterRepository.Delete(id);
     }
 }
