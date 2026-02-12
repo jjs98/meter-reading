@@ -1,5 +1,6 @@
 ﻿using Infrastructure;
 using Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 using static Presentation.Tests.Integration.WebApiFactory;
 
 namespace Presentation.Tests.Integration.Builder;
@@ -50,15 +51,52 @@ public class UserBuilder(AppDbContext dbContext)
 
         foreach (var role in roles)
         {
-            var roleEntity = new RoleEntity { Name = role };
+            var roleEntity = GetOrCreateRole(role);
             var userRole = new UserRoleEntity { User = user, Role = roleEntity };
-            dbContext.Roles.Add(roleEntity);
             dbContext.UserRoles.Add(userRole);
-            _roles.Add(roleEntity);
             _userRoles.Add(userRole);
         }
 
         return this;
+    }
+
+    private RoleEntity GetOrCreateRole(string roleName)
+    {
+        // First check the local context cache
+        var localRole = dbContext.Roles.Local.FirstOrDefault(r => r.Name == roleName);
+        if (localRole != null)
+        {
+            return localRole;
+        }
+
+        // Then check the database
+        var existingRole = dbContext.Roles.AsNoTracking().FirstOrDefault(r => r.Name == roleName);
+        if (existingRole != null)
+        {
+            // Attach it to the context
+            dbContext.Roles.Attach(existingRole);
+            return existingRole;
+        }
+
+        // Create new role
+        var newRole = new RoleEntity { Name = roleName };
+        dbContext.Roles.Add(newRole);
+        _roles.Add(newRole);
+
+        try
+        {
+            dbContext.SaveChanges();
+        }
+        catch (DbUpdateException)
+        {
+            // Role was created by another test, detach our entity and get the existing one
+            dbContext.Entry(newRole).State = EntityState.Detached;
+            _roles.Remove(newRole);
+            var roleFromDb = dbContext.Roles.First(r => r.Name == roleName);
+            return roleFromDb;
+        }
+
+        return newRole;
     }
 }
 
