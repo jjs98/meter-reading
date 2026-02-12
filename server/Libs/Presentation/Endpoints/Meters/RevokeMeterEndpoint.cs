@@ -1,13 +1,24 @@
+using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
 using FastEndpoints;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Presentation.Endpoints.Meters;
 
 public record RevokeMeterEndpointRequest(int MeterId, int UserId);
+
+public class RevokeMeterEndpointValidator : Validator<RevokeMeterEndpointRequest>
+{
+    public RevokeMeterEndpointValidator()
+    {
+        RuleFor(x => x.MeterId).GreaterThan(0).WithMessage("MeterId is required");
+        RuleFor(x => x.UserId).GreaterThan(0).WithMessage("UserId is required");
+    }
+}
 
 public class RevokeMeterEndpoint(IMeterService meterService, ILogger<RevokeMeterEndpoint> logger)
     : Endpoint<RevokeMeterEndpointRequest, EmptyResponse>
@@ -16,6 +27,12 @@ public class RevokeMeterEndpoint(IMeterService meterService, ILogger<RevokeMeter
     {
         Delete("/api/meter/revoke");
         Roles("User");
+        Description(d =>
+            d.Produces((int)HttpStatusCode.NoContent)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(RevokeMeterEndpointRequest req, CancellationToken ct)

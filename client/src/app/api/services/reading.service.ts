@@ -58,8 +58,10 @@ export class ReadingService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
+          400: 'json',
           401: 'text',
           403: 'text',
+          404: 'text',
           500: 'text',
         }
       }
@@ -78,6 +80,7 @@ export class ReadingService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
+          400: 'json',
           401: 'text',
           403: 'text',
           500: 'text',
@@ -99,8 +102,10 @@ export class ReadingService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
+          400: 'json',
           401: 'text',
           403: 'text',
+          404: 'text',
           500: 'text',
         }
       }
@@ -119,8 +124,10 @@ export class ReadingService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
+          400: 'json',
           401: 'text',
           403: 'text',
+          404: 'text',
           500: 'text',
         }
       }

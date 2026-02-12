@@ -1,7 +1,9 @@
+using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Enums;
 using FastEndpoints;
+using Microsoft.AspNetCore.Http;
 
 namespace Presentation.Endpoints.Meters;
 
@@ -21,6 +23,10 @@ public class GetMetersEndpoint(IMeterService meterService)
     {
         Get("/api/meter");
         Roles("User");
+        Description(d =>
+            d.Produces<IEnumerable<GetMetersEndpointResponse>>((int)HttpStatusCode.OK)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)

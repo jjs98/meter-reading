@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using Application.Services;
 using FastEndpoints;
+using Microsoft.AspNetCore.Http;
 
 namespace Presentation.Endpoints.Auth;
 
@@ -13,6 +14,11 @@ public class RefreshEndpoint(IAuthService authService, IUserService userService)
     public override void Configure()
     {
         Post("/api/auth/refresh");
+        Description(d =>
+            d.Produces<RefreshEndpointResponse>((int)HttpStatusCode.OK)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.BadRequest, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)

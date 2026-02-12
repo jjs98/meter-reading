@@ -1,7 +1,9 @@
+using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Models;
 using FastEndpoints;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -16,6 +18,16 @@ public record CreateReadingEndpointResponse(
     DateTime ReadingDate
 );
 
+public class CreateReadingEndpointValidator : Validator<CreateReadingEndpointRequest>
+{
+    public CreateReadingEndpointValidator()
+    {
+        RuleFor(x => x.MeterId).GreaterThan(0).WithMessage("MeterId is required");
+        RuleFor(x => x.Number).NotEmpty().WithMessage("Number is required");
+        RuleFor(x => x.ReadingDate).NotEmpty().WithMessage("ReadingDate is required");
+    }
+}
+
 public class CreateReadingEndpoint(
     IReadingService readingService,
     IMeterService meterService,
@@ -26,6 +38,11 @@ public class CreateReadingEndpoint(
     {
         Post("/api/reading");
         Roles("User");
+        Description(d =>
+            d.Produces<CreateReadingEndpointResponse>((int)HttpStatusCode.Created)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(CreateReadingEndpointRequest req, CancellationToken ct)
@@ -62,14 +79,14 @@ public class CreateReadingEndpoint(
                 ReadingDate = req.ReadingDate,
             };
             var createdReading = await readingService.Create(reading);
-            await Send.OkAsync(
-                new CreateReadingEndpointResponse(
+            await Send.CreatedAtAsync<CreateReadingEndpoint>(
+                responseBody: new CreateReadingEndpointResponse(
                     createdReading.Id,
                     createdReading.MeterId,
                     createdReading.Number,
                     createdReading.ReadingDate
                 ),
-                ct
+                cancellation: ct
             );
         }
         catch (Exception ex)

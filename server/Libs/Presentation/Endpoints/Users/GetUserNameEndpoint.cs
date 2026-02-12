@@ -1,13 +1,23 @@
+using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
 using FastEndpoints;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Presentation.Endpoints.Users;
 
 public record GetUserNameRequest([property: RouteParam] int Id);
+
+public class GetUserNameValidator : Validator<GetUserNameRequest>
+{
+    public GetUserNameValidator()
+    {
+        RuleFor(x => x.Id).GreaterThan(0).WithMessage("Id is required");
+    }
+}
 
 public class GetUserNameEndpoint(
     ILogger<GetUserNameEndpoint> logger,
@@ -19,6 +29,12 @@ public class GetUserNameEndpoint(
     {
         Get("/api/user/{Id}/name");
         Roles("User");
+        Description(d =>
+            d.Produces<string>((int)HttpStatusCode.OK)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(GetUserNameRequest req, CancellationToken ct)

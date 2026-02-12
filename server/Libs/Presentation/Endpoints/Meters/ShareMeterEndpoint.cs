@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
 using FastEndpoints;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -11,6 +12,15 @@ namespace Presentation.Endpoints.Meters;
 public record ShareMeterEndpointRequest(int MeterId, int UserId, string Username);
 
 public record ShareMeterEndpointResponse(int MeterId, int UserId, string Username);
+
+public class ShareMeterEndpointValidator : Validator<ShareMeterEndpointRequest>
+{
+    public ShareMeterEndpointValidator()
+    {
+        RuleFor(x => x.MeterId).GreaterThan(0).WithMessage("MeterId is required");
+        RuleFor(x => x.Username).NotEmpty().WithMessage("Username is required");
+    }
+}
 
 public class ShareMeterEndpoint(
     IMeterService meterService,
@@ -23,7 +33,7 @@ public class ShareMeterEndpoint(
         Post("/api/meter/share");
         Roles("User");
         Description(d =>
-            d.Produces<ShareMeterEndpointResponse>()
+            d.Produces<ShareMeterEndpointResponse>((int)HttpStatusCode.OK)
                 .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
                 .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
                 .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")

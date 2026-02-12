@@ -1,8 +1,8 @@
+using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Enums;
 using Domain.Exceptions;
-using Domain.Models;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -27,6 +27,12 @@ public class GetSharedMetersEndpoint(
     {
         Get("/api/meter/shared");
         Roles("User");
+        Description(d =>
+            d.Produces<IEnumerable<GetSharedMetersEndpointResponse>>((int)HttpStatusCode.OK)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)

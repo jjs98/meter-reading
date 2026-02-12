@@ -58,7 +58,7 @@ export function withReadings() {
               readingDate: reading.readingDate,
             },
           });
-          if (response.status === 200) {
+          if (response.status === 201) {
             await this.refreshReadings(reading.meterId);
             toastService.add({
               severity: ToastSeverity.Success,

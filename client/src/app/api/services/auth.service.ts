@@ -113,6 +113,7 @@ export class AuthService extends ApiBaseService {
       })),
       {
         errorResponseTypes: {
+          400: 'text',
           401: 'text',
           403: 'text',
           500: 'text',

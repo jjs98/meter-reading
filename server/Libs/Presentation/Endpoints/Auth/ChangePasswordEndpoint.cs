@@ -6,7 +6,6 @@ using FastEndpoints;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Presentation.Endpoints.Meters;
 
 namespace Presentation.Endpoints.Auth;
 

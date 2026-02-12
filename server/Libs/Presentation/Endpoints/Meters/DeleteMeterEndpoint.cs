@@ -1,13 +1,23 @@
+using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
 using FastEndpoints;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Presentation.Endpoints.Meters;
 
 public record DeleteMeterEndpointRequest([property: RouteParam] int Id);
+
+public class DeleteMeterEndpointValidator : Validator<DeleteMeterEndpointRequest>
+{
+    public DeleteMeterEndpointValidator()
+    {
+        RuleFor(x => x.Id).GreaterThan(0).WithMessage("Id is required");
+    }
+}
 
 public class DeleteMeterEndpoint(IMeterService meterService, ILogger<DeleteMeterEndpoint> logger)
     : Endpoint<DeleteMeterEndpointRequest, EmptyResponse>
@@ -16,6 +26,12 @@ public class DeleteMeterEndpoint(IMeterService meterService, ILogger<DeleteMeter
     {
         Delete("/api/meter/{Id}");
         Roles("User");
+        Description(d =>
+            d.Produces((int)HttpStatusCode.NoContent)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(DeleteMeterEndpointRequest req, CancellationToken ct)

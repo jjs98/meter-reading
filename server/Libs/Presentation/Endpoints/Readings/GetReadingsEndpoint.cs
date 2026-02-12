@@ -1,8 +1,9 @@
+using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
-using Domain.Models;
 using FastEndpoints;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -11,6 +12,14 @@ namespace Presentation.Endpoints.Readings;
 public record GetReadingsEndpointRequest(int MeterId);
 
 public record GetReadingsEndpointResponse(int Id, int MeterId, string Number, DateTime ReadingDate);
+
+public class GetReadingsEndpointValidator : Validator<GetReadingsEndpointRequest>
+{
+    public GetReadingsEndpointValidator()
+    {
+        RuleFor(x => x.MeterId).GreaterThan(0).WithMessage("MeterId is required");
+    }
+}
 
 public class GetReadingsEndpoint(
     IReadingService readingService,
@@ -22,6 +31,12 @@ public class GetReadingsEndpoint(
     {
         Get("/api/reading");
         Roles("User");
+        Description(d =>
+            d.Produces<IEnumerable<GetReadingsEndpointResponse>>((int)HttpStatusCode.OK)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(GetReadingsEndpointRequest req, CancellationToken ct)

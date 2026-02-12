@@ -1,7 +1,9 @@
+using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
 using FastEndpoints;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -10,6 +12,14 @@ namespace Presentation.Endpoints.Meters;
 public record GetSharedByMeterIdEndpointRequest([property: RouteParam] int MeterId);
 
 public record GetSharedByMeterIdEndpointResponse(int MeterId, int UserId, string Username);
+
+public class GetSharedByMeterIdEndpointValidator : Validator<GetSharedByMeterIdEndpointRequest>
+{
+    public GetSharedByMeterIdEndpointValidator()
+    {
+        RuleFor(x => x.MeterId).GreaterThan(0).WithMessage("MeterId is required");
+    }
+}
 
 public class GetSharedByMeterIdEndpoint(
     IMeterService meterService,
@@ -21,6 +31,12 @@ public class GetSharedByMeterIdEndpoint(
     {
         Get("/api/meter/shared/{MeterId}");
         Roles("User");
+        Description(d =>
+            d.Produces<IEnumerable<GetSharedByMeterIdEndpointResponse>>((int)HttpStatusCode.OK)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(

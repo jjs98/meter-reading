@@ -217,7 +217,7 @@ export class ReadingDialogComponent {
   private async addReading(meterId: number): Promise<void> {
     const successfulAdded = await this.dataStore.addReading({
       meterId: meterId,
-      number: this.number?.toString(),
+      number: this.number?.toString() ?? '',
       readingDate: this.readingDate()?.toISOString() ?? '',
     });
     if (successfulAdded) {
@@ -239,7 +239,7 @@ export class ReadingDialogComponent {
     const successfulUpdated = await this.dataStore.updateReading({
       id: reading.id,
       meterId: reading.meterId,
-      number: this.number?.toString(),
+      number: this.number?.toString() ?? '',
       readingDate: this.readingDate()?.toISOString() ?? '',
     });
     if (successfulUpdated) {

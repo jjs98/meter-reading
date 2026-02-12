@@ -1,5 +1,5 @@
 export type CreateReadingEndpointRequest = {
     meterId?: number;
-    number?: string;
-    readingDate?: string;
+    number: string;
+    readingDate: string;
   };

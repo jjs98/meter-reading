@@ -48,13 +48,13 @@ export function withMeters() {
           const response = await meterService.createMeterEndpoint({
             body: {
               userId: meter.userId,
-              location: meter.location,
+              location: meter.location!,
               meterNumber: meter.meterNumber,
               addition: meter.addition,
               type: meter.type,
             },
           });
-          if (response.status === 200) {
+          if (response.status === 201) {
             await this.refreshMeters();
             toastService.add({
               severity: ToastSeverity.Success,
@@ -101,7 +101,13 @@ export function withMeters() {
           }
           const response = await meterService.updateMeterEndpoint({
             id: meter.id,
-            body: meter,
+            body: {
+              userId: meter.userId,
+              location: meter.location!,
+              meterNumber: meter.meterNumber,
+              addition: meter.addition,
+              type: meter.type,
+            },
           });
           if (response.status === 204) {
             await this.refreshMeters();

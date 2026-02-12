@@ -1,8 +1,10 @@
+using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Enums;
 using Domain.Models;
 using FastEndpoints;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 
 namespace Presentation.Endpoints.Meters;
@@ -24,6 +26,15 @@ public record CreateMeterEndpointResponse(
     MeterType Type
 );
 
+public class CreateMeterEndpointValidator : Validator<CreateMeterEndpointRequest>
+{
+    public CreateMeterEndpointValidator()
+    {
+        RuleFor(x => x.UserId).GreaterThan(0).WithMessage("UserId is required");
+        RuleFor(x => x.Location).NotEmpty().WithMessage("Location is required");
+    }
+}
+
 public class CreateMeterEndpoint(IMeterService meterService)
     : Endpoint<CreateMeterEndpointRequest, CreateMeterEndpointResponse>
 {
@@ -31,6 +42,10 @@ public class CreateMeterEndpoint(IMeterService meterService)
     {
         Post("/api/meter");
         Roles("User");
+        Description(d =>
+            d.Produces<CreateMeterEndpointResponse>((int)HttpStatusCode.Created)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(CreateMeterEndpointRequest req, CancellationToken ct)
@@ -53,8 +68,8 @@ public class CreateMeterEndpoint(IMeterService meterService)
             Type = req.Type,
         };
         var createdMeter = await meterService.Create(meter);
-        await Send.OkAsync(
-            new CreateMeterEndpointResponse(
+        await Send.CreatedAtAsync<CreateMeterEndpoint>(
+            responseBody: new CreateMeterEndpointResponse(
                 createdMeter.Id,
                 createdMeter.UserId,
                 createdMeter.Location,
@@ -62,7 +77,7 @@ public class CreateMeterEndpoint(IMeterService meterService)
                 createdMeter.Addition,
                 createdMeter.Type
             ),
-            ct
+            cancellation: ct
         );
     }
 }

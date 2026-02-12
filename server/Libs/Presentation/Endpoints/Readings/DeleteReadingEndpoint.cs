@@ -1,13 +1,23 @@
+using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
 using FastEndpoints;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Presentation.Endpoints.Readings;
 
 public record DeleteReadingEndpointRequest([property: RouteParam] int Id);
+
+public class DeleteReadingEndpointValidator : Validator<DeleteReadingEndpointRequest>
+{
+    public DeleteReadingEndpointValidator()
+    {
+        RuleFor(x => x.Id).GreaterThan(0).WithMessage("Id is required");
+    }
+}
 
 public class DeleteReadingEndpoint(
     IReadingService readingService,
@@ -19,6 +29,12 @@ public class DeleteReadingEndpoint(
     {
         Delete("/api/reading/{Id}");
         Roles("User");
+        Description(d =>
+            d.Produces((int)HttpStatusCode.NoContent)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(DeleteReadingEndpointRequest req, CancellationToken ct)

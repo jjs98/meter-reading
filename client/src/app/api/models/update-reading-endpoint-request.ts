@@ -1,5 +1,5 @@
 export type UpdateReadingEndpointRequest = {
     meterId?: number;
-    number?: string;
-    readingDate?: string;
+    number: string;
+    readingDate: string;
   };

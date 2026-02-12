@@ -1,8 +1,10 @@
+using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
 using Domain.Models;
 using FastEndpoints;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -15,6 +17,17 @@ public record UpdateReadingEndpointRequest(
     DateTime ReadingDate
 );
 
+public class UpdateReadingEndpointValidator : Validator<UpdateReadingEndpointRequest>
+{
+    public UpdateReadingEndpointValidator()
+    {
+        RuleFor(x => x.Id).GreaterThan(0).WithMessage("Id is required");
+        RuleFor(x => x.MeterId).GreaterThan(0).WithMessage("MeterId is required");
+        RuleFor(x => x.Number).NotEmpty().WithMessage("Number is required");
+        RuleFor(x => x.ReadingDate).NotEmpty().WithMessage("ReadingDate is required");
+    }
+}
+
 public class UpdateReadingEndpoint(
     IReadingService readingService,
     IMeterService meterService,
@@ -25,6 +38,12 @@ public class UpdateReadingEndpoint(
     {
         Put("/api/reading/{Id}");
         Roles("User");
+        Description(d =>
+            d.Produces((int)HttpStatusCode.NoContent)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(UpdateReadingEndpointRequest req, CancellationToken ct)

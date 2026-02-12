@@ -99,7 +99,7 @@ export type LoginEndpointApiResponse<TStatus extends LoginEndpointStatusCodes = 
           ok: false;
         }))
     | ((Omit<HttpErrorResponse, 'error'>) & ({
-          error: (unknown) | (null);
+          error: (string) | (null);
           status: 401;
           ok: false;
         }))
@@ -118,6 +118,7 @@ export type LoginEndpointApiResponse<TStatus extends LoginEndpointStatusCodes = 
 
 type RefreshEndpointStatusCodes =
   | (200)
+  | (400)
   | (401)
   | (403)
   | (500);
@@ -130,7 +131,12 @@ export type RefreshEndpointApiResponse<TStatus extends RefreshEndpointStatusCode
           ok: true;
         }))
     | ((Omit<HttpErrorResponse, 'error'>) & ({
-          error: (unknown) | (null);
+          error: (string) | (null);
+          status: 400;
+          ok: false;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (string) | (null);
           status: 401;
           ok: false;
         }))

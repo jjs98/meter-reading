@@ -3,6 +3,7 @@ using Application.Services;
 using Domain.Models;
 using FastEndpoints;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Presentation.Endpoints.Auth;
@@ -27,6 +28,10 @@ public class LoginEndpoint(IAuthService authService, ILogger<LoginEndpoint> logg
     {
         Post("/api/auth/login");
         AllowAnonymous();
+        Description(d =>
+            d.Produces<LoginEndpointResponse>((int)HttpStatusCode.OK)
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(LoginEndpointRequest req, CancellationToken ct)
