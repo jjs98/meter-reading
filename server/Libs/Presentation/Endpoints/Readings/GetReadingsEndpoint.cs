@@ -10,11 +10,13 @@ namespace Presentation.Endpoints.Readings;
 
 public record GetReadingsEndpointRequest(int MeterId);
 
+public record GetReadingsEndpointResponse(int Id, int MeterId, string Number, DateTime ReadingDate);
+
 public class GetReadingsEndpoint(
     IReadingService readingService,
     IMeterService meterService,
     ILogger<GetReadingsEndpoint> logger
-) : Endpoint<GetReadingsEndpointRequest, IEnumerable<Reading>>
+) : Endpoint<GetReadingsEndpointRequest, IEnumerable<GetReadingsEndpointResponse>>
 {
     public override void Configure()
     {
@@ -50,7 +52,15 @@ public class GetReadingsEndpoint(
             }
 
             var readings = await readingService.GetByMeterId(req.MeterId);
-            await Send.OkAsync(readings, ct);
+            await Send.OkAsync(
+                readings.Select(x => new GetReadingsEndpointResponse(
+                    x.Id,
+                    x.MeterId,
+                    x.Number,
+                    x.ReadingDate
+                )),
+                ct
+            );
         }
         catch (Exception ex)
         {

@@ -1,331 +1,259 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
-import type { Meter } from '../meter';
-import type { MeterShareDto } from '../meter-share-dto';
-import type { ProblemDetails } from '../problem-details';
-import type { SharedMeter } from '../shared-meter';
+import type { CreateMeterEndpointResponse } from '../create-meter-endpoint-response';
+import type { GetMetersEndpointResponse } from '../get-meters-endpoint-response';
+import type { GetSharedByMeterIdEndpointResponse } from '../get-shared-by-meter-id-endpoint-response';
+import type { GetSharedMetersEndpointResponse } from '../get-shared-meters-endpoint-response';
+import type { ShareMeterEndpointResponse } from '../share-meter-endpoint-response';
 
-type GetApiMeterStatusCodes =
+type GetMetersEndpointStatusCodes =
   | (200)
   | (401)
   | (403)
   | (500);
 /**
- * Response model for operation getApiMeter
+ * Response model for operation getMetersEndpoint
  */
-export type GetApiMeterApiResponse<TStatus extends GetApiMeterStatusCodes = GetApiMeterStatusCodes> = (
-    | ((HttpResponse<(Meter)[]>) & ({
+export type GetMetersEndpointApiResponse<TStatus extends GetMetersEndpointStatusCodes = GetMetersEndpointStatusCodes> = (
+    | ((HttpResponse<(GetMetersEndpointResponse)[]>) & ({
           status: 200;
           ok: true;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 401;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 403;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 500;
           ok: false;
         }))) & ({
       status: TStatus;
     });
 
-type PostApiMeterStatusCodes =
-  | (201)
-  | (401)
-  | (403)
-  | (500);
-/**
- * Response model for operation postApiMeter
- */
-export type PostApiMeterApiResponse<TStatus extends PostApiMeterStatusCodes = PostApiMeterStatusCodes> = (
-    | ((HttpResponse<Meter>) & ({
-          status: 201;
-          ok: true;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 401;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
-          status: 403;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
-          status: 500;
-          ok: false;
-        }))) & ({
-      status: TStatus;
-    });
-
-type GetApiMeterIdStatusCodes =
+type CreateMeterEndpointStatusCodes =
   | (200)
   | (401)
   | (403)
-  | (404)
   | (500);
 /**
- * Response model for operation getApiMeterId
+ * Response model for operation createMeterEndpoint
  */
-export type GetApiMeterIdApiResponse<TStatus extends GetApiMeterIdStatusCodes = GetApiMeterIdStatusCodes> = (
-    | ((HttpResponse<Meter>) & ({
+export type CreateMeterEndpointApiResponse<TStatus extends CreateMeterEndpointStatusCodes = CreateMeterEndpointStatusCodes> = (
+    | ((HttpResponse<CreateMeterEndpointResponse>) & ({
           status: 200;
           ok: true;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 401;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 403;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 404;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 500;
           ok: false;
         }))) & ({
       status: TStatus;
     });
 
-type PutApiMeterIdStatusCodes =
-  | (204)
-  | (400)
-  | (401)
-  | (403)
-  | (404)
-  | (500);
-/**
- * Response model for operation putApiMeterId
- */
-export type PutApiMeterIdApiResponse<TStatus extends PutApiMeterIdStatusCodes = PutApiMeterIdStatusCodes> = (
-    | ((HttpResponse<never>) & ({
-          status: 204;
-          ok: true;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 400;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 401;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
-          status: 403;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 404;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
-          status: 500;
-          ok: false;
-        }))) & ({
-      status: TStatus;
-    });
-
-type DeleteApiMeterIdStatusCodes =
+type UpdateMeterEndpointStatusCodes =
   | (204)
   | (401)
   | (403)
-  | (404)
   | (500);
 /**
- * Response model for operation deleteApiMeterId
+ * Response model for operation updateMeterEndpoint
  */
-export type DeleteApiMeterIdApiResponse<TStatus extends DeleteApiMeterIdStatusCodes = DeleteApiMeterIdStatusCodes> = (
-    | ((HttpResponse<never>) & ({
+export type UpdateMeterEndpointApiResponse<TStatus extends UpdateMeterEndpointStatusCodes = UpdateMeterEndpointStatusCodes> = (
+    | ((HttpResponse<unknown>) & ({
           status: 204;
           ok: true;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 401;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 403;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 404;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 500;
           ok: false;
         }))) & ({
       status: TStatus;
     });
 
-type GetApiMeterSharedStatusCodes =
-  | (200)
-  | (401)
-  | (403)
-  | (404)
-  | (500);
-/**
- * Response model for operation getApiMeterShared
- */
-export type GetApiMeterSharedApiResponse<TStatus extends GetApiMeterSharedStatusCodes = GetApiMeterSharedStatusCodes> = (
-    | ((HttpResponse<(Meter)[]>) & ({
-          status: 200;
-          ok: true;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 401;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
-          status: 403;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 404;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
-          status: 500;
-          ok: false;
-        }))) & ({
-      status: TStatus;
-    });
-
-type GetApiMeterSharedMeterIdStatusCodes =
-  | (200)
-  | (401)
-  | (403)
-  | (404)
-  | (500);
-/**
- * Response model for operation getApiMeterSharedMeterId
- */
-export type GetApiMeterSharedMeterIdApiResponse<TStatus extends GetApiMeterSharedMeterIdStatusCodes = GetApiMeterSharedMeterIdStatusCodes> = (
-    | ((HttpResponse<(MeterShareDto)[]>) & ({
-          status: 200;
-          ok: true;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 401;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
-          status: 403;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 404;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
-          status: 500;
-          ok: false;
-        }))) & ({
-      status: TStatus;
-    });
-
-type PostApiMeterShareStatusCodes =
-  | (201)
-  | (401)
-  | (403)
-  | (404)
-  | (500);
-/**
- * Response model for operation postApiMeterShare
- */
-export type PostApiMeterShareApiResponse<TStatus extends PostApiMeterShareStatusCodes = PostApiMeterShareStatusCodes> = (
-    | ((HttpResponse<SharedMeter>) & ({
-          status: 201;
-          ok: true;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 401;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
-          status: 403;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 404;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
-          status: 500;
-          ok: false;
-        }))) & ({
-      status: TStatus;
-    });
-
-type DeleteApiMeterRevokeStatusCodes =
+type DeleteMeterEndpointStatusCodes =
   | (204)
   | (401)
   | (403)
-  | (404)
   | (500);
 /**
- * Response model for operation deleteApiMeterRevoke
+ * Response model for operation deleteMeterEndpoint
  */
-export type DeleteApiMeterRevokeApiResponse<TStatus extends DeleteApiMeterRevokeStatusCodes = DeleteApiMeterRevokeStatusCodes> = (
-    | ((HttpResponse<never>) & ({
+export type DeleteMeterEndpointApiResponse<TStatus extends DeleteMeterEndpointStatusCodes = DeleteMeterEndpointStatusCodes> = (
+    | ((HttpResponse<unknown>) & ({
           status: 204;
           ok: true;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 401;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 403;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
+          status: 500;
+          ok: false;
+        }))) & ({
+      status: TStatus;
+    });
+
+type GetSharedByMeterIdEndpointStatusCodes =
+  | (200)
+  | (401)
+  | (403)
+  | (500);
+/**
+ * Response model for operation getSharedByMeterIdEndpoint
+ */
+export type GetSharedByMeterIdEndpointApiResponse<TStatus extends GetSharedByMeterIdEndpointStatusCodes = GetSharedByMeterIdEndpointStatusCodes> = (
+    | ((HttpResponse<(GetSharedByMeterIdEndpointResponse)[]>) & ({
+          status: 200;
+          ok: true;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
+          status: 401;
+          ok: false;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
+          status: 403;
+          ok: false;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
+          status: 500;
+          ok: false;
+        }))) & ({
+      status: TStatus;
+    });
+
+type GetSharedMetersEndpointStatusCodes =
+  | (200)
+  | (401)
+  | (403)
+  | (500);
+/**
+ * Response model for operation getSharedMetersEndpoint
+ */
+export type GetSharedMetersEndpointApiResponse<TStatus extends GetSharedMetersEndpointStatusCodes = GetSharedMetersEndpointStatusCodes> = (
+    | ((HttpResponse<(GetSharedMetersEndpointResponse)[]>) & ({
+          status: 200;
+          ok: true;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
+          status: 401;
+          ok: false;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
+          status: 403;
+          ok: false;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
+          status: 500;
+          ok: false;
+        }))) & ({
+      status: TStatus;
+    });
+
+type RevokeMeterEndpointStatusCodes =
+  | (204)
+  | (401)
+  | (403)
+  | (500);
+/**
+ * Response model for operation revokeMeterEndpoint
+ */
+export type RevokeMeterEndpointApiResponse<TStatus extends RevokeMeterEndpointStatusCodes = RevokeMeterEndpointStatusCodes> = (
+    | ((HttpResponse<unknown>) & ({
+          status: 204;
+          ok: true;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
+          status: 401;
+          ok: false;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
+          status: 403;
+          ok: false;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
+          status: 500;
+          ok: false;
+        }))) & ({
+      status: TStatus;
+    });
+
+type ShareMeterEndpointStatusCodes =
+  | (200)
+  | (401)
+  | (403)
+  | (404)
+  | (500);
+/**
+ * Response model for operation shareMeterEndpoint
+ */
+export type ShareMeterEndpointApiResponse<TStatus extends ShareMeterEndpointStatusCodes = ShareMeterEndpointStatusCodes> = (
+    | ((HttpResponse<ShareMeterEndpointResponse>) & ({
+          status: 200;
+          ok: true;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (string) | (null);
+          status: 401;
+          ok: false;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
+          status: 403;
+          ok: false;
+        }))
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (string) | (null);
           status: 404;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (string) | (null);
           status: 500;
           ok: false;
         }))) & ({

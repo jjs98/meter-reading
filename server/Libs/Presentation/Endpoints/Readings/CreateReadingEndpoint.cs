@@ -62,7 +62,6 @@ public class CreateReadingEndpoint(
                 ReadingDate = req.ReadingDate,
             };
             var createdReading = await readingService.Create(reading);
-            HttpContext.Response.StatusCode = StatusCodes.Status201Created;
             await Send.OkAsync(
                 new CreateReadingEndpointResponse(
                     createdReading.Id,

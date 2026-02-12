@@ -5,163 +5,119 @@ import { waitForResponse } from '../utils/angular-service.utils';
 import { ApiBaseService } from '../utils/api-base-service';
 import { RequestBuilder } from '../utils/request-builder';
 
-import type { ChangePasswordDto } from '../models/change-password-dto';
-import type {
-  PostApiAuthChangePasswordApiResponse,
-  PostApiAuthHashApiResponse,
-  PostApiAuthLoginApiResponse,
-  PostApiAuthRefreshApiResponse,
-} from '../models/responses/auth-responses.model';
-import type { UserLoginDto } from '../models/user-login-dto';
+import type { ChangePasswordEndpointRequest } from '../models/change-password-endpoint-request';
+import type { HashEndpointRequest } from '../models/hash-endpoint-request';
+import type { LoginEndpointRequest } from '../models/login-endpoint-request';
+import type { ChangePasswordEndpointApiResponse, HashEndpointApiResponse, LoginEndpointApiResponse, RefreshEndpointApiResponse } from '../models/responses/auth-responses.model';
 import type { AbortablePromise } from '../utils/angular-service.utils';
 
 /**
- * Parameters for operation postApiAuthLogin
+ * Parameters for operation changePasswordEndpoint
  */
-interface PostApiAuthLoginParams {
-  body?: UserLoginDto;
-}
+type ChangePasswordEndpointParams = {
+    body: ChangePasswordEndpointRequest;
+  };
 
 /**
- * Parameters for operation postApiAuthChangePassword
+ * Parameters for operation hashEndpoint
  */
-interface PostApiAuthChangePasswordParams {
-  body?: ChangePasswordDto;
-}
+type HashEndpointParams = {
+    body: HashEndpointRequest;
+  };
 
 /**
- * Parameters for operation postApiAuthHash
+ * Parameters for operation loginEndpoint
  */
-interface PostApiAuthHashParams {
-  body?: string;
-}
+type LoginEndpointParams = {
+    body: LoginEndpointRequest;
+  };
 
 @Injectable()
 export class AuthService extends ApiBaseService {
-  private static readonly POST_API_AUTH_LOGIN_PATH = '/api/Auth/login';
-  private static readonly POST_API_AUTH_REFRESH_PATH = '/api/Auth/refresh';
-  private static readonly POST_API_AUTH_CHANGE_PASSWORD_PATH =
-    '/api/Auth/changePassword';
-  private static readonly POST_API_AUTH_HASH_PATH = '/api/Auth/hash';
+  private static readonly CHANGE_PASSWORD_ENDPOINT_PATH = '/api/auth/changePassword';
+  private static readonly HASH_ENDPOINT_PATH = '/api/auth/hash';
+  private static readonly LOGIN_ENDPOINT_PATH = '/api/auth/login';
+  private static readonly REFRESH_ENDPOINT_PATH = '/api/auth/refresh';
 
-  public postApiAuthLogin(
-    params?: PostApiAuthLoginParams,
-    context?: HttpContext
-  ): AbortablePromise<PostApiAuthLoginApiResponse> {
-    const rb = new RequestBuilder(
-      this.rootUrl,
-      AuthService.POST_API_AUTH_LOGIN_PATH,
-      'post'
-    );
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
+  public changePasswordEndpoint(params: ChangePasswordEndpointParams, context?: HttpContext): AbortablePromise<ChangePasswordEndpointApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, AuthService.CHANGE_PASSWORD_ENDPOINT_PATH, 'post');
+    rb.body(params.body, 'application/json');
 
-    return waitForResponse<PostApiAuthLoginApiResponse>(
-      this.http.request(
-        rb.build({
-          responseType: 'json',
-          accept: 'application/json',
-          context,
-        })
-      ),
-      {
-        errorResponseTypes: {
-          401: 'text',
-          403: 'text',
-          500: 'text',
-        },
-      }
-    );
-  }
-
-  public postApiAuthRefresh(
-    context?: HttpContext
-  ): AbortablePromise<PostApiAuthRefreshApiResponse> {
-    const rb = new RequestBuilder(
-      this.rootUrl,
-      AuthService.POST_API_AUTH_REFRESH_PATH,
-      'post'
-    );
-
-    return waitForResponse<PostApiAuthRefreshApiResponse>(
-      this.http.request(
-        rb.build({
-          responseType: 'json',
-          accept: 'application/json',
-          context,
-        })
-      ),
+    return waitForResponse<ChangePasswordEndpointApiResponse>(
+      this.http.request(rb.build({
+        responseType: 'text',
+        accept: '*/*',
+        context,
+      })),
       {
         errorResponseTypes: {
           400: 'json',
-          401: 'json',
+          401: 'text',
           403: 'text',
           500: 'text',
-        },
+        }
       }
-    );
+    )
   }
 
-  public postApiAuthChangePassword(
-    params?: PostApiAuthChangePasswordParams,
-    context?: HttpContext
-  ): AbortablePromise<PostApiAuthChangePasswordApiResponse> {
-    const rb = new RequestBuilder(
-      this.rootUrl,
-      AuthService.POST_API_AUTH_CHANGE_PASSWORD_PATH,
-      'post'
-    );
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
+  public hashEndpoint(params: HashEndpointParams, context?: HttpContext): AbortablePromise<HashEndpointApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, AuthService.HASH_ENDPOINT_PATH, 'post');
+    rb.body(params.body, 'application/json');
 
-    return waitForResponse<PostApiAuthChangePasswordApiResponse>(
-      this.http.request(
-        rb.build({
-          responseType: 'json',
-          accept: 'application/json',
-          context,
-        })
-      ),
+    return waitForResponse<HashEndpointApiResponse>(
+      this.http.request(rb.build({
+        responseType: 'json',
+        accept: 'application/json',
+        context,
+      })),
       {
         errorResponseTypes: {
-          401: 'json',
+          400: 'json',
+          401: 'text',
           403: 'text',
           500: 'text',
-        },
+        }
       }
-    );
+    )
   }
 
-  public postApiAuthHash(
-    params?: PostApiAuthHashParams,
-    context?: HttpContext
-  ): AbortablePromise<PostApiAuthHashApiResponse> {
-    const rb = new RequestBuilder(
-      this.rootUrl,
-      AuthService.POST_API_AUTH_HASH_PATH,
-      'post'
-    );
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
+  public loginEndpoint(params: LoginEndpointParams, context?: HttpContext): AbortablePromise<LoginEndpointApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, AuthService.LOGIN_ENDPOINT_PATH, 'post');
+    rb.body(params.body, 'application/json');
 
-    return waitForResponse<PostApiAuthHashApiResponse>(
-      this.http.request(
-        rb.build({
-          responseType: 'json',
-          accept: 'application/json',
-          context,
-        })
-      ),
+    return waitForResponse<LoginEndpointApiResponse>(
+      this.http.request(rb.build({
+        responseType: 'json',
+        accept: 'application/json',
+        context,
+      })),
+      {
+        errorResponseTypes: {
+          400: 'json',
+          401: 'text',
+          403: 'text',
+          500: 'text',
+        }
+      }
+    )
+  }
+
+  public refreshEndpoint(context?: HttpContext): AbortablePromise<RefreshEndpointApiResponse> {
+    const rb = new RequestBuilder(this.rootUrl, AuthService.REFRESH_ENDPOINT_PATH, 'post');
+
+    return waitForResponse<RefreshEndpointApiResponse>(
+      this.http.request(rb.build({
+        responseType: 'json',
+        accept: 'application/json',
+        context,
+      })),
       {
         errorResponseTypes: {
           401: 'text',
           403: 'text',
           500: 'text',
-        },
+        }
       }
-    );
+    )
   }
 }

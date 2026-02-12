@@ -18,7 +18,9 @@ import { ListboxModule } from 'primeng/listbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { Meter, MeterShareDto, MeterType } from '../../api/models';
+import { MeterType } from '../../api/models';
+import { Meter } from '../../models/meter';
+import { MeterShare } from '../../models/meter-share';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 
@@ -52,7 +54,7 @@ export class MeterDialogComponent {
   protected type: MeterType | undefined = undefined;
 
   protected shareUsername: string | undefined = undefined;
-  protected sharedMeters: WritableSignal<MeterShareDto[]> = signal([]);
+  protected sharedMeters: WritableSignal<MeterShare[]> = signal([]);
 
   protected dialogVisible = signal(false);
 
@@ -153,9 +155,7 @@ export class MeterDialogComponent {
     }
   }
 
-  protected async confirmRevokeShare(
-    sharedMeter: MeterShareDto
-  ): Promise<void> {
+  protected async confirmRevokeShare(sharedMeter: MeterShare): Promise<void> {
     this.confirmationService.confirm({
       header: this.translations.meterShare_confirmDelete_header(),
       message: this.translations.meterShare_confirmDelete_message(),
@@ -207,7 +207,7 @@ export class MeterDialogComponent {
     });
   }
 
-  private async revokeShare(sharedMeter: MeterShareDto): Promise<void> {
+  private async revokeShare(sharedMeter: MeterShare): Promise<void> {
     if (sharedMeter && sharedMeter.userId && this.existingMeter?.id) {
       const succeeded = await this.dataStore.revokeMeterShare(
         this.existingMeter.id,
@@ -252,7 +252,7 @@ export class MeterDialogComponent {
     const successfulAdded = await this.dataStore.addMeter({
       userId: userId,
       meterNumber: this.meterNumber ?? null,
-      location: this.location ?? null,
+      location: this.location,
       type: this.type,
       addition: this.addition,
     });
@@ -276,7 +276,7 @@ export class MeterDialogComponent {
       id: meter.id,
       userId: meter.userId ?? -1,
       meterNumber: this.meterNumber ?? null,
-      location: this.location ?? null,
+      location: this.location,
       type: this.type,
       addition: this.addition,
     });

@@ -1,3 +1,4 @@
+using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
@@ -21,6 +22,12 @@ public class ShareMeterEndpoint(
     {
         Post("/api/meter/share");
         Roles("User");
+        Description(d =>
+            d.Produces<ShareMeterEndpointResponse>()
+                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
+                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+        );
     }
 
     public override async Task HandleAsync(ShareMeterEndpointRequest req, CancellationToken ct)
@@ -46,7 +53,6 @@ public class ShareMeterEndpoint(
             }
 
             var createdSharedMeter = await meterService.ShareMeter(user.Id, req.MeterId);
-            HttpContext.Response.StatusCode = StatusCodes.Status201Created;
             await Send.OkAsync(
                 new ShareMeterEndpointResponse(
                     createdSharedMeter.MeterId,

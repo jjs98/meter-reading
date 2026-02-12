@@ -98,7 +98,7 @@ export class ChangePasswordDialogComponent {
       return;
     }
 
-    const response = await this.authService.postApiAuthChangePassword({
+    const response = await this.authService.changePasswordEndpoint({
       body: {
         oldPassword: this.oldPassword,
         newPassword: this.newPassword,
@@ -112,6 +112,7 @@ export class ChangePasswordDialogComponent {
         detail: this.translations.login_passwordChangeSuccess(),
       });
       this.dialogVisible.set(false);
+      this.loading.set(false);
       return;
     }
     this.oldPasswordValid = false;

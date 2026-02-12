@@ -23,8 +23,9 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { Meter, Reading } from '../../api/models';
 import { ReadingDialogComponent } from '../../components/reading-dialog/reading-dialog.component';
+import { Meter } from '../../models/meter';
+import { Reading } from '../../models/reading';
 import { NavigationService } from '../../services/navigation.service';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';

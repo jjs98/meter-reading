@@ -53,7 +53,6 @@ public class CreateMeterEndpoint(IMeterService meterService)
             Type = req.Type,
         };
         var createdMeter = await meterService.Create(meter);
-        HttpContext.Response.StatusCode = StatusCodes.Status201Created;
         await Send.OkAsync(
             new CreateMeterEndpointResponse(
                 createdMeter.Id,

@@ -28,6 +28,7 @@ public static class Module
             .SwaggerDocument(o =>
             {
                 o.AutoTagPathSegmentIndex = 2;
+                o.ShortSchemaNames = true;
             });
 
         return services;
@@ -40,12 +41,21 @@ public static class Module
             .UseRouting()
             .UseAuthentication()
             .UseAuthorization()
-            .UseFastEndpoints();
+            .UseFastEndpoints(c =>
+            {
+                c.Endpoints.ShortNames = true;
+            });
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwaggerGen();
+            app.UseSwaggerGen(
+                config => { },
+                uiConfig =>
+                {
+                    uiConfig.ShowOperationIDs();
+                }
+            );
         }
 
         return app;

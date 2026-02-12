@@ -1,9 +1,9 @@
 export interface Token {
-  nameid: string;
-  unique_name: string;
-  email: string;
-  given_name: string;
-  family_name: string;
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier': string;
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name': string;
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress': string;
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname': string;
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname': string;
   role: string[];
   nbf: number;
   exp: number;

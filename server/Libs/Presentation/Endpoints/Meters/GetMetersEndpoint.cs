@@ -5,7 +5,7 @@ using FastEndpoints;
 
 namespace Presentation.Endpoints.Meters;
 
-public record GetMeterEndpointResponse(
+public record GetMetersEndpointResponse(
     int Id,
     int UserId,
     string Location,
@@ -15,7 +15,7 @@ public record GetMeterEndpointResponse(
 );
 
 public class GetMetersEndpoint(IMeterService meterService)
-    : Endpoint<EmptyRequest, IEnumerable<GetMeterEndpointResponse>>
+    : Endpoint<EmptyRequest, IEnumerable<GetMetersEndpointResponse>>
 {
     public override void Configure()
     {
@@ -33,7 +33,7 @@ public class GetMetersEndpoint(IMeterService meterService)
         }
 
         var meters = await meterService.GetByUserId(userId);
-        var response = meters.Select(m => new GetMeterEndpointResponse(
+        var response = meters.Select(m => new GetMetersEndpointResponse(
             m.Id,
             m.UserId,
             m.Location,

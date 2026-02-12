@@ -1,6 +1,4 @@
-export type { PostApiAuthChangePasswordApiResponse, PostApiAuthHashApiResponse, PostApiAuthLoginApiResponse, PostApiAuthRefreshApiResponse } from './models/responses/auth-responses.model';
-export type { DeleteApiMeterIdApiResponse, DeleteApiMeterRevokeApiResponse, GetApiMeterApiResponse, GetApiMeterIdApiResponse, GetApiMeterSharedApiResponse, GetApiMeterSharedMeterIdApiResponse, PostApiMeterApiResponse, PostApiMeterShareApiResponse, PutApiMeterIdApiResponse } from './models/responses/meter-responses.model';
-export type { DeleteApiReadingIdApiResponse, GetApiReadingApiResponse, GetApiReadingIdApiResponse, PostApiReadingApiResponse, PutApiReadingIdApiResponse } from './models/responses/reading-responses.model';
-export type { DeleteApiRoleIdApiResponse, GetApiRoleApiResponse, GetApiRoleIdApiResponse, PostApiRoleApiResponse, PutApiRoleIdApiResponse } from './models/responses/role-responses.model';
-export type { DeleteApiUserIdApiResponse, GetApiUserApiResponse, GetApiUserIdApiResponse, GetApiUserIdNameApiResponse, PostApiUserApiResponse, PutApiUserIdApiResponse } from './models/responses/user-responses.model';
-export type { DeleteApiUserRoleIdApiResponse, GetApiUserRoleRoleRoleIdApiResponse, GetApiUserRoleUserUserIdApiResponse, PostApiUserRoleApiResponse, PutApiUserRoleIdApiResponse } from './models/responses/user-role-responses.model';
+export type { ChangePasswordEndpointApiResponse, HashEndpointApiResponse, LoginEndpointApiResponse, RefreshEndpointApiResponse } from './models/responses/auth-responses.model';
+export type { CreateMeterEndpointApiResponse, DeleteMeterEndpointApiResponse, GetMetersEndpointApiResponse, GetSharedByMeterIdEndpointApiResponse, GetSharedMetersEndpointApiResponse, RevokeMeterEndpointApiResponse, ShareMeterEndpointApiResponse, UpdateMeterEndpointApiResponse } from './models/responses/meter-responses.model';
+export type { CreateReadingEndpointApiResponse, DeleteReadingEndpointApiResponse, GetReadingsEndpointApiResponse, UpdateReadingEndpointApiResponse } from './models/responses/reading-responses.model';
+export type { GetUserNameEndpointApiResponse } from './models/responses/user-responses.model';

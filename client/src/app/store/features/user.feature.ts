@@ -6,7 +6,7 @@ import {
   withState,
 } from '@ngrx/signals';
 
-import { User } from '../../api/models';
+import { User } from '../../models/user';
 import { patch } from '../../utils/data-store.utils';
 
 interface UserState {
