@@ -75,6 +75,9 @@ jobs:
     name: build server
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      checks: write
+      pull-requests: write
     steps:
       - name: checkout
         uses: actions/checkout@v4
