@@ -1,3 +1,6 @@
+[![Build Status](https://img.shields.io/github/actions/workflow/status/jjs98/meter-reading/build.yml?branch=main&style=for-the-badge)](https://github.com/jjs98/meter-reading/actions/workflows/build.yml)
+[![Codecov](https://img.shields.io/codecov/c/github/jjs98/meter-reading?style=for-the-badge)](https://codecov.io/gh/jjs98/meter-reading)
+
 # Meter Reading
 
 This is a simple project to track the meter readings of a house. You can add readings for electricity, gas and water and see the history of the readings. If you have multiple people living in the house, you can also share the readings with them, so that everyone can see the history of the readings. (For example the electricity readings for the house)
