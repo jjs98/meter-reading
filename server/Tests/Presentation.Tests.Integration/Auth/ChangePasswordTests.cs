@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using System.Net.Http.Json;
-using Application.DTOs;
-using FluentAssertions;
+using Domain.Models;
+using FastEndpoints;
+using Presentation.Endpoints.Auth;
 using Presentation.Tests.Integration.Builder;
 
 namespace Presentation.Tests.Integration.Auth;
@@ -10,6 +10,7 @@ namespace Presentation.Tests.Integration.Auth;
 public class ChangePasswordTests(WebApiFactory webApiFactory)
 {
     [Test]
+    [NotInParallel]
     public async Task ChangePassword_ReturnsOk_WhenUserExistAndPasswordIsCorrect()
     {
         // Arrange
@@ -18,31 +19,33 @@ public class ChangePasswordTests(WebApiFactory webApiFactory)
         using var dbContext = webApiFactory.CreateDbContext();
         var userBuilder = new UserBuilder(dbContext);
         var userData = userBuilder.WithUser(user).Build();
-        var login = new UserLoginDto { Username = user.Username, Password = user.Password };
-        var loginResponse = await client.PostAsJsonAsync("api/auth/login", login);
-        var loginToken = await loginResponse.Content.ReadFromJsonAsync<TokenDto>();
+        var loginResponse = await client.POSTAsync<
+            LoginEndpoint,
+            LoginEndpointRequest,
+            LoginEndpointResponse
+        >(new LoginEndpointRequest(user.Username, user.Password));
+        var loginToken = loginResponse.Result;
 
         client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
 
         var newPassword = "newPassword";
 
-        var changePassword = new ChangePasswordDto
-        {
-            OldPassword = user.Password,
-            NewPassword = newPassword,
-        };
-
         // Act
-        var response = await client.PostAsJsonAsync("api/auth/changePassword", changePassword);
+        var response = await client.POSTAsync<
+            ChangePasswordEndpoint,
+            ChangePasswordEndpointRequest,
+            EmptyResponse
+        >(new ChangePasswordEndpointRequest(user.Password, newPassword));
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        await Assert.That(response.Response.StatusCode).IsEqualTo(HttpStatusCode.OK);
 
-        var newLogin = new UserLoginDto { Username = user.Username, Password = newPassword };
-        var newLoginResponse = await client.PostAsJsonAsync("api/auth/login", newLogin);
-        var token = await newLoginResponse.Content.ReadFromJsonAsync<TokenDto>();
-        token.Should().NotBeNull();
-        token.Token.Should().NotBeNullOrEmpty();
+        var newLoginResponse = await client.POSTAsync<
+            LoginEndpoint,
+            LoginEndpointRequest,
+            LoginEndpointResponse
+        >(new LoginEndpointRequest(user.Username, newPassword));
+        await Assert.That(newLoginResponse.Result.Token).IsNotNullOrEmpty();
     }
 
     [Test]
@@ -54,25 +57,26 @@ public class ChangePasswordTests(WebApiFactory webApiFactory)
         using var dbContext = webApiFactory.CreateDbContext();
         var userBuilder = new UserBuilder(dbContext);
         var userData = userBuilder.WithUser(user).Build();
-        var login = new UserLoginDto { Username = user.Username, Password = user.Password };
-        var loginResponse = await client.PostAsJsonAsync("api/auth/login", login);
-        var loginToken = await loginResponse.Content.ReadFromJsonAsync<TokenDto>();
+        var loginResponse = await client.POSTAsync<
+            LoginEndpoint,
+            LoginEndpointRequest,
+            LoginEndpointResponse
+        >(new LoginEndpointRequest(user.Username, user.Password));
+        var loginToken = loginResponse.Result;
 
         client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
 
-        var changePassword = new ChangePasswordDto
-        {
-            OldPassword = "wrongPassword",
-            NewPassword = "newPassword",
-        };
-
         // Act
-        var response = await client.PostAsJsonAsync("api/auth/changePassword", changePassword);
+        var response = await client.POSTAsync<
+            ChangePasswordEndpoint,
+            ChangePasswordEndpointRequest,
+            EmptyResponse
+        >(new ChangePasswordEndpointRequest("wrongPassword", "newPassword"));
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        var message = await response.Content.ReadFromJsonAsync<string>();
-        message.Should().Be("Invalid credentials");
+        await Assert.That(response.Response.StatusCode).IsEqualTo(HttpStatusCode.Unauthorized);
+        var message = await response.Response.Content.ReadAsStringAsync();
+        await Assert.That(message).IsEqualTo("Invalid credentials");
     }
 
     [Test]
@@ -80,16 +84,16 @@ public class ChangePasswordTests(WebApiFactory webApiFactory)
     {
         // Arrange
         using var client = webApiFactory.CreateClient();
-        var changePassword = new ChangePasswordDto
-        {
-            OldPassword = "wrongPassword",
-            NewPassword = "newPassword",
-        };
+        var changePassword = new PasswordChange("wrongPassword", "newPassword");
 
         // Act
-        var response = await client.PostAsJsonAsync("api/auth/changePassword", changePassword);
+        var response = await client.POSTAsync<
+            ChangePasswordEndpoint,
+            ChangePasswordEndpointRequest,
+            EmptyResponse
+        >(new ChangePasswordEndpointRequest("wrongPassword", "newPassword"));
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        await Assert.That(response.Response.StatusCode).IsEqualTo(HttpStatusCode.Unauthorized);
     }
 }

@@ -1,14 +1,24 @@
-import { User } from '../api/models/user';
 import { Token } from '../models/Token.type';
+import { User } from '../models/user';
 
 export function mapTokenToUser(token: Token | undefined): User | undefined {
   if (!token) return undefined;
   return {
-    id: Number(token.nameid),
-    username: token.unique_name,
+    id: Number(
+      token[
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+      ]
+    ),
+    username:
+      token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
     password: '',
-    email: token.email,
-    firstName: token.given_name,
-    lastName: token.family_name,
+    email:
+      token[
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
+      ],
+    firstName:
+      token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'],
+    lastName:
+      token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'],
   };
 }

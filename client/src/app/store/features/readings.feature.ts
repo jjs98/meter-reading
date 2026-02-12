@@ -7,8 +7,8 @@ import {
 } from '@ngrx/signals';
 import { ToastService, ToastSeverity } from 'daisyui-toaster';
 
-import { Reading } from '../../api/models';
 import { ReadingService } from '../../api/services';
+import { Reading } from '../../models/reading';
 import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
@@ -42,7 +42,7 @@ export function withReadings() {
         },
         async refreshReadings(meterId: number): Promise<void> {
           this.setMeterReading([]);
-          const response = await readingService.getApiReading({
+          const response = await readingService.getReadingsEndpoint({
             meterId: meterId,
           });
           if (response.status === 200) {
@@ -51,10 +51,14 @@ export function withReadings() {
           }
         },
         async addReading(reading: Reading): Promise<boolean> {
-          const response = await readingService.postApiReading({
-            body: reading,
+          const response = await readingService.createReadingEndpoint({
+            body: {
+              meterId: reading.meterId,
+              number: reading.number,
+              readingDate: reading.readingDate,
+            },
           });
-          if (response.status === 201) {
+          if (response.status === 200) {
             await this.refreshReadings(reading.meterId);
             toastService.add({
               severity: ToastSeverity.Success,
@@ -74,7 +78,7 @@ export function withReadings() {
           readingId: number,
           meterId: number
         ): Promise<boolean> {
-          const response = await readingService.deleteApiReadingId({
+          const response = await readingService.deleteReadingEndpoint({
             id: readingId,
           });
           if (response.status === 204) {
@@ -102,7 +106,7 @@ export function withReadings() {
             });
             return false;
           }
-          const response = await readingService.putApiReadingId({
+          const response = await readingService.updateReadingEndpoint({
             id: reading.id,
             body: reading,
           });

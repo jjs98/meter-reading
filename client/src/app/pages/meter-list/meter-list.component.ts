@@ -19,8 +19,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TableModule, TableRowSelectEvent } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { Meter } from '../../api/models';
 import { MeterDialogComponent } from '../../components/meter-dialog/meter-dialog.component';
+import { Meter } from '../../models/meter';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 import { SharedMeter } from '../../store/features/shared-meters.feature';

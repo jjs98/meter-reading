@@ -9,8 +9,8 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import { mergeMap, timer } from 'rxjs';
 
-import { TokenDto } from '../../api/models';
 import { AuthService } from '../../api/services';
+import { TokenDto } from '../../models/token-dto';
 import { Token } from '../../models/Token.type';
 import { patch } from '../../utils/data-store.utils';
 import {
@@ -77,7 +77,7 @@ export function withToken() {
               if (!store.isTokenValid()) {
                 return Promise.resolve();
               }
-              const response = await authService.postApiAuthRefresh();
+              const response = await authService.refreshEndpoint();
               if (response.status === 200) {
                 const token = response.body as TokenDto;
                 store.setTokenString(token.token ?? undefined);

@@ -7,8 +7,8 @@ import {
 } from '@ngrx/signals';
 import { ToastService, ToastSeverity } from 'daisyui-toaster';
 
-import { Meter } from '../../api/models';
 import { MeterService } from '../../api/services/meter.service';
+import { Meter } from '../../models/meter';
 import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
@@ -38,15 +38,23 @@ export function withMeters() {
           });
         },
         async refreshMeters(): Promise<void> {
-          const response = await meterService.getApiMeter();
+          const response = await meterService.getMetersEndpoint();
           if (response.status === 200) {
             const meters = response.body as Meter[];
             this.setMeters(meters);
           }
         },
         async addMeter(meter: Meter): Promise<boolean> {
-          const response = await meterService.postApiMeter({ body: meter });
-          if (response.status === 201) {
+          const response = await meterService.createMeterEndpoint({
+            body: {
+              userId: meter.userId,
+              location: meter.location,
+              meterNumber: meter.meterNumber,
+              addition: meter.addition,
+              type: meter.type,
+            },
+          });
+          if (response.status === 200) {
             await this.refreshMeters();
             toastService.add({
               severity: ToastSeverity.Success,
@@ -63,7 +71,9 @@ export function withMeters() {
           return false;
         },
         async deleteMeter(meterId: number): Promise<boolean> {
-          const response = await meterService.deleteApiMeterId({ id: meterId });
+          const response = await meterService.deleteMeterEndpoint({
+            id: meterId,
+          });
           if (response.status === 204) {
             await this.refreshMeters();
             toastService.add({
@@ -89,7 +99,7 @@ export function withMeters() {
             });
             return false;
           }
-          const response = await meterService.putApiMeterId({
+          const response = await meterService.updateMeterEndpoint({
             id: meter.id,
             body: meter,
           });

@@ -5,16 +5,16 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 COPY Bootstrap/Bootstrap.csproj Bootstrap/
-COPY WebApi/WebApi.csproj WebApi/
-COPY Application/Application.csproj Application/
-COPY Domain/Domain.csproj Domain/
-COPY Infrastructure/Infrastructure.csproj Infrastructure/
+COPY Libs/Presentation/Presentation.csproj Libs/Presentation/
+COPY Libs/Application/Application.csproj Libs/Application/
+COPY Libs/Domain/Domain.csproj Libs/Domain/
+COPY Libs/Infrastructure/Infrastructure.csproj Libs/Infrastructure/
 
 RUN dotnet restore Bootstrap/Bootstrap.csproj
-RUN dotnet restore WebApi/WebApi.csproj
-RUN dotnet restore Application/Application.csproj
-RUN dotnet restore Domain/Domain.csproj
-RUN dotnet restore Infrastructure/Infrastructure.csproj
+RUN dotnet restore Libs/Presentation/Presentation.csproj
+RUN dotnet restore Libs/Application/Application.csproj
+RUN dotnet restore Libs/Domain/Domain.csproj
+RUN dotnet restore Libs/Infrastructure/Infrastructure.csproj
 
 COPY . .
 

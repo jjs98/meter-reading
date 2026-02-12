@@ -1,11 +1,11 @@
-﻿using Domain.Models;
-using Infrastructure;
+﻿using Infrastructure;
+using Infrastructure.Entities;
 
 namespace Presentation.Tests.Integration.Builder;
 
 public class MeterBuilder(AppDbContext dbContext)
 {
-    private readonly List<Meter> _meters = [];
+    private readonly List<MeterEntity> _meters = [];
 
     public MeterData Result()
     {
@@ -18,9 +18,9 @@ public class MeterBuilder(AppDbContext dbContext)
         return Result();
     }
 
-    public MeterBuilder WithMeter(string location, User user)
+    public MeterBuilder WithMeter(string location, UserEntity user)
     {
-        var meter = new Meter { Location = location, User = user };
+        var meter = new MeterEntity { Location = location, User = user };
         dbContext.Meters.Add(meter);
         _meters.Add(meter);
 
@@ -28,4 +28,4 @@ public class MeterBuilder(AppDbContext dbContext)
     }
 }
 
-public record MeterData(List<Meter> Meters);
+public record MeterData(List<MeterEntity> Meters);

@@ -1,7 +1,6 @@
 ﻿using System.Net;
-using System.Net.Http.Json;
-using Application.DTOs;
-using FluentAssertions;
+using FastEndpoints;
+using Presentation.Endpoints.Auth;
 using Presentation.Tests.Integration.Builder;
 
 namespace Presentation.Tests.Integration.Auth;
@@ -18,16 +17,17 @@ public class LoginTests(WebApiFactory webApiFactory)
         var dbContext = webApiFactory.CreateDbContext();
         var userBuilder = new UserBuilder(dbContext);
         var userData = userBuilder.WithUser(user).Build();
-        var login = new UserLoginDto { Username = user.Username, Password = user.Password };
 
         // Act
-        var response = await client.PostAsJsonAsync("api/auth/login", login);
+        var response = await client.POSTAsync<
+            LoginEndpoint,
+            LoginEndpointRequest,
+            LoginEndpointResponse
+        >(new LoginEndpointRequest(user.Username, user.Password));
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var token = await response.Content.ReadFromJsonAsync<TokenDto>();
-        token.Should().NotBeNull();
-        token.Token.Should().NotBeNullOrEmpty();
+        await Assert.That(response.Response.StatusCode).IsEqualTo(HttpStatusCode.OK);
+        await Assert.That(response.Result.Token).IsNotNullOrEmpty();
     }
 
     [Test]
@@ -39,15 +39,18 @@ public class LoginTests(WebApiFactory webApiFactory)
         var dbContext = webApiFactory.CreateDbContext();
         var userBuilder = new UserBuilder(dbContext);
         var userData = userBuilder.WithUser(user).Build();
-        var login = new UserLoginDto { Username = user.Username, Password = "wrongpassword" };
 
         // Act
-        var response = await client.PostAsJsonAsync("api/auth/login", login);
+        var response = await client.POSTAsync<
+            LoginEndpoint,
+            LoginEndpointRequest,
+            LoginEndpointResponse
+        >(new LoginEndpointRequest(user.Username, "wrongpassword"));
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        var message = await response.Content.ReadFromJsonAsync<string>();
-        message.Should().Be("Invalid credentials");
+        await Assert.That(response.Response.StatusCode).IsEqualTo(HttpStatusCode.Unauthorized);
+        var message = await response.Response.Content.ReadAsStringAsync();
+        await Assert.That(message).IsEqualTo("Invalid credentials");
     }
 
     [Test]
@@ -55,14 +58,17 @@ public class LoginTests(WebApiFactory webApiFactory)
     {
         // Arrange
         using var client = webApiFactory.CreateClient();
-        var login = new UserLoginDto { Username = "nonexistent", Password = "nonexistent" };
 
         // Act
-        var response = await client.PostAsJsonAsync("api/auth/login", login);
+        var response = await client.POSTAsync<
+            LoginEndpoint,
+            LoginEndpointRequest,
+            LoginEndpointResponse
+        >(new LoginEndpointRequest("nonexistent", "nonexistent"));
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        var message = await response.Content.ReadFromJsonAsync<string>();
-        message.Should().Be("User with name nonexistent not found");
+        await Assert.That(response.Response.StatusCode).IsEqualTo(HttpStatusCode.Unauthorized);
+        var message = await response.Response.Content.ReadAsStringAsync();
+        await Assert.That(message).IsEqualTo("User with name nonexistent not found");
     }
 }

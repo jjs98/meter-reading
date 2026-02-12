@@ -9,8 +9,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ToastService, ToastSeverity } from 'daisyui-toaster';
 
-import { TokenDto } from '../../api/models';
 import { AuthService } from '../../api/services/auth.service';
+import { TokenDto } from '../../models/token-dto';
 import { NavigationService } from '../../services/navigation.service';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
 
   protected async login(): Promise<void> {
     this.loading.set(true);
-    const response = await this.authService.postApiAuthLogin({
+    const response = await this.authService.loginEndpoint({
       body: {
         username: this.username,
         password: this.password,

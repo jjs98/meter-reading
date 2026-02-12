@@ -7,9 +7,10 @@ import {
 } from '@ngrx/signals';
 import { ToastService, ToastSeverity } from 'daisyui-toaster';
 
-import { Meter, MeterShareDto } from '../../api/models';
 import { UserService } from '../../api/services';
 import { MeterService } from '../../api/services/meter.service';
+import { Meter } from '../../models/meter';
+import { MeterShare } from '../../models/meter-share';
 import { TranslateService } from '../../services/translate.service';
 import { patch } from '../../utils/data-store.utils';
 
@@ -45,18 +46,28 @@ export function withSharedMeters() {
           });
         },
         async refreshSharedMeters(): Promise<void> {
-          const response = await meterService.getApiMeterShared();
+          const response = await meterService.getSharedMetersEndpoint();
           if (response.status === 200) {
-            const meters = response.body as Meter[];
+            const meters = response.body ?? [];
             const sharedMeters: SharedMeter[] = [];
 
             for (const meter of meters) {
-              const response = await userService.getApiUserIdName({
-                id: meter.userId,
+              const response = await userService.getUserNameEndpoint({
+                id: meter.userId ?? -1,
               });
               if (response.status === 200) {
-                const owner = response.body as string;
-                const sharedMeter: SharedMeter = { meter, owner: owner || '' };
+                const owner = response.body ?? '';
+                const sharedMeter: SharedMeter = {
+                  meter: {
+                    id: meter.id,
+                    userId: meter.userId,
+                    location: meter.location,
+                    meterNumber: meter.meterNumber,
+                    addition: meter.addition,
+                    type: meter.type,
+                  },
+                  owner,
+                };
                 sharedMeters.push(sharedMeter);
               }
             }
@@ -65,10 +76,10 @@ export function withSharedMeters() {
           }
         },
         async shareMeter(meterId: number, username: string): Promise<boolean> {
-          const response = await meterService.postApiMeterShare({
+          const response = await meterService.shareMeterEndpoint({
             body: { meterId, username },
           });
-          if (response.status === 201) {
+          if (response.status === 200) {
             toastService.add({
               severity: ToastSeverity.Success,
               summary: translations.success(),
@@ -95,7 +106,7 @@ export function withSharedMeters() {
           meterId: number,
           userId: number
         ): Promise<boolean> {
-          const response = await meterService.deleteApiMeterRevoke({
+          const response = await meterService.revokeMeterEndpoint({
             body: { meterId, userId },
           });
           if (response.status === 204) {
@@ -113,12 +124,12 @@ export function withSharedMeters() {
           });
           return false;
         },
-        async getSharedMeter(meterId: number): Promise<MeterShareDto[]> {
-          const response = await meterService.getApiMeterSharedMeterId({
+        async getSharedMeter(meterId: number): Promise<MeterShare[]> {
+          const response = await meterService.getSharedByMeterIdEndpoint({
             meterId,
           });
           if (response.status === 200) {
-            return response.body as MeterShareDto[];
+            return response.body as MeterShare[];
           }
           return [];
         },

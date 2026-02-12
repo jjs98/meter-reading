@@ -1,0 +1,14 @@
+﻿using Domain.Models;
+
+namespace Infrastructure.Repositories.Interfaces;
+
+public interface IReadingRepository
+{
+    Task<IEnumerable<Reading>> GetAll();
+    Task<Reading> GetById(int id);
+    Task<IEnumerable<Reading>> GetAllByMeterId(int meterId);
+    Task<Reading> Create(Reading reading);
+    Task Update(Reading reading);
+    Task DeleteByMeterId(int meterId);
+    Task Delete(int id);
+}

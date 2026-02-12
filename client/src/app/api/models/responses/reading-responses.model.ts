@@ -1,187 +1,126 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
-import type { ProblemDetails } from '../problem-details';
-import type { Reading } from '../reading';
+import type { CreateReadingEndpointResponse } from '../create-reading-endpoint-response';
+import type { GetReadingsEndpointResponse } from '../get-readings-endpoint-response';
 
-type GetApiReadingStatusCodes =
+type GetReadingsEndpointStatusCodes =
   | (200)
   | (401)
   | (403)
-  | (404)
   | (500);
 /**
- * Response model for operation getApiReading
+ * Response model for operation getReadingsEndpoint
  */
-export type GetApiReadingApiResponse<TStatus extends GetApiReadingStatusCodes = GetApiReadingStatusCodes> = (
-    | ((HttpResponse<(Reading)[]>) & ({
+export type GetReadingsEndpointApiResponse<TStatus extends GetReadingsEndpointStatusCodes = GetReadingsEndpointStatusCodes> = (
+    | ((HttpResponse<(GetReadingsEndpointResponse)[]>) & ({
           status: 200;
           ok: true;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 401;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 403;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 404;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 500;
           ok: false;
         }))) & ({
       status: TStatus;
     });
 
-type PostApiReadingStatusCodes =
-  | (201)
-  | (400)
-  | (401)
-  | (403)
-  | (500);
-/**
- * Response model for operation postApiReading
- */
-export type PostApiReadingApiResponse<TStatus extends PostApiReadingStatusCodes = PostApiReadingStatusCodes> = (
-    | ((HttpResponse<Reading>) & ({
-          status: 201;
-          ok: true;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 400;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 401;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
-          status: 403;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
-          status: 500;
-          ok: false;
-        }))) & ({
-      status: TStatus;
-    });
-
-type GetApiReadingIdStatusCodes =
+type CreateReadingEndpointStatusCodes =
   | (200)
   | (401)
   | (403)
-  | (404)
   | (500);
 /**
- * Response model for operation getApiReadingId
+ * Response model for operation createReadingEndpoint
  */
-export type GetApiReadingIdApiResponse<TStatus extends GetApiReadingIdStatusCodes = GetApiReadingIdStatusCodes> = (
-    | ((HttpResponse<Reading>) & ({
+export type CreateReadingEndpointApiResponse<TStatus extends CreateReadingEndpointStatusCodes = CreateReadingEndpointStatusCodes> = (
+    | ((HttpResponse<CreateReadingEndpointResponse>) & ({
           status: 200;
           ok: true;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 401;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 403;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 404;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 500;
           ok: false;
         }))) & ({
       status: TStatus;
     });
 
-type PutApiReadingIdStatusCodes =
+type UpdateReadingEndpointStatusCodes =
   | (204)
   | (401)
   | (403)
-  | (404)
   | (500);
 /**
- * Response model for operation putApiReadingId
+ * Response model for operation updateReadingEndpoint
  */
-export type PutApiReadingIdApiResponse<TStatus extends PutApiReadingIdStatusCodes = PutApiReadingIdStatusCodes> = (
-    | ((HttpResponse<never>) & ({
+export type UpdateReadingEndpointApiResponse<TStatus extends UpdateReadingEndpointStatusCodes = UpdateReadingEndpointStatusCodes> = (
+    | ((HttpResponse<unknown>) & ({
           status: 204;
           ok: true;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 401;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 403;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 404;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 500;
           ok: false;
         }))) & ({
       status: TStatus;
     });
 
-type DeleteApiReadingIdStatusCodes =
+type DeleteReadingEndpointStatusCodes =
   | (204)
   | (401)
   | (403)
-  | (404)
   | (500);
 /**
- * Response model for operation deleteApiReadingId
+ * Response model for operation deleteReadingEndpoint
  */
-export type DeleteApiReadingIdApiResponse<TStatus extends DeleteApiReadingIdStatusCodes = DeleteApiReadingIdStatusCodes> = (
-    | ((HttpResponse<never>) & ({
+export type DeleteReadingEndpointApiResponse<TStatus extends DeleteReadingEndpointStatusCodes = DeleteReadingEndpointStatusCodes> = (
+    | ((HttpResponse<unknown>) & ({
           status: 204;
           ok: true;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 401;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 403;
           ok: false;
         }))
-    | ((HttpErrorResponse) & ({
-          error: (ProblemDetails) | (null);
-          status: 404;
-          ok: false;
-        }))
-    | ((HttpErrorResponse) & ({
-          error: (never) | (null);
+    | ((Omit<HttpErrorResponse, 'error'>) & ({
+          error: (unknown) | (null);
           status: 500;
           ok: false;
         }))) & ({

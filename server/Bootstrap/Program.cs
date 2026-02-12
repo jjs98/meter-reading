@@ -17,21 +17,7 @@ public class Program
 
         var app = builder.Build();
 
-        app.UseCors(app => app.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
-        app.UseHttpsRedirection();
-
-        app.UseRouting();
-
-        app.UseAuthentication();
-        app.UseAuthorization();
-
-        app.MapControllers();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment()) { }
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        app.UsePresentationModule();
 
         using (var scope = app.Services.CreateScope())
         {

@@ -1,7 +1,6 @@
 ﻿using System.Net;
-using System.Net.Http.Json;
-using Application.DTOs;
-using FluentAssertions;
+using FastEndpoints;
+using Presentation.Endpoints.Auth;
 using Presentation.Tests.Integration.Builder;
 
 namespace Presentation.Tests.Integration.Auth;
@@ -19,20 +18,26 @@ public class RefreshTests(WebApiFactory webApiFactory)
         var userBuilder = new UserBuilder(dbContext);
         var userData = userBuilder.WithUser(user).Build();
 
-        var login = new UserLoginDto { Username = user.Username, Password = user.Password };
-        var loginResponse = await client.PostAsJsonAsync("api/auth/login", login);
-        var loginToken = await loginResponse.Content.ReadFromJsonAsync<TokenDto>();
+        var loginResponse = await client.POSTAsync<
+            LoginEndpoint,
+            LoginEndpointRequest,
+            LoginEndpointResponse
+        >(new LoginEndpointRequest(user.Username, user.Password));
+        ;
+        var loginToken = loginResponse.Result;
 
         client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
 
         // Act
-        var response = await client.PostAsync("api/auth/refresh", null);
+        var response = await client.POSTAsync<
+            RefreshEndpoint,
+            EmptyRequest,
+            RefreshEndpointResponse
+        >(new EmptyRequest());
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var token = await response.Content.ReadFromJsonAsync<TokenDto>();
-        token.Should().NotBeNull();
-        token.Token.Should().NotBeNullOrEmpty();
+        await Assert.That(response.Response.StatusCode).IsEqualTo(HttpStatusCode.OK);
+        await Assert.That(response.Result.Token).IsNotNullOrEmpty();
     }
 
     [Test]
@@ -42,9 +47,13 @@ public class RefreshTests(WebApiFactory webApiFactory)
         using var client = webApiFactory.CreateClient();
 
         // Act
-        var response = await client.PostAsync("api/auth/refresh", null);
+        var response = await client.POSTAsync<
+            RefreshEndpoint,
+            EmptyRequest,
+            RefreshEndpointResponse
+        >(new EmptyRequest());
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        await Assert.That(response.Response.StatusCode).IsEqualTo(HttpStatusCode.Unauthorized);
     }
 }
