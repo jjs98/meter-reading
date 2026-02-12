@@ -93,20 +93,12 @@ jobs:
           export Jwt__Key="ThisIsMySuperSecretKeyWhichNeedsToBeASpecificLengthForSomeReason"
           export Jwt__Issuer="test.de"
           export Jwt__Audience="test.de"
-          dotnet test --coverage --report-trx
+          dotnet test --coverage --report-trx --results-directory ./TestResults
 
-      - name: Upload test results to Codecov
-        uses: codecov/codecov-action@v5
-        if: ${{ !cancelled() }}
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          report_type: test_results
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-        if: ${{ !cancelled() }}
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./TestResults/**/*.trx
 
       - name: log in to Docker Registry
         uses: docker/login-action@v2

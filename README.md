@@ -1,5 +1,4 @@
 [![Build Status](https://img.shields.io/github/actions/workflow/status/jjs98/meter-reading/build.yml?branch=main&style=for-the-badge)](https://github.com/jjs98/meter-reading/actions/workflows/build.yml)
-[![Codecov](https://img.shields.io/codecov/c/github/jjs98/meter-reading?style=for-the-badge)](https://codecov.io/gh/jjs98/meter-reading)
 
 # Meter Reading
 
