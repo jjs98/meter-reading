@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Mime;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
@@ -30,13 +31,11 @@ public class ShareMeterEndpoint(
 {
     public override void Configure()
     {
-        Post("/api/meter/share");
+        Post("/meter/share");
         Roles("User");
         Description(d =>
             d.Produces<ShareMeterEndpointResponse>((int)HttpStatusCode.OK)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+                .Produces<string>((int)HttpStatusCode.NotFound, MediaTypeNames.Text.Plain)
         );
     }
 

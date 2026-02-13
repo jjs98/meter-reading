@@ -23,7 +23,7 @@ public class HashEndpoint(IAuthService authService)
 {
     public override void Configure()
     {
-        Post("/api/auth/hash");
+        Post("/auth/hash");
         AllowAnonymous();
         Description(d => d.Produces<HashEndpointResponse>((int)HttpStatusCode.OK));
     }

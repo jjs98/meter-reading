@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Mime;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
@@ -29,13 +30,11 @@ public class GetSharedByMeterIdEndpoint(
 {
     public override void Configure()
     {
-        Get("/api/meter/shared/{MeterId}");
+        Get("/meter/shared/{MeterId}");
         Roles("User");
         Description(d =>
             d.Produces<IEnumerable<GetSharedByMeterIdEndpointResponse>>((int)HttpStatusCode.OK)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+                .Produces<string>((int)HttpStatusCode.NotFound, MediaTypeNames.Text.Plain)
         );
     }
 

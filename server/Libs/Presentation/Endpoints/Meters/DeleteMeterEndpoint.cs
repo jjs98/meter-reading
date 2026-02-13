@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Mime;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
@@ -24,13 +25,11 @@ public class DeleteMeterEndpoint(IMeterService meterService, ILogger<DeleteMeter
 {
     public override void Configure()
     {
-        Delete("/api/meter/{Id}");
+        Delete("/meter/{Id}");
         Roles("User");
         Description(d =>
             d.Produces((int)HttpStatusCode.NoContent)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+                .Produces<string>((int)HttpStatusCode.NotFound, MediaTypeNames.Text.Plain)
         );
     }
 

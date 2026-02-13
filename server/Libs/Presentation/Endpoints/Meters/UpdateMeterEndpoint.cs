@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Mime;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Enums;
@@ -35,13 +36,11 @@ public class UpdateMeterEndpoint(IMeterService meterService, ILogger<UpdateMeter
 {
     public override void Configure()
     {
-        Put("/api/meter/{Id}");
+        Put("/meter/{Id}");
         Roles("User");
         Description(d =>
             d.Produces((int)HttpStatusCode.NoContent)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+                .Produces<string>((int)HttpStatusCode.NotFound, MediaTypeNames.Text.Plain)
         );
     }
 

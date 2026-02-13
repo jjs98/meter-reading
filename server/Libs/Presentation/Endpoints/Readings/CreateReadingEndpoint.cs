@@ -36,13 +36,9 @@ public class CreateReadingEndpoint(
 {
     public override void Configure()
     {
-        Post("/api/reading");
+        Post("/reading");
         Roles("User");
-        Description(d =>
-            d.Produces<CreateReadingEndpointResponse>((int)HttpStatusCode.Created)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
-        );
+        Description(d => d.Produces<CreateReadingEndpointResponse>((int)HttpStatusCode.Created));
     }
 
     public override async Task HandleAsync(CreateReadingEndpointRequest req, CancellationToken ct)

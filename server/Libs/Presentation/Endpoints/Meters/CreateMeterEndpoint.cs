@@ -40,12 +40,9 @@ public class CreateMeterEndpoint(IMeterService meterService)
 {
     public override void Configure()
     {
-        Post("/api/meter");
+        Post("/meter");
         Roles("User");
-        Description(d =>
-            d.Produces<CreateMeterEndpointResponse>((int)HttpStatusCode.Created)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-        );
+        Description(d => d.Produces<CreateMeterEndpointResponse>((int)HttpStatusCode.Created));
     }
 
     public override async Task HandleAsync(CreateMeterEndpointRequest req, CancellationToken ct)

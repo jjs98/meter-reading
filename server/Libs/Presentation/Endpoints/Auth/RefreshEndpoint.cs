@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Mime;
 using System.Security.Claims;
 using Application.Services;
 using FastEndpoints;
@@ -13,11 +14,10 @@ public class RefreshEndpoint(IAuthService authService, IUserService userService)
 {
     public override void Configure()
     {
-        Post("/api/auth/refresh");
+        Post("/auth/refresh");
         Description(d =>
             d.Produces<RefreshEndpointResponse>((int)HttpStatusCode.OK)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.BadRequest, typeof(string), "text/plain")
+                .Produces<string>((int)HttpStatusCode.BadRequest, MediaTypeNames.Text.Plain)
         );
     }
 

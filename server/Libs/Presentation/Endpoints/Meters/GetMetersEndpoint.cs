@@ -21,11 +21,10 @@ public class GetMetersEndpoint(IMeterService meterService)
 {
     public override void Configure()
     {
-        Get("/api/meter");
+        Get("/meter");
         Roles("User");
         Description(d =>
             d.Produces<IEnumerable<GetMetersEndpointResponse>>((int)HttpStatusCode.OK)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
         );
     }
 

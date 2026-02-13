@@ -26,12 +26,9 @@ public class LoginEndpoint(IAuthService authService, ILogger<LoginEndpoint> logg
 {
     public override void Configure()
     {
-        Post("/api/auth/login");
+        Post("/auth/login");
         AllowAnonymous();
-        Description(d =>
-            d.Produces<LoginEndpointResponse>((int)HttpStatusCode.OK)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-        );
+        Description(d => d.Produces<LoginEndpointResponse>((int)HttpStatusCode.OK));
     }
 
     public override async Task HandleAsync(LoginEndpointRequest req, CancellationToken ct)
