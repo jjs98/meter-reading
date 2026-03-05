@@ -1,5 +1,3 @@
-using System.Net;
-using System.Net.Mime;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Enums;
@@ -9,6 +7,7 @@ using FastEndpoints;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Meters;
 
@@ -38,10 +37,7 @@ public class UpdateMeterEndpoint(IMeterService meterService, ILogger<UpdateMeter
     {
         Put("/meter/{Id}");
         Roles("User");
-        Description(d =>
-            d.Produces((int)HttpStatusCode.NoContent)
-                .Produces<string>((int)HttpStatusCode.NotFound, MediaTypeNames.Text.Plain)
-        );
+        Description(d => d.Produces204().Produces404());
     }
 
     public override async Task HandleAsync(UpdateMeterEndpointRequest req, CancellationToken ct)

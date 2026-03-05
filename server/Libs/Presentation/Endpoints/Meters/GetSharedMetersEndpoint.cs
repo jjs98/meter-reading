@@ -1,5 +1,3 @@
-using System.Net;
-using System.Net.Mime;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Enums;
@@ -7,6 +5,7 @@ using Domain.Exceptions;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Meters;
 
@@ -29,8 +28,7 @@ public class GetSharedMetersEndpoint(
         Get("/meter/shared");
         Roles("User");
         Description(d =>
-            d.Produces<IEnumerable<GetSharedMetersEndpointResponse>>((int)HttpStatusCode.OK)
-                .Produces<string>((int)HttpStatusCode.NotFound, MediaTypeNames.Text.Plain)
+            d.Produces200<IEnumerable<GetSharedMetersEndpointResponse>>().Produces404()
         );
     }
 

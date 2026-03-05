@@ -1,4 +1,3 @@
-using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Models;
@@ -6,6 +5,7 @@ using FastEndpoints;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Readings;
 
@@ -38,7 +38,7 @@ public class CreateReadingEndpoint(
     {
         Post("/reading");
         Roles("User");
-        Description(d => d.Produces<CreateReadingEndpointResponse>((int)HttpStatusCode.Created));
+        Description(d => d.Produces201<CreateReadingEndpointResponse>());
     }
 
     public override async Task HandleAsync(CreateReadingEndpointRequest req, CancellationToken ct)

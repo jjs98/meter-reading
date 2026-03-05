@@ -1,5 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
+import type { EmptyResponse } from '../empty-response';
 import type { ErrorResponse } from '../error-response';
 import type { HashEndpointResponse } from '../hash-endpoint-response';
 import type { LoginEndpointResponse } from '../login-endpoint-response';
@@ -15,7 +16,7 @@ type ChangePasswordEndpointStatusCodes =
  * Response model for operation changePasswordEndpoint
  */
 export type ChangePasswordEndpointApiResponse<TStatus extends ChangePasswordEndpointStatusCodes = ChangePasswordEndpointStatusCodes> = (
-    | ((HttpResponse<unknown>) & ({
+    | ((HttpResponse<EmptyResponse>) & ({
           status: 200;
           ok: true;
         }))
@@ -35,7 +36,7 @@ export type ChangePasswordEndpointApiResponse<TStatus extends ChangePasswordEndp
           ok: false;
         }))
     | ((Omit<HttpErrorResponse, 'error'>) & ({
-          error: (unknown) | (null);
+          error: (string) | (null);
           status: 500;
           ok: false;
         }))) & ({
@@ -62,7 +63,7 @@ export type HashEndpointApiResponse<TStatus extends HashEndpointStatusCodes = Ha
           ok: false;
         }))
     | ((Omit<HttpErrorResponse, 'error'>) & ({
-          error: (unknown) | (null);
+          error: (string) | (null);
           status: 401;
           ok: false;
         }))
@@ -72,7 +73,7 @@ export type HashEndpointApiResponse<TStatus extends HashEndpointStatusCodes = Ha
           ok: false;
         }))
     | ((Omit<HttpErrorResponse, 'error'>) & ({
-          error: (unknown) | (null);
+          error: (string) | (null);
           status: 500;
           ok: false;
         }))) & ({
@@ -109,7 +110,7 @@ export type LoginEndpointApiResponse<TStatus extends LoginEndpointStatusCodes = 
           ok: false;
         }))
     | ((Omit<HttpErrorResponse, 'error'>) & ({
-          error: (unknown) | (null);
+          error: (string) | (null);
           status: 500;
           ok: false;
         }))) & ({
@@ -146,7 +147,7 @@ export type RefreshEndpointApiResponse<TStatus extends RefreshEndpointStatusCode
           ok: false;
         }))
     | ((Omit<HttpErrorResponse, 'error'>) & ({
-          error: (unknown) | (null);
+          error: (string) | (null);
           status: 500;
           ok: false;
         }))) & ({

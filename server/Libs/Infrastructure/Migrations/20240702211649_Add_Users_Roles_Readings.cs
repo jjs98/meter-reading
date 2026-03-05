@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -45,7 +44,7 @@ namespace Infrastructure.Migrations
                     UpdateDate = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: true
-                    )
+                    ),
                 },
                 constraints: table =>
                 {
@@ -79,7 +78,7 @@ namespace Infrastructure.Migrations
                     UpdateDate = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: true
-                    )
+                    ),
                 },
                 constraints: table =>
                 {
@@ -106,7 +105,7 @@ namespace Infrastructure.Migrations
                     UpdateDate = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: true
-                    )
+                    ),
                 },
                 constraints: table =>
                 {
@@ -116,7 +115,7 @@ namespace Infrastructure.Migrations
                         {
                             x.Id,
                             x.Name,
-                            x.UserId
+                            x.UserId,
                         }
                     );
                     table.ForeignKey(

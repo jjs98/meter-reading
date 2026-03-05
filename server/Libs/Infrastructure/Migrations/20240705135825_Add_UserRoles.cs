@@ -40,7 +40,7 @@ public partial class Add_UserRoles : Migration
                 UpdateDate = table.Column<DateTime>(
                     type: "timestamp with time zone",
                     nullable: true
-                )
+                ),
             },
             constraints: table =>
             {

@@ -3,8 +3,8 @@ using Application.Services;
 using Domain.Models;
 using FastEndpoints;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Auth;
 
@@ -28,7 +28,7 @@ public class LoginEndpoint(IAuthService authService, ILogger<LoginEndpoint> logg
     {
         Post("/auth/login");
         AllowAnonymous();
-        Description(d => d.Produces<LoginEndpointResponse>((int)HttpStatusCode.OK));
+        Description(d => d.Produces200<LoginEndpointResponse>());
     }
 
     public override async Task HandleAsync(LoginEndpointRequest req, CancellationToken ct)

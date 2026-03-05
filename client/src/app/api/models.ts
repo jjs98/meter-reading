@@ -7,6 +7,7 @@ export type { CreateReadingEndpointRequest } from './models/create-reading-endpo
 export type { CreateReadingEndpointResponse } from './models/create-reading-endpoint-response';
 export type { DeleteMeterEndpointRequest } from './models/delete-meter-endpoint-request';
 export type { DeleteReadingEndpointRequest } from './models/delete-reading-endpoint-request';
+export type { EmptyResponse } from './models/empty-response';
 export type { ErrorResponse } from './models/error-response';
 export type { GetMetersEndpointResponse } from './models/get-meters-endpoint-response';
 export type { GetReadingsEndpointRequest } from './models/get-readings-endpoint-request';

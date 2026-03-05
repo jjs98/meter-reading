@@ -16,7 +16,7 @@ public class ErrorHandlingFilter : IGlobalPostProcessor
         ctx.HttpContext.Response.StatusCode = ctx.ExceptionDispatchInfo?.SourceException switch
         {
             EntityNotFoundException => StatusCodes.Status404NotFound,
-            _ => StatusCodes.Status500InternalServerError
+            _ => StatusCodes.Status500InternalServerError,
         };
 
         await ctx.HttpContext.Response.WriteAsync(

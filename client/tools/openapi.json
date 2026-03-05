@@ -80,12 +80,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       }
     },
     "/api/reading": {
@@ -149,12 +144,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       },
       "get": {
         "tags": ["Reading"],
@@ -227,12 +217,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       }
     },
     "/api/reading/{id}": {
@@ -297,12 +282,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       },
       "put": {
         "tags": ["Reading"],
@@ -378,12 +358,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       }
     },
     "/api/meter": {
@@ -436,18 +411,43 @@
           },
           "403": {
             "description": "Forbidden"
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       },
       "get": {
         "tags": ["Meter"],
         "operationId": "GetMetersEndpoint",
         "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Success",
             "content": {
@@ -461,25 +461,10 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "403": {
             "description": "Forbidden"
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       }
     },
     "/api/meter/{id}": {
@@ -544,12 +529,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       },
       "put": {
         "tags": ["Meter"],
@@ -625,12 +605,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       }
     },
     "/api/meter/shared/{meterId}": {
@@ -705,12 +680,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       }
     },
     "/api/meter/shared": {
@@ -718,31 +688,8 @@
         "tags": ["Meter"],
         "operationId": "GetSharedMetersEndpoint",
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetSharedMetersEndpointResponse"
-                  }
-                }
-              }
-            }
-          },
           "401": {
             "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
             "content": {
               "text/plain": {
                 "schema": {
@@ -761,15 +708,33 @@
               }
             }
           },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetSharedMetersEndpointResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "403": {
             "description": "Forbidden"
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       }
     },
     "/api/meter/revoke": {
@@ -841,12 +806,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       }
     },
     "/api/meter/share": {
@@ -920,12 +880,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": ["User"]
-          }
-        ]
+        }
       }
     },
     "/api/auth/changePassword": {
@@ -947,7 +902,14 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request",
@@ -968,13 +930,18 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": []
-          }
-        ]
+        }
       }
     },
     "/api/auth/hash": {
@@ -1011,6 +978,26 @@
               "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -1065,6 +1052,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -1074,22 +1071,32 @@
         "tags": ["Auth"],
         "operationId": "RefreshEndpoint",
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RefreshEndpointResponse"
-                }
-              }
-            }
-          },
           "401": {
             "description": "Unauthorized",
             "content": {
               "text/plain": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshEndpointResponse"
                 }
               }
             }
@@ -1104,12 +1111,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWTBearerAuth": []
-          }
-        ]
+        }
       }
     }
   },
@@ -1474,6 +1476,11 @@
             "$ref": "#/components/schemas/MeterType"
           }
         }
+      },
+      "EmptyResponse": {
+        "type": "object",
+        "description": "a response dto that doesn't have any properties",
+        "additionalProperties": false
       },
       "ChangePasswordEndpointRequest": {
         "type": "object",

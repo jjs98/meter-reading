@@ -1,14 +1,12 @@
-﻿using System.Net;
-using System.Net.Mime;
-using System.Text.Json;
+﻿using System.Text.Json;
 using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Presentation.Extensions;
 
 namespace Presentation;
 
@@ -31,7 +29,7 @@ public static class Module
             .AddFastEndpoints()
             .SwaggerDocument(o =>
             {
-                o.AutoTagPathSegmentIndex = 2;
+                o.AutoTagPathSegmentIndex = 1;
                 o.ShortSchemaNames = true;
             });
 
@@ -50,16 +48,7 @@ public static class Module
                 c.Endpoints.Configurator = epd =>
                 {
                     epd.AllowAnonymous();
-                    epd.Description(b =>
-                        b.Produces<string>(
-                                (int)HttpStatusCode.Unauthorized,
-                                MediaTypeNames.Text.Plain
-                            )
-                            .Produces<string>(
-                                (int)HttpStatusCode.InternalServerError,
-                                MediaTypeNames.Text.Plain
-                            )
-                    );
+                    epd.Description(b => b.Produces401().Produces500());
                     epd.PostProcessor<ErrorHandlingFilter>(Order.After);
                 };
                 c.Endpoints.ShortNames = true;

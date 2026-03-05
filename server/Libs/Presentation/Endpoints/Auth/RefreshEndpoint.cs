@@ -1,9 +1,8 @@
 ﻿using System.Net;
-using System.Net.Mime;
 using System.Security.Claims;
 using Application.Services;
 using FastEndpoints;
-using Microsoft.AspNetCore.Http;
+using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Auth;
 
@@ -15,10 +14,7 @@ public class RefreshEndpoint(IAuthService authService, IUserService userService)
     public override void Configure()
     {
         Post("/auth/refresh");
-        Description(d =>
-            d.Produces<RefreshEndpointResponse>((int)HttpStatusCode.OK)
-                .Produces<string>((int)HttpStatusCode.BadRequest, MediaTypeNames.Text.Plain)
-        );
+        Description(d => d.Produces200<RefreshEndpointResponse>().Produces400());
     }
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)

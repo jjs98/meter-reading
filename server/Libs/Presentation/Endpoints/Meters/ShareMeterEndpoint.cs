@@ -1,5 +1,3 @@
-using System.Net;
-using System.Net.Mime;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
@@ -7,6 +5,7 @@ using FastEndpoints;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Meters;
 
@@ -33,10 +32,7 @@ public class ShareMeterEndpoint(
     {
         Post("/meter/share");
         Roles("User");
-        Description(d =>
-            d.Produces<ShareMeterEndpointResponse>((int)HttpStatusCode.OK)
-                .Produces<string>((int)HttpStatusCode.NotFound, MediaTypeNames.Text.Plain)
-        );
+        Description(d => d.Produces200<ShareMeterEndpointResponse>().Produces404());
     }
 
     public override async Task HandleAsync(ShareMeterEndpointRequest req, CancellationToken ct)

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -33,7 +32,7 @@ namespace Infrastructure.Migrations
                     UpdateDate = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: true
-                    )
+                    ),
                 },
                 constraints: table =>
                 {
@@ -73,7 +72,7 @@ namespace Infrastructure.Migrations
                         type: "timestamp with time zone",
                         nullable: true
                     ),
-                    UserId = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false),
                 },
                 constraints: table =>
                 {

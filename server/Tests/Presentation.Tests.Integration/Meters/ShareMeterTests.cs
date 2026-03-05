@@ -60,11 +60,7 @@ public class ShareMeterTests(WebApiFactory webApiFactory)
         var thirdUser = webApiFactory.GetTestUser();
         using var dbContext = webApiFactory.CreateDbContext();
         var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder
-            .WithUser(user)
-            .WithUser(otherUser)
-            .WithUser(thirdUser)
-            .Build();
+        var userData = userBuilder.WithUser(user).WithUser(otherUser).WithUser(thirdUser).Build();
 
         var meterBuilder = new MeterBuilder(dbContext);
         var meterData = meterBuilder
@@ -79,7 +75,11 @@ public class ShareMeterTests(WebApiFactory webApiFactory)
         >(new LoginEndpointRequest(user.Username, user.Password));
         client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
 
-        var request = new ShareMeterEndpointRequest(meterId, userData.Users[0].Id, thirdUser.Username);
+        var request = new ShareMeterEndpointRequest(
+            meterId,
+            userData.Users[0].Id,
+            thirdUser.Username
+        );
 
         // Act
         var response = await client.POSTAsync<
@@ -110,7 +110,11 @@ public class ShareMeterTests(WebApiFactory webApiFactory)
         >(new LoginEndpointRequest(user.Username, user.Password));
         client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
 
-        var request = new ShareMeterEndpointRequest(999999, userData.Users[0].Id, otherUser.Username);
+        var request = new ShareMeterEndpointRequest(
+            999999,
+            userData.Users[0].Id,
+            otherUser.Username
+        );
 
         // Act
         var response = await client.POSTAsync<
@@ -146,7 +150,11 @@ public class ShareMeterTests(WebApiFactory webApiFactory)
         >(new LoginEndpointRequest(user.Username, user.Password));
         client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
 
-        var request = new ShareMeterEndpointRequest(meterId, userData.Users[0].Id, "nonexistent_user");
+        var request = new ShareMeterEndpointRequest(
+            meterId,
+            userData.Users[0].Id,
+            "nonexistent_user"
+        );
 
         // Act
         var response = await client.POSTAsync<
