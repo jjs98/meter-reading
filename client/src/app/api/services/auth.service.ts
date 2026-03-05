@@ -45,8 +45,8 @@ export class AuthService extends ApiBaseService {
 
     return waitForResponse<ChangePasswordEndpointApiResponse>(
       this.http.request(rb.build({
-        responseType: 'text',
-        accept: '*/*',
+        responseType: 'json',
+        accept: 'application/json',
         context,
       })),
       {

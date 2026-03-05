@@ -4,8 +4,8 @@ using Application.Services;
 using Domain.Models;
 using FastEndpoints;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Auth;
 
@@ -27,11 +27,8 @@ public class ChangePasswordEndpoint(
 {
     public override void Configure()
     {
-        Post("/api/auth/changePassword");
-        Description(d =>
-            d.Produces((int)HttpStatusCode.OK)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-        );
+        Post("/auth/changePassword");
+        Description(d => d.Produces200<EmptyResponse>());
     }
 
     public override async Task HandleAsync(ChangePasswordEndpointRequest req, CancellationToken ct)

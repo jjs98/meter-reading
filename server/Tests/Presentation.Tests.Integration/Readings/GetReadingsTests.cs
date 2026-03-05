@@ -71,9 +71,7 @@ public class GetReadingsTests(WebApiFactory webApiFactory)
         meterBuilder.WithSharedMeter(meterData.Meters[0], userData.Users[1]).Build();
 
         var readingBuilder = new ReadingBuilder(dbContext);
-        readingBuilder
-            .WithReading("100", DateTime.UtcNow, meterData.Meters[0])
-            .Build();
+        readingBuilder.WithReading("100", DateTime.UtcNow, meterData.Meters[0]).Build();
 
         var loginResponse = await client.POSTAsync<
             LoginEndpoint,

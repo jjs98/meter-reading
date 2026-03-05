@@ -1,11 +1,10 @@
-using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Enums;
 using Domain.Models;
 using FastEndpoints;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
+using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Meters;
 
@@ -40,12 +39,9 @@ public class CreateMeterEndpoint(IMeterService meterService)
 {
     public override void Configure()
     {
-        Post("/api/meter");
+        Post("/meter");
         Roles("User");
-        Description(d =>
-            d.Produces<CreateMeterEndpointResponse>((int)HttpStatusCode.Created)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-        );
+        Description(d => d.Produces201<CreateMeterEndpointResponse>());
     }
 
     public override async Task HandleAsync(CreateMeterEndpointRequest req, CancellationToken ct)

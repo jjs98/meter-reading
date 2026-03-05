@@ -1,4 +1,3 @@
-using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Enums;
@@ -6,6 +5,7 @@ using Domain.Exceptions;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Meters;
 
@@ -25,13 +25,10 @@ public class GetSharedMetersEndpoint(
 {
     public override void Configure()
     {
-        Get("/api/meter/shared");
+        Get("/meter/shared");
         Roles("User");
         Description(d =>
-            d.Produces<IEnumerable<GetSharedMetersEndpointResponse>>((int)HttpStatusCode.OK)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
+            d.Produces200<IEnumerable<GetSharedMetersEndpointResponse>>().Produces404()
         );
     }
 

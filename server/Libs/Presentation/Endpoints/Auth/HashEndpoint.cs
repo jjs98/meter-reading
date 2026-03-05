@@ -1,8 +1,7 @@
-﻿using System.Net;
-using Application.Services;
+﻿using Application.Services;
 using FastEndpoints;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
+using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Auth;
 
@@ -23,9 +22,9 @@ public class HashEndpoint(IAuthService authService)
 {
     public override void Configure()
     {
-        Post("/api/auth/hash");
+        Post("/auth/hash");
         AllowAnonymous();
-        Description(d => d.Produces<HashEndpointResponse>((int)HttpStatusCode.OK));
+        Description(d => d.Produces200<HashEndpointResponse>());
     }
 
     public override async Task HandleAsync(HashEndpointRequest req, CancellationToken ct)

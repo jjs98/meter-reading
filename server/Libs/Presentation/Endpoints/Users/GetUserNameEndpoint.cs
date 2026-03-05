@@ -1,4 +1,3 @@
-using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
@@ -6,6 +5,7 @@ using FastEndpoints;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Users;
 
@@ -27,14 +27,9 @@ public class GetUserNameEndpoint(
 {
     public override void Configure()
     {
-        Get("/api/user/{Id}/name");
+        Get("/user/{Id}/name");
         Roles("User");
-        Description(d =>
-            d.Produces<string>((int)HttpStatusCode.OK)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
-        );
+        Description(d => d.Produces200<string>().Produces404());
     }
 
     public override async Task HandleAsync(GetUserNameRequest req, CancellationToken ct)

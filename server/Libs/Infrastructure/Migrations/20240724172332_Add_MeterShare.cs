@@ -30,7 +30,7 @@ namespace Infrastructure.Migrations
                     UpdateDate = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: true
-                    )
+                    ),
                 },
                 constraints: table =>
                 {

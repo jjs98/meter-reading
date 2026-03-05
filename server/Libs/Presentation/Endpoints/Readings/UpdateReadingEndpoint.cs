@@ -1,4 +1,3 @@
-using System.Net;
 using System.Security.Claims;
 using Application.Services;
 using Domain.Exceptions;
@@ -7,6 +6,7 @@ using FastEndpoints;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Readings;
 
@@ -36,14 +36,9 @@ public class UpdateReadingEndpoint(
 {
     public override void Configure()
     {
-        Put("/api/reading/{Id}");
+        Put("/reading/{Id}");
         Roles("User");
-        Description(d =>
-            d.Produces((int)HttpStatusCode.NoContent)
-                .Produces((int)HttpStatusCode.Unauthorized, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.NotFound, typeof(string), "text/plain")
-                .Produces((int)HttpStatusCode.InternalServerError, typeof(string), "text/plain")
-        );
+        Description(d => d.Produces204().Produces404());
     }
 
     public override async Task HandleAsync(UpdateReadingEndpointRequest req, CancellationToken ct)

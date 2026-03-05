@@ -27,7 +27,7 @@ public partial class Init : Migration
                 UpdateDate = table.Column<DateTime>(
                     type: "timestamp with time zone",
                     nullable: false
-                )
+                ),
             },
             constraints: table =>
             {

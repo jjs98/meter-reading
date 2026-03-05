@@ -4,5 +4,5 @@ public enum MeterType
 {
     Electricity,
     Water,
-    Gas
+    Gas,
 }

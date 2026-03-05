@@ -31,7 +31,7 @@ export type GetMetersEndpointApiResponse<TStatus extends GetMetersEndpointStatus
           ok: false;
         }))
     | ((Omit<HttpErrorResponse, 'error'>) & ({
-          error: (unknown) | (null);
+          error: (string) | (null);
           status: 500;
           ok: false;
         }))) & ({
@@ -68,7 +68,7 @@ export type CreateMeterEndpointApiResponse<TStatus extends CreateMeterEndpointSt
           ok: false;
         }))
     | ((Omit<HttpErrorResponse, 'error'>) & ({
-          error: (unknown) | (null);
+          error: (string) | (null);
           status: 500;
           ok: false;
         }))) & ({
