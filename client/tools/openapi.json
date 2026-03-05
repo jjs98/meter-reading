@@ -80,7 +80,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       }
     },
     "/api/reading": {
@@ -144,7 +149,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       },
       "get": {
         "tags": ["Reading"],
@@ -217,7 +227,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       }
     },
     "/api/reading/{id}": {
@@ -282,7 +297,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       },
       "put": {
         "tags": ["Reading"],
@@ -358,7 +378,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       }
     },
     "/api/meter": {
@@ -422,7 +447,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       },
       "get": {
         "tags": ["Meter"],
@@ -464,7 +494,12 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       }
     },
     "/api/meter/{id}": {
@@ -529,7 +564,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       },
       "put": {
         "tags": ["Meter"],
@@ -605,7 +645,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       }
     },
     "/api/meter/shared/{meterId}": {
@@ -680,7 +725,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       }
     },
     "/api/meter/shared": {
@@ -734,7 +784,12 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       }
     },
     "/api/meter/revoke": {
@@ -806,7 +861,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       }
     },
     "/api/meter/share": {
@@ -880,7 +940,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": ["User"]
+          }
+        ]
       }
     },
     "/api/auth/changePassword": {
@@ -941,7 +1006,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": []
+          }
+        ]
       }
     },
     "/api/auth/hash": {
@@ -1111,7 +1181,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": []
+          }
+        ]
       }
     }
   },

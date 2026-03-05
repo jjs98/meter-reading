@@ -47,7 +47,6 @@ public static class Module
             {
                 c.Endpoints.Configurator = epd =>
                 {
-                    epd.AllowAnonymous();
                     epd.Description(b => b.Produces401().Produces500());
                     epd.PostProcessor<ErrorHandlingFilter>(Order.After);
                 };
