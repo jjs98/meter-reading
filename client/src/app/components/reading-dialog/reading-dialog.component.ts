@@ -41,7 +41,7 @@ import { DataStore } from '../../store/data.store';
     TooltipModule,
   ],
   templateUrl: './reading-dialog.component.html',
-  styleUrl: './reading-dialog.component.css',
+  styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReadingDialogComponent {

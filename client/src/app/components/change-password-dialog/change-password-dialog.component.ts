@@ -8,34 +8,18 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastService, ToastSeverity } from 'daisyui-toaster';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { TooltipModule } from 'primeng/tooltip';
 
 import { AuthService } from '../../api/services';
+import { TooltipDirective } from '../../directives/tooltip.directive';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 
 @Component({
   selector: 'app-change-password-dialog',
   standalone: true,
-  imports: [
-    ButtonModule,
-    CommonModule,
-    DialogModule,
-    FloatLabelModule,
-    FormsModule,
-    InputTextModule,
-    PasswordModule,
-    RadioButtonModule,
-    TooltipModule,
-  ],
+  imports: [CommonModule, FormsModule, TooltipDirective],
   templateUrl: './change-password-dialog.component.html',
-  styleUrl: './change-password-dialog.component.css',
+  styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangePasswordDialogComponent {
@@ -45,8 +29,8 @@ export class ChangePasswordDialogComponent {
   protected oldPassword = '';
   protected newPassword = '';
   protected repeatNewPassword = '';
-  protected repeatNewPasswordValid = true;
-  protected oldPasswordValid = true;
+  protected repeatNewPasswordValid = signal(true);
+  protected oldPasswordValid = signal(true);
 
   protected dialogVisible = signal(false);
   protected loading = signal(false);
@@ -84,8 +68,8 @@ export class ChangePasswordDialogComponent {
   protected async changePassword(): Promise<void> {
     this.loading.set(true);
 
-    this.repeatNewPasswordValid = true;
-    this.oldPasswordValid = true;
+    this.repeatNewPasswordValid.set(true);
+    this.oldPasswordValid.set(true);
 
     if (this.newPassword !== this.repeatNewPassword) {
       this.toastService.add({
@@ -94,7 +78,7 @@ export class ChangePasswordDialogComponent {
         detail: this.translations.login_passwordRepeatInvalid(),
       });
       this.loading.set(false);
-      this.repeatNewPasswordValid = false;
+      this.repeatNewPasswordValid.set(false);
       return;
     }
 
@@ -115,7 +99,7 @@ export class ChangePasswordDialogComponent {
       this.loading.set(false);
       return;
     }
-    this.oldPasswordValid = false;
+    this.oldPasswordValid.set(false);
     this.loading.set(false);
     this.toastService.add({
       severity: ToastSeverity.Error,
@@ -128,7 +112,7 @@ export class ChangePasswordDialogComponent {
     this.oldPassword = '';
     this.newPassword = '';
     this.repeatNewPassword = '';
-    this.repeatNewPasswordValid = true;
-    this.oldPasswordValid = true;
+    this.repeatNewPasswordValid.set(true);
+    this.oldPasswordValid.set(true);
   }
 }

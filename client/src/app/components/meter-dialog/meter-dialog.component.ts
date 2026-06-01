@@ -39,7 +39,7 @@ import { DataStore } from '../../store/data.store';
     TooltipModule,
   ],
   templateUrl: './meter-dialog.component.html',
-  styleUrl: './meter-dialog.component.css',
+  styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeterDialogComponent {

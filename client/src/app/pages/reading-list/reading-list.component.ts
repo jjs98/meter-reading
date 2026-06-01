@@ -59,7 +59,7 @@ export interface ChartData {
     TooltipModule,
   ],
   templateUrl: './reading-list.component.html',
-  styleUrl: './reading-list.component.css',
+  styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReadingListComponent implements OnInit {

@@ -7,13 +7,13 @@
   "scripts": {
     "prepare": "husky"
   },
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@11.5.0",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
+    "@commitlint/cli": "^21.0.2",
+    "@commitlint/config-conventional": "^21.0.2",
     "husky": "^9.1.7"
   }
 }

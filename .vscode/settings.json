@@ -2,10 +2,11 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "package.json": ".prettier*, .eslint*, .npm*, jest*, nx.json, pnpm-lock.yaml, tsconfig*, angular.json, ng-package.json, playwright*, tailwind*,.postcss*, eslint.config.js",
+    "package.json": ".prettier*, .eslint*, .npm*, jest*, nx.json, pnpm-lock.yaml, tsconfig*, angular.json, ng-package.json, playwright*, tailwind*,.postcss*, eslint.config.js, pnpm-workspace.yaml",
     "*.ts": "$(capture).spec.ts, $(capture).test.ts, $(capture).d.ts, $(capture).js, $(capture).js.map, $(capture).ts.map",
     "*.js": "$(capture).d.ts, $(capture).js.map",
-    "*.css": "$(capture).css.map"
+    "*.css": "$(capture).css.map",
+    "*Dockerfile": "$(capture).dockerignore",
   },
 
   "editor.formatOnSave": true,
