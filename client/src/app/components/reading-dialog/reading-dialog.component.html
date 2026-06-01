@@ -1,85 +1,71 @@
-<p-dialog
-  header="{{ translations.reading_reading() }}"
-  [modal]="true"
-  [(visible)]="dialogVisible"
-  [draggable]="false"
-  [resizable]="false"
-  styleClass="w-[23rem]">
-  <div class="mt-8 mb-8 flex items-center gap-3">
-    <i class="fa-solid fa-gauge"></i>
-    <p-floatLabel class="w-64">
-      <p-inputNumber
-        pInputNumber
-        inputId="number"
-        class="flex-auto"
+<dialog class="modal" [open]="dialogVisible()">
+  <div class="modal-box w-sm">
+    <p class="text-xl font-bold">
+      {{ translations.reading_reading() }}
+    </p>
+    <fieldset class="fieldset text-lg">
+      <label for="number" class="label">
+        <i class="fa-solid fa-gauge"></i>
+        {{ translations.reading_reading() }}
+      </label>
+      <input
+        id="number"
+        type="number"
+        class="input w-full"
         [(ngModel)]="number"
         autocomplete="off"
         (keypress)="onKeyPress($event)"
-        locale="de-de"
-        [useGrouping]="false"
-        [minFractionDigits]="0"
-        [maxFractionDigits]="3" />
-      <label for="number" class="w-6rem font-semibold">{{
-        translations.reading_reading()
-      }}</label>
-    </p-floatLabel>
-  </div>
-  <div class="mb-8 flex items-center gap-3">
-    <i class="fa-solid fa-calendar-days"></i>
-    <p-floatLabel class="w-64">
-      <p-datepicker
+        locale="de-de" />
+      <label for="readingDate" class="label">
+        <i class="fa-solid fa-calendar-days"></i>
+        {{ translations.reading_readingDate() }}
+      </label>
+      <input
         id="readingDate"
-        [(ngModel)]="readingDate"
-        [touchUI]="true"
-        [showIcon]="true"
-        [showOnFocus]="false"
-        [maxDate]="currentDate"
-        appendTo="body"
-        dateFormat="dd.mm.yy" />
-      <label for="readingDate" class="w-6rem font-semibold">{{
-        translations.reading_readingDate()
-      }}</label>
-    </p-floatLabel>
-  </div>
-  @if (hasReadingForDate()) {
-    <div class="mb-8 flex items-center gap-3">
-      <i class="fa-solid fa-circle-exclamation"></i>
-      <p-floatLabel>
-        <span class="text-red-500">{{
-          translations.reading_error_alreadyExists()
-        }}</span>
-      </p-floatLabel>
+        type="date"
+        class="input w-full"
+        [(ngModel)]="readingDate" />
+      @if (hasReadingForDate()) {
+        <div class="mb-8 flex items-center gap-3">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span class="text-red-500">
+            {{ translations.reading_error_alreadyExists() }}
+          </span>
+        </div>
+      }
+    </fieldset>
+    <div class="modal-action">
+      @if (existingReading) {
+        <button
+          class="btn btn-error btn-circle lg:tooltip text-xl"
+          [tooltip]="translations.delete()"
+          (click)="confirmDeleteReading()">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      }
+      <button
+        class="btn btn-error btn-circle lg:tooltip text-xl"
+        [tooltip]="translations.cancel()"
+        (click)="onCancel()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <button
+        class="lg:tooltip btn btn-circle btn-success text-xl"
+        [tooltip]="translations.save()"
+        [disabled]="
+          !number ||
+          !readingDate() ||
+          !hasReadingChanged() ||
+          hasReadingForDate()
+        "
+        (click)="onSave()">
+        <i
+          class="{{
+            loading()
+              ? 'fa-solid fa-spinner animate-spin'
+              : 'fa-solid fa-floppy-disk'
+          }}"></i>
+      </button>
     </div>
-  }
-  <div class="flex justify-end gap-4">
-    @if (existingReading) {
-      <p-button
-        icon="fa-solid fa-trash"
-        severity="danger"
-        [pTooltip]="translations.delete()"
-        [tooltipPosition]="'bottom'"
-        [showDelay]="1000"
-        [rounded]="true"
-        (onClick)="confirmDeleteReading()" />
-    }
-    <p-button
-      icon="fa-solid fa-xmark"
-      severity="secondary"
-      [pTooltip]="translations.cancel()"
-      [tooltipPosition]="'bottom'"
-      [showDelay]="1000"
-      [rounded]="true"
-      (onClick)="onCancel()" />
-    <p-button
-      icon="fa-solid fa-floppy-disk"
-      severity="success"
-      [pTooltip]="translations.save()"
-      [tooltipPosition]="'bottom'"
-      [showDelay]="1000"
-      [rounded]="true"
-      [disabled]="
-        !number || !readingDate() || !hasReadingChanged() || hasReadingForDate()
-      "
-      (onClick)="onSave()" />
   </div>
-</p-dialog>
+</dialog>

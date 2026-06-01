@@ -21,6 +21,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TooltipModule } from 'primeng/tooltip';
 
+import { TooltipDirective } from '../../directives/tooltip.directive';
 import { Reading } from '../../models/reading';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
@@ -39,6 +40,7 @@ import { DataStore } from '../../store/data.store';
     InputTextModule,
     RadioButtonModule,
     TooltipModule,
+    TooltipDirective,
   ],
   templateUrl: './reading-dialog.component.html',
   styleUrls: [],
@@ -53,11 +55,14 @@ export class ReadingDialogComponent {
   protected readonly translations = inject(TranslateService).translations;
 
   protected number: number | undefined = undefined;
-  protected readingDate: WritableSignal<Date | undefined> = signal(undefined);
+  protected readingDate: WritableSignal<string | undefined> = signal(undefined);
 
   protected dialogVisible = signal(false);
+  protected loading = signal(false);
   protected hasReadingForDate = computed((): boolean => {
-    if (this.readingDate() === this.lastReadingDate) return false;
+    const readingDate = this.readingDate();
+    if (readingDate === this.lastReadingDate) return false;
+    if (!readingDate) return false;
 
     const hasReading =
       this.dataStore
@@ -65,7 +70,7 @@ export class ReadingDialogComponent {
         .find(
           (r): boolean =>
             new Date(r.readingDate).toISOString() ===
-            this.readingDate()?.toISOString()
+            new Date(readingDate)?.toISOString()
         ) !== undefined;
     return hasReading;
   });
@@ -73,7 +78,7 @@ export class ReadingDialogComponent {
   private readonly toastService = inject(ToastService);
   private readonly confirmationService = inject(ConfirmationService);
   private isEdit = false;
-  private lastReadingDate: Date | undefined = undefined;
+  private lastReadingDate: string | undefined = undefined;
 
   public constructor() {
     effect(
@@ -91,16 +96,15 @@ export class ReadingDialogComponent {
       this.isEdit = true;
       this.existingReading = reading;
       this.number = Number(reading.number ?? undefined);
-      this.readingDate.set(new Date(reading.readingDate ?? undefined));
+      this.readingDate.set(
+        new Date(reading.readingDate ?? undefined).toISOString().split('T')[0]
+      );
+      console.log(this.readingDate());
       this.lastReadingDate = this.readingDate();
     } else {
       const currentDate = new Date();
       this.readingDate.set(
-        new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          currentDate.getDate()
-        )
+        `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`
       );
     }
 
@@ -112,6 +116,7 @@ export class ReadingDialogComponent {
   }
 
   protected async onSave(): Promise<void> {
+    this.loading.set(true);
     const meterId = this.meterId();
     if (!meterId) {
       this.toastService.add({
@@ -119,6 +124,7 @@ export class ReadingDialogComponent {
         summary: 'Error',
         detail: 'Could not determine Meter',
       });
+      this.loading.set(false);
       return;
     }
     const readingDate = this.readingDate();
@@ -128,9 +134,9 @@ export class ReadingDialogComponent {
         summary: 'Error',
         detail: 'Please fill out all fields',
       });
+      this.loading.set(false);
       return;
     }
-    this.readingDate.set(this.toUTC(readingDate));
 
     if (this.isEdit) {
       await this.editReading();
@@ -145,10 +151,6 @@ export class ReadingDialogComponent {
     }
   }
 
-  protected toUTC(date: Date): Date {
-    return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-  }
-
   protected hasReadingChanged(): boolean {
     const reading = this.existingReading;
     if (!reading) {
@@ -157,8 +159,8 @@ export class ReadingDialogComponent {
 
     return (
       this.number != Number(reading.number) ||
-      this.readingDate()?.toISOString() !=
-        new Date(reading.readingDate).toISOString()
+      this.readingDate() !=
+        new Date(reading.readingDate).toISOString().split('T')[0]
     );
   }
 
@@ -212,20 +214,24 @@ export class ReadingDialogComponent {
 
     this.isEdit = false;
     this.existingReading = undefined;
+    this.lastReadingDate = undefined;
   }
 
   private async addReading(meterId: number): Promise<void> {
+    const readingDate = this.readingDate();
     const successfulAdded = await this.dataStore.addReading({
       meterId: meterId,
       number: this.number?.toString() ?? '',
-      readingDate: this.readingDate()?.toISOString() ?? '',
+      readingDate: readingDate ? new Date(readingDate).toISOString() : '',
     });
+    this.loading.set(false);
     if (successfulAdded) {
       this.dialogVisible.set(false);
     }
   }
 
   private async editReading(): Promise<void> {
+    const readingDate = this.readingDate();
     const reading = this.existingReading;
     if (!reading) {
       this.toastService.add({
@@ -233,6 +239,7 @@ export class ReadingDialogComponent {
         summary: this.translations.error(),
         detail: this.translations.meter_error_determine(),
       });
+      this.loading.set(false);
       return;
     }
 
@@ -240,8 +247,9 @@ export class ReadingDialogComponent {
       id: reading.id,
       meterId: reading.meterId,
       number: this.number?.toString() ?? '',
-      readingDate: this.readingDate()?.toISOString() ?? '',
+      readingDate: readingDate ? new Date(readingDate).toISOString() : '',
     });
+    this.loading.set(false);
     if (successfulUpdated) {
       this.dialogVisible.set(false);
     }
