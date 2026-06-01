@@ -792,28 +792,30 @@
         ]
       }
     },
-    "/api/meter/revoke": {
+    "/api/meter/revoke/{meterId}/{userId}": {
       "delete": {
         "tags": ["Meter"],
         "operationId": "RevokeMeterEndpoint",
-        "requestBody": {
-          "x-name": "RevokeMeterEndpointRequest",
-          "description": "",
-          "content": {
-            "*/*": {
-              "schema": {
-                "$ref": "#/components/schemas/RevokeMeterEndpointRequest"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RevokeMeterEndpointRequest"
-              }
+        "parameters": [
+          {
+            "name": "meterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           },
-          "required": true,
-          "x-position": 1
-        },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "204": {
             "description": "No Content"
@@ -1468,21 +1470,7 @@
       },
       "RevokeMeterEndpointRequest": {
         "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "meterId": {
-            "type": "integer",
-            "format": "int32",
-            "minimum": 0.0,
-            "exclusiveMinimum": true
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "minimum": 0.0,
-            "exclusiveMinimum": true
-          }
-        }
+        "additionalProperties": false
       },
       "ShareMeterEndpointResponse": {
         "type": "object",

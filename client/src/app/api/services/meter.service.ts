@@ -7,7 +7,6 @@ import { RequestBuilder } from '../utils/request-builder';
 
 import type { CreateMeterEndpointRequest } from '../models/create-meter-endpoint-request';
 import type { CreateMeterEndpointApiResponse, DeleteMeterEndpointApiResponse, GetMetersEndpointApiResponse, GetSharedByMeterIdEndpointApiResponse, GetSharedMetersEndpointApiResponse, RevokeMeterEndpointApiResponse, ShareMeterEndpointApiResponse, UpdateMeterEndpointApiResponse } from '../models/responses/meter-responses.model';
-import type { RevokeMeterEndpointRequest } from '../models/revoke-meter-endpoint-request';
 import type { ShareMeterEndpointRequest } from '../models/share-meter-endpoint-request';
 import type { UpdateMeterEndpointRequest } from '../models/update-meter-endpoint-request';
 import type { AbortablePromise } from '../utils/angular-service.utils';
@@ -45,7 +44,8 @@ type GetSharedByMeterIdEndpointParams = {
  * Parameters for operation revokeMeterEndpoint
  */
 type RevokeMeterEndpointParams = {
-    body: RevokeMeterEndpointRequest;
+    meterId: number;
+    userId: number;
   };
 
 /**
@@ -63,7 +63,7 @@ export class MeterService extends ApiBaseService {
   private static readonly DELETE_METER_ENDPOINT_PATH = '/api/meter/{id}';
   private static readonly GET_SHARED_BY_METER_ID_ENDPOINT_PATH = '/api/meter/shared/{meterId}';
   private static readonly GET_SHARED_METERS_ENDPOINT_PATH = '/api/meter/shared';
-  private static readonly REVOKE_METER_ENDPOINT_PATH = '/api/meter/revoke';
+  private static readonly REVOKE_METER_ENDPOINT_PATH = '/api/meter/revoke/{meterId}/{userId}';
   private static readonly SHARE_METER_ENDPOINT_PATH = '/api/meter/share';
 
   public getMetersEndpoint(context?: HttpContext): AbortablePromise<GetMetersEndpointApiResponse> {
@@ -195,7 +195,8 @@ export class MeterService extends ApiBaseService {
 
   public revokeMeterEndpoint(params: RevokeMeterEndpointParams, context?: HttpContext): AbortablePromise<RevokeMeterEndpointApiResponse> {
     const rb = new RequestBuilder(this.rootUrl, MeterService.REVOKE_METER_ENDPOINT_PATH, 'delete');
-    rb.body(params.body, '*/*');
+    rb.path('meterId', params.meterId, {});
+    rb.path('userId', params.userId, {});
 
     return waitForResponse<RevokeMeterEndpointApiResponse>(
       this.http.request(rb.build({

@@ -75,7 +75,7 @@ public class UpdateReadingEndpoint(
                 ReadingDate = req.ReadingDate,
             };
             await readingService.Update(reading);
-            await Send.StringAsync(string.Empty, StatusCodes.Status204NoContent, cancellation: ct);
+            await Send.NoContentAsync(cancellation: ct);
         }
         catch (Exception ex)
         {

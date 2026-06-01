@@ -3,7 +3,6 @@ import {
   HostBinding,
   HostListener,
   input,
-  InputSignal,
   OnDestroy,
   signal,
 } from '@angular/core';
@@ -16,24 +15,14 @@ import {
 export class TooltipDirective implements OnDestroy {
   public tooltip = input('');
   public tooltipDelay = input(500);
-  public tooltipBreakpoint: InputSignal<
-    'sm' | 'md' | 'lg' | 'xl' | '2xl' | undefined
-  > = input();
 
   @HostBinding('attr.data-tip')
   public get dataTip(): string {
-    return this.tooltip();
-  }
-
-  @HostBinding('class')
-  public get hostClasses(): string {
     if (!this.showTooltip()) {
       return '';
     }
 
-    return this.tooltipBreakpoint()
-      ? `${this.tooltipBreakpoint()}:tooltip`
-      : 'tooltip';
+    return this.tooltip();
   }
 
   private showTooltip = signal(false);

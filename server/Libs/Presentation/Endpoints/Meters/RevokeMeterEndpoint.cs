@@ -9,7 +9,10 @@ using Presentation.Extensions;
 
 namespace Presentation.Endpoints.Meters;
 
-public record RevokeMeterEndpointRequest(int MeterId, int UserId);
+public record RevokeMeterEndpointRequest(
+    [property: RouteParam] int MeterId,
+    [property: RouteParam] int UserId
+);
 
 public class RevokeMeterEndpointValidator : Validator<RevokeMeterEndpointRequest>
 {
@@ -25,7 +28,7 @@ public class RevokeMeterEndpoint(IMeterService meterService, ILogger<RevokeMeter
 {
     public override void Configure()
     {
-        Delete("/meter/revoke");
+        Delete("/meter/revoke/{MeterId}/{UserId}");
         Roles("User");
         Description(d => d.Produces204().Produces404());
     }
@@ -51,7 +54,7 @@ public class RevokeMeterEndpoint(IMeterService meterService, ILogger<RevokeMeter
             }
 
             await meterService.RevokeMeter(req.UserId, req.MeterId);
-            await Send.StringAsync(string.Empty, StatusCodes.Status204NoContent, cancellation: ct);
+            await Send.NoContentAsync(cancellation: ct);
         }
         catch (Exception ex)
         {

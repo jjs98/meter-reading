@@ -45,7 +45,7 @@ public class DeleteMeterEndpoint(IMeterService meterService, ILogger<DeleteMeter
             }
 
             await meterService.Delete(req.Id);
-            await Send.StringAsync(string.Empty, StatusCodes.Status204NoContent, cancellation: ct);
+            await Send.NoContentAsync(cancellation: ct);
         }
         catch (Exception ex)
         {

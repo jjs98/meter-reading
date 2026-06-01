@@ -63,7 +63,7 @@ public class UpdateMeterEndpoint(IMeterService meterService, ILogger<UpdateMeter
                 Type = req.Type,
             };
             await meterService.Update(meter);
-            await Send.StringAsync(string.Empty, StatusCodes.Status204NoContent, cancellation: ct);
+            await Send.NoContentAsync(cancellation: ct);
         }
         catch (Exception ex)
         {

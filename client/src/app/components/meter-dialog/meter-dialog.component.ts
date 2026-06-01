@@ -10,15 +10,9 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ToastService, ToastSeverity } from 'daisyui-toaster';
 import { ConfirmationService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { ListboxModule } from 'primeng/listbox';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { TooltipModule } from 'primeng/tooltip';
 
 import { MeterType } from '../../api/models';
+import { TooltipDirective } from '../../directives/tooltip.directive';
 import { Meter } from '../../models/meter';
 import { MeterShare } from '../../models/meter-share';
 import { TranslateService } from '../../services/translate.service';
@@ -27,17 +21,7 @@ import { DataStore } from '../../store/data.store';
 @Component({
   selector: 'app-meter-dialog',
   standalone: true,
-  imports: [
-    ButtonModule,
-    CommonModule,
-    DialogModule,
-    FloatLabelModule,
-    FormsModule,
-    InputTextModule,
-    ListboxModule,
-    RadioButtonModule,
-    TooltipModule,
-  ],
+  imports: [CommonModule, FormsModule, TooltipDirective],
   templateUrl: './meter-dialog.component.html',
   styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -57,6 +41,7 @@ export class MeterDialogComponent {
   protected sharedMeters: WritableSignal<MeterShare[]> = signal([]);
 
   protected dialogVisible = signal(false);
+  protected loading = signal(false);
 
   private readonly toastService = inject(ToastService);
   private readonly confirmationService = inject(ConfirmationService);
@@ -97,6 +82,7 @@ export class MeterDialogComponent {
   }
 
   protected async onSave(): Promise<void> {
+    this.loading.set(true);
     const userId = this.dataStore.user()?.id;
     if (!userId) {
       this.toastService.add({
@@ -104,6 +90,7 @@ export class MeterDialogComponent {
         summary: 'Error',
         detail: 'Could not determine User',
       });
+      this.loading.set(false);
       return;
     }
     if (!this.location || this.type === undefined) {
@@ -112,6 +99,7 @@ export class MeterDialogComponent {
         summary: 'Error',
         detail: 'Please fill out all fields',
       });
+      this.loading.set(false);
       return;
     }
 
@@ -256,6 +244,7 @@ export class MeterDialogComponent {
       type: this.type,
       addition: this.addition,
     });
+    this.loading.set(false);
     if (successfulAdded) {
       this.dialogVisible.set(false);
     }
@@ -269,6 +258,7 @@ export class MeterDialogComponent {
         summary: this.translations.error(),
         detail: this.translations.meter_error_determine(),
       });
+      this.loading.set(false);
       return;
     }
 
@@ -280,6 +270,7 @@ export class MeterDialogComponent {
       type: this.type,
       addition: this.addition,
     });
+    this.loading.set(false);
     if (successfulUpdated) {
       this.dialogVisible.set(false);
     }

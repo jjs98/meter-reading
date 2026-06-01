@@ -1,156 +1,138 @@
-<p-dialog
-  header="{{ translations.meter_meter() }}"
-  [modal]="true"
-  [(visible)]="dialogVisible"
-  [draggable]="false"
-  [resizable]="false"
-  styleClass="w-[23rem]">
-  <div class="mt-8 mb-8 flex items-center gap-3">
-    <i class="fa-solid fa-house"></i>
-    <p-floatLabel>
+<dialog class="modal" [open]="dialogVisible()">
+  <div class="modal-box w-sm">
+    <p class="text-xl font-bold">
+      {{ translations.meter_meter() }}
+    </p>
+    <fieldset class="fieldset text-lg">
+      <label for="location" class="label">
+        <i class="fa-solid fa-house"></i>
+        {{ translations.meter_location() }}
+      </label>
       <input
-        pInputText
         id="location"
-        class="flex-auto"
+        class="input w-full"
         [(ngModel)]="location"
         autocomplete="off"
         (keypress)="onKeyPress($event)" />
-      <label for="location" class="w-6rem font-semibold">{{
-        translations.meter_location()
-      }}</label>
-    </p-floatLabel>
-  </div>
-  <div class="mb-8 flex items-center gap-3">
-    <i class="fa-solid fa-barcode"></i>
-    <p-floatLabel>
+      <label for="meterNumber" class="label">
+        <i class="fa-solid fa-barcode"></i>
+        {{ translations.meter_number() }}
+      </label>
       <input
-        pInputText
         id="meterNumber"
-        class="flex-auto"
+        class="input w-full"
         [(ngModel)]="meterNumber"
         autocomplete="off"
         (keypress)="onKeyPress($event)" />
-      <label for="meterNumber" class="w-6rem font-semibold">{{
-        translations.meter_number()
-      }}</label>
-    </p-floatLabel>
-  </div>
-  <div class="mb-8 flex items-center gap-3">
-    <i class="fa-solid fa-file-invoice"></i>
-    <p-floatLabel>
+      <label for="addition" class="label">
+        <i class="fa-solid fa-file-invoice"></i>
+        {{ translations.meter_addition() }}
+      </label>
       <input
-        pInputText
         id="addition"
-        class="flex-auto"
+        class="input w-full"
         [(ngModel)]="addition"
         autocomplete="off"
         (keypress)="onKeyPress($event)" />
-      <label for="addition" class="w-6rem font-semibold">{{
-        translations.meter_addition()
-      }}</label>
-    </p-floatLabel>
-  </div>
-  <div class="mb-8 flex items-center gap-4">
-    <div class="flex items-center">
-      <p-radioButton
-        name="type"
-        [value]="0"
-        [(ngModel)]="type"
-        inputId="electricity" />
-      <label for="electricity" class="ml-2">
-        {{ translations.meter_type_electricity() }}
-      </label>
-    </div>
-
-    <div class="flex items-center">
-      <p-radioButton
-        name="type"
-        [value]="1"
-        [(ngModel)]="type"
-        inputId="water" />
-      <label for="water" class="ml-2">
-        {{ translations.meter_type_water() }}
-      </label>
-    </div>
-
-    <div class="flex items-center">
-      <p-radioButton name="type" [value]="2" [(ngModel)]="type" inputId="gas" />
-      <label for="gas" class="ml-2">
-        {{ translations.meter_type_gas() }}
-      </label>
-    </div>
-  </div>
-  @if (existingMeter) {
-    <div class="mb-8 flex items-center gap-3">
-      <i class="fa-solid fa-user-plus"></i>
-      <p-floatLabel>
-        <input
-          pInputText
-          id="shareUser"
-          class="flex-auto"
-          [(ngModel)]="shareUsername"
-          autocomplete="off"
-          (keypress)="onShareKeyPress($event)" />
-        <label for="shareUser" class="w-6rem font-semibold">{{
-          translations.meterShare_share()
-        }}</label>
-      </p-floatLabel>
-      <p-button
-        icon="fa-solid fa-share"
-        [pTooltip]="translations.meterShare_share()"
-        [tooltipPosition]="'bottom'"
-        [showDelay]="1000"
-        [rounded]="true"
-        [disabled]="!shareUsername || shareUsername === ''"
-        (onClick)="shareMeter()" />
-    </div>
-    <p-listbox
-      [options]="sharedMeters()"
-      optionLabel="username"
-      [filter]="true"
-      styleClass="mb-8">
-      <ng-template pTemplate="username" let-sharedMeter #item>
-        <div class="flex items-center gap-4">
-          <div>{{ sharedMeter.username }}</div>
-          <p-button
-            icon="fa-solid fa-trash"
-            severity="danger"
-            [pTooltip]="translations.meterShare_revoke()"
-            [tooltipPosition]="'bottom'"
-            [showDelay]="1000"
-            [rounded]="true"
-            (onClick)="confirmRevokeShare(sharedMeter)" />
+      <div class="mt-4 mb-4 flex flex-row justify-between gap-4">
+        <div>
+          <input
+            id="electricity"
+            type="radio"
+            name="type"
+            [value]="0"
+            [(ngModel)]="type" />
+          <label for="electricity" class="label ml-2">
+            {{ translations.meter_type_electricity() }}
+          </label>
         </div>
-      </ng-template>
-    </p-listbox>
-  }
-  <div class="flex justify-end gap-4">
-    @if (existingMeter) {
-      <p-button
-        icon="fa-solid fa-trash"
-        severity="danger"
-        [pTooltip]="translations.delete()"
-        [tooltipPosition]="'bottom'"
-        [showDelay]="1000"
-        [rounded]="true"
-        (onClick)="confirmDeleteMeter()" />
-    }
-    <p-button
-      icon="fa-solid fa-xmark"
-      severity="secondary"
-      [pTooltip]="translations.cancel()"
-      [tooltipPosition]="'bottom'"
-      [showDelay]="1000"
-      [rounded]="true"
-      (onClick)="onCancel()" />
-    <p-button
-      icon="fa-solid fa-floppy-disk"
-      severity="success"
-      [pTooltip]="translations.save()"
-      [tooltipPosition]="'bottom'"
-      [showDelay]="1000"
-      [rounded]="true"
-      [disabled]="!location || type === undefined || !hasMeterChanged()"
-      (onClick)="onSave()" />
+        <div>
+          <input
+            id="water"
+            type="radio"
+            name="type"
+            [value]="1"
+            [(ngModel)]="type" />
+          <label for="water" class="label ml-2">
+            {{ translations.meter_type_water() }}
+          </label>
+        </div>
+        <div>
+          <input
+            id="gas"
+            type="radio"
+            name="type"
+            [value]="2"
+            [(ngModel)]="type" />
+          <label for="gas" class="label ml-2">
+            {{ translations.meter_type_gas() }}
+          </label>
+        </div>
+      </div>
+      @if (existingMeter) {
+        <label for="shareUser" class="label">
+          <i class="fa-solid fa-user-plus"></i>
+          {{ translations.meterShare_share() }}
+        </label>
+        <div class="join w-full">
+          <input
+            id="shareUser"
+            class="input join-item w-full"
+            [(ngModel)]="shareUsername"
+            autocomplete="off"
+            (keypress)="onShareKeyPress($event)" />
+          <button
+            class="btn btn-primary btn-circle join-item lg:tooltip"
+            [tooltip]="translations.meterShare_share()"
+            [disabled]="!shareUsername || shareUsername === ''"
+            (click)="shareMeter()">
+            <i class="fa-solid fa-share"></i>
+          </button>
+        </div>
+        <ul class="mt-2 flex flex-col gap-2">
+          @for (sharedMeter of sharedMeters(); track sharedMeter.meterId) {
+            <li>
+              <div class="flex items-center justify-end gap-4">
+                <div>{{ sharedMeter.username }}</div>
+                <button
+                  class="btn btn-circle btn-error lg:tooltip"
+                  [tooltip]="translations.meterShare_revoke()"
+                  (click)="confirmRevokeShare(sharedMeter)">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    </fieldset>
+    <div class="modal-action">
+      @if (existingMeter) {
+        <button
+          class="btn btn-error btn-circle lg:tooltip text-xl"
+          [tooltip]="translations.delete()"
+          (click)="confirmDeleteMeter()">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      }
+      <button
+        class="btn btn-circle btn-error lg:tooltip text-xl"
+        [tooltip]="translations.cancel()"
+        (click)="onCancel()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <button
+        class="btn btn-circle btn-success lg:tooltip text-xl"
+        [tooltip]="translations.save()"
+        [disabled]="!location || type === undefined || !hasMeterChanged()"
+        (click)="onSave()">
+        <i
+          class="{{
+            loading()
+              ? 'fa-solid fa-spinner animate-spin'
+              : 'fa-solid fa-floppy-disk'
+          }}"></i>
+      </button>
+    </div>
   </div>
-</p-dialog>
+</dialog>

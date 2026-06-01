@@ -107,7 +107,8 @@ export function withSharedMeters() {
           userId: number
         ): Promise<boolean> {
           const response = await meterService.revokeMeterEndpoint({
-            body: { meterId, userId },
+            meterId,
+            userId,
           });
           if (response.status === 204) {
             toastService.add({

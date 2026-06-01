@@ -61,7 +61,7 @@ public class DeleteReadingEndpoint(
             }
 
             await readingService.Delete(req.Id);
-            await Send.StringAsync(string.Empty, StatusCodes.Status204NoContent, cancellation: ct);
+            await Send.NoContentAsync(cancellation: ct);
         }
         catch (Exception ex)
         {
