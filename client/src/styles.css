@@ -21,15 +21,3 @@ body {
     outline-offset: 0;
   }
 }
-
-.p-card-body {
-  @apply flex h-full flex-col gap-5 p-4;
-}
-
-.p-card-content {
-  @apply flex min-h-0 grow flex-col gap-5 p-0;
-}
-
-.p-dialog .p-dialog-content {
-  padding: 0 1.5rem 1.5rem 1.5rem;
-}

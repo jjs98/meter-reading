@@ -7,20 +7,12 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { DialogModule } from 'primeng/dialog';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { TableModule, TableRowSelectEvent } from 'primeng/table';
-import { TooltipModule } from 'primeng/tooltip';
 
 import { MeterDialogComponent } from '../../components/meter-dialog/meter-dialog.component';
+import { TooltipDirective } from '../../directives/tooltip.directive';
 import { Meter } from '../../models/meter';
+import { ConfirmationService } from '../../services/confirmation.service';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 import { SharedMeter } from '../../store/features/shared-meters.feature';
@@ -28,19 +20,7 @@ import { SharedMeter } from '../../store/features/shared-meters.feature';
 @Component({
   selector: 'app-meter',
   standalone: true,
-  imports: [
-    ButtonModule,
-    CardModule,
-    CommonModule,
-    DialogModule,
-    FloatLabelModule,
-    FormsModule,
-    InputTextModule,
-    MeterDialogComponent,
-    RadioButtonModule,
-    TableModule,
-    TooltipModule,
-  ],
+  imports: [CommonModule, MeterDialogComponent, TooltipDirective],
   templateUrl: './meter-list.component.html',
   styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -70,32 +50,23 @@ export class MeterComponent implements OnInit {
     this.editDialog().showDialog(meter);
   }
 
-  protected onMeterSelect($event: TableRowSelectEvent): void {
-    const selectedMeter = $event.data as Meter;
-    this.onRowSelect(selectedMeter.id);
-  }
-
-  protected onSharedMeterSelect($event: TableRowSelectEvent): void {
-    const selectedMeter = $event.data as SharedMeter;
-    this.onRowSelect(selectedMeter.meter.id);
-  }
-
   protected async confirmRevokeShare(sharedMeter: SharedMeter): Promise<void> {
     this.confirmationService.confirm({
       header: this.translations.meterShare_confirmDelete_header(),
       message: this.translations.meterShare_confirmDelete_message(),
-      icon: 'i-[mdi--alert-circle]',
-      acceptButtonStyleClass: 'p-button-danger p-button',
-      rejectButtonStyleClass: 'p-button',
-      acceptIcon: 'none',
-      rejectIcon: 'none',
-
-      accept: (): void => {
+      confirmCallback: async (): Promise<void> => {
         this.revokeMeterShare(sharedMeter);
       },
-      reject: (): void => {
-        // intentionally left blank
-      },
+    });
+  }
+
+  protected onRowSelect(id: number | undefined): void {
+    if (!id) {
+      return;
+    }
+
+    this.router.navigate([`${id}`], {
+      relativeTo: this.activatedRoute,
     });
   }
 
@@ -109,15 +80,5 @@ export class MeterComponent implements OnInit {
     if (succeeded) {
       await this.dataStore.refreshSharedMeters();
     }
-  }
-
-  private onRowSelect(id: number | undefined): void {
-    if (!id) {
-      return;
-    }
-
-    this.router.navigate([`${id}`], {
-      relativeTo: this.activatedRoute,
-    });
   }
 }

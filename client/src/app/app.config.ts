@@ -10,28 +10,18 @@ import {
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { provideToastService } from 'daisyui-toaster';
-import { ConfirmationService } from 'primeng/api';
-import { providePrimeNG } from 'primeng/config';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { environment } from '../environments/environment';
 
 import { provideApi } from './api/services';
 import { appRoutes } from './app.routes';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
-import { MyPreset } from './mypreset';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
-    providePrimeNG({
-      theme: {
-        preset: MyPreset,
-        options: {
-          // darkModeSelector: '.dark',
-        },
-      },
-    }),
-
+    provideCharts(withDefaultRegisterables()),
     provideZonelessChangeDetection(),
     provideRouter(appRoutes),
     provideHttpClient(withInterceptorsFromDi()),
@@ -41,7 +31,6 @@ export const appConfig: ApplicationConfig = {
       multi: true,
     },
     provideApi({ rootUrl: environment.api.baseUrl }),
-    { provide: ConfirmationService },
     provideToastService(),
   ],
 };

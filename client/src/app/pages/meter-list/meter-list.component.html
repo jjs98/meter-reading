@@ -1,122 +1,122 @@
-<p-card [styleClass]="'overflow-hidden h-full'">
-  <div class="flex flex-col gap-10 overflow-auto">
-    <p-table
-      [value]="dataStore.meters()"
-      selectionMode="single"
-      (onRowSelect)="onMeterSelect($event)"
-      class="h-full"
-      [scrollable]="true"
-      scrollHeight="flex">
-      <ng-template pTemplate="caption">
-        <span>{{ translations.meter_meters() }}</span>
-      </ng-template>
-      <ng-template pTemplate="header">
-        <tr>
-          <th style="width: 25%">{{ translations.meter_type_type() }}</th>
-          <th style="width: auto">{{ translations.meter_location() }}</th>
-          <th style="width: auto">{{ translations.meter_addition() }}</th>
-          <th style="width: 5rem">
-            <p-button
-              icon="fa-solid fa-plus"
-              [pTooltip]="translations.add()"
-              [tooltipPosition]="'bottom'"
-              [showDelay]="1000"
-              [rounded]="true"
-              (onClick)="showNewDialog()" />
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-meter>
-        <tr [pSelectableRow]="meter">
-          <td>
-            <i
-              class="{{
-                meter.type === 0
-                  ? 'fa-solid fa-bolt'
-                  : meter.type === 1
-                    ? 'fa-solid fa-droplet'
-                    : 'fa-solid fa-fire-extinguisher'
-              }}"></i>
-          </td>
-          <td>
-            <span>{{ meter.location }}</span>
-          </td>
-          <td>
-            <span>{{ meter.addition }}</span>
-          </td>
-          <td>
-            <p-button
-              icon="fa-solid fa-pencil"
-              [pTooltip]="translations.edit()"
-              [tooltipPosition]="'bottom'"
-              [showDelay]="1000"
-              [rounded]="true"
-              (onClick)="showEditDialog(meter)"></p-button>
-          </td>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="4">{{ translations.noRecordsFound() }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-    @if (dataStore.sharedMeters().length > 0) {
-      <p-table
-        [value]="dataStore.sharedMeters()"
-        selectionMode="single"
-        (onRowSelect)="onSharedMeterSelect($event)"
-        class="h-full"
-        [scrollable]="true"
-        scrollHeight="flex">
-        <ng-template pTemplate="caption">
-          <span>{{ translations.meter_sharedMeters() }}</span>
-        </ng-template>
-        <ng-template pTemplate="header">
+<div class="h-full w-full overflow-hidden">
+  <div class="flex h-full flex-col overflow-hidden">
+    <p class="m-4 text-2xl">{{ translations.meter_meters() }}</p>
+    <div class="max-h-fit flex-1 overflow-auto">
+      <table class="table-pin-rows table h-full">
+        <thead>
           <tr>
             <th style="width: 25%">{{ translations.meter_type_type() }}</th>
             <th style="width: auto">{{ translations.meter_location() }}</th>
             <th style="width: auto">{{ translations.meter_addition() }}</th>
-            <th style="width: auto">{{ translations.meter_sharedBy() }}</th>
-            <th style="width: 5rem"></th>
+            <th style="width: 5rem">
+              <button
+                class="btn btn-primary btn-circle lg:tooltip lg:tooltip-left"
+                [tooltip]="translations.add()"
+                (click)="showNewDialog()">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </th>
           </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-sharedMeter>
-          <tr [pSelectableRow]="sharedMeter">
-            <td>
-              <span
-                class="{{
-                  sharedMeter.meter.type === 0
-                    ? 'fa-solid fa-bolt'
-                    : sharedMeter.meter.type === 1
-                      ? 'fa-solid fa-droplet'
-                      : 'fa-solid fa-gas-pump'
-                }}"></span>
-            </td>
-            <td>
-              <span>{{ sharedMeter.meter.location }}</span>
-            </td>
-            <td>
-              <span>{{ sharedMeter.meter.addition }}</span>
-            </td>
-            <td>
-              <span>{{ sharedMeter.owner }}</span>
-            </td>
-            <td>
-              <p-button
-                icon="fa-solid fa-link-slash"
-                severity="danger"
-                [pTooltip]="translations.meterShare_revoke()"
-                [tooltipPosition]="'bottom'"
-                [showDelay]="1000"
-                [rounded]="true"
-                (onClick)="confirmRevokeShare(sharedMeter)"></p-button>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+        </thead>
+        <tbody>
+          @for (meter of dataStore.meters(); track meter.id) {
+            <tr>
+              <td class="hover:cursor-pointer" (click)="onRowSelect(meter.id)">
+                <i
+                  class="{{
+                    meter.type === 0
+                      ? 'fa-solid fa-bolt'
+                      : meter.type === 1
+                        ? 'fa-solid fa-droplet'
+                        : 'fa-solid fa-fire-extinguisher'
+                  }}"></i>
+              </td>
+              <td class="hover:cursor-pointer" (click)="onRowSelect(meter.id)">
+                <span>{{ meter.location }}</span>
+              </td>
+              <td class="hover:cursor-pointer" (click)="onRowSelect(meter.id)">
+                <span>{{ meter.addition }}</span>
+              </td>
+              <td>
+                <button
+                  class="btn btn-circle btn-primary lg:tooltip lg:tooltip-left"
+                  [tooltip]="translations.edit()"
+                  (click)="showEditDialog(meter)">
+                  <i class="fa-solid fa-pencil"></i>
+                </button>
+              </td>
+            </tr>
+          }
+          @if (dataStore.meters().length === 0) {
+            <tr>
+              <td colspan="4">{{ translations.noRecordsFound() }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    @if (dataStore.sharedMeters().length > 0) {
+      <div class="divider"></div>
+      <p class="m-4 text-2xl">{{ translations.meter_sharedMeters() }}</p>
+      <div class="max-h-1/3 overflow-auto">
+        <table class="table-pin-rows table h-full">
+          <thead>
+            <tr>
+              <th style="width: 25%">{{ translations.meter_type_type() }}</th>
+              <th style="width: auto">{{ translations.meter_location() }}</th>
+              <th style="width: auto">{{ translations.meter_addition() }}</th>
+              <th style="width: auto">{{ translations.meter_sharedBy() }}</th>
+              <th style="width: 5rem"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (
+              sharedMeter of dataStore.sharedMeters();
+              track sharedMeter.meter.id
+            ) {
+              <tr>
+                <td
+                  class="hover:cursor-pointer"
+                  (click)="onRowSelect(sharedMeter.meter.id)">
+                  <span
+                    class="{{
+                      sharedMeter.meter.type === 0
+                        ? 'fa-solid fa-bolt'
+                        : sharedMeter.meter.type === 1
+                          ? 'fa-solid fa-droplet'
+                          : 'fa-solid fa-gas-pump'
+                    }}"></span>
+                </td>
+                <td
+                  class="hover:cursor-pointer"
+                  (click)="onRowSelect(sharedMeter.meter.id)">
+                  <span>{{ sharedMeter.meter.location }}</span>
+                </td>
+                <td
+                  class="hover:cursor-pointer"
+                  (click)="onRowSelect(sharedMeter.meter.id)">
+                  <span>{{ sharedMeter.meter.addition }}</span>
+                </td>
+                <td
+                  class="hover:cursor-pointer"
+                  (click)="onRowSelect(sharedMeter.meter.id)">
+                  <span>{{ sharedMeter.owner }}</span>
+                </td>
+                <td>
+                  <button
+                    class="btn btn-error btn-circle lg:tooltip lg:tooltip-left"
+                    [tooltip]="translations.meterShare_revoke()"
+                    (click)="confirmRevokeShare(sharedMeter)">
+                    <i class="fa-solid fa-link-slash"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     }
   </div>
-</p-card>
+</div>
 
 <app-meter-dialog></app-meter-dialog>

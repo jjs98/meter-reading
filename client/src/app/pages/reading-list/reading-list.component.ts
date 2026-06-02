@@ -11,19 +11,12 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ChartEvent } from 'chart.js';
 import FileSaver from 'file-saver';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { ChartModule } from 'primeng/chart';
-import { DialogModule } from 'primeng/dialog';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { TableModule } from 'primeng/table';
-import { TooltipModule } from 'primeng/tooltip';
+import { BaseChartDirective } from 'ng2-charts';
 
 import { ReadingDialogComponent } from '../../components/reading-dialog/reading-dialog.component';
+import { TooltipDirective } from '../../directives/tooltip.directive';
 import { Meter } from '../../models/meter';
 import { Reading } from '../../models/reading';
 import { NavigationService } from '../../services/navigation.service';
@@ -40,23 +33,20 @@ export interface ChartData {
   }[];
 }
 
+export interface ChartEventData {
+  event?: ChartEvent;
+  active?: object[];
+}
+
 @Component({
   selector: 'app-reading-list',
   standalone: true,
   imports: [
-    ButtonModule,
-    CardModule,
-    ChartModule,
     CommonModule,
-    DialogModule,
-    AutoCompleteModule,
-    FloatLabelModule,
     FormsModule,
-    InputTextModule,
-    RadioButtonModule,
     ReadingDialogComponent,
-    TableModule,
-    TooltipModule,
+    TooltipDirective,
+    BaseChartDirective,
   ],
   templateUrl: './reading-list.component.html',
   styleUrls: [],
