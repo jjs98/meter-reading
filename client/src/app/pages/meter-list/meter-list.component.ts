@@ -46,16 +46,16 @@ import { SharedMeter } from '../../store/features/shared-meters.feature';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeterComponent implements OnInit {
-  protected readonly dataStore = inject(DataStore);
-  protected readonly translations = inject(TranslateService).translations;
-  protected dialogVisible = signal(false);
-
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly confirmationService = inject(ConfirmationService);
 
   private readonly newDialog = viewChild.required(MeterDialogComponent);
   private readonly editDialog = viewChild.required(MeterDialogComponent);
+
+  protected readonly dataStore = inject(DataStore);
+  protected readonly translations = inject(TranslateService).translations;
+  protected dialogVisible = signal(false);
 
   public async ngOnInit(): Promise<void> {
     await this.dataStore.refreshMeters();

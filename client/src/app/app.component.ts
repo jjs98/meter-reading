@@ -12,7 +12,6 @@ import { DaisyUiToasterComponent } from 'daisyui-toaster';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { InputIconModule } from 'primeng/inputicon';
 import { MenubarModule } from 'primeng/menubar';
@@ -20,6 +19,7 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { ChangePasswordDialogComponent } from './components/change-password-dialog/change-password-dialog.component';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { NavigationService } from './services/navigation.service';
 import { TranslateService } from './services/translate.service';
 import { DataStore } from './store/data.store';
@@ -31,8 +31,8 @@ import { DataStore } from './store/data.store';
     CardModule,
     ChangePasswordDialogComponent,
     CommonModule,
-    ConfirmDialogModule,
     DialogModule,
+    ConfirmationDialogComponent,
     FormsModule,
     InputIconModule,
     MenubarModule,
@@ -47,18 +47,18 @@ import { DataStore } from './store/data.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
+  private readonly navigationService = inject(NavigationService);
+
+  private readonly changePasswordDialog = viewChild.required(
+    ChangePasswordDialogComponent
+  );
+
   protected readonly dataStore = inject(DataStore);
   protected readonly translationService = inject(TranslateService);
   protected readonly translations = this.translationService.translations;
   protected readingDate: Date | undefined = undefined;
 
   protected items: MenuItem[] = [];
-
-  private readonly navigationService = inject(NavigationService);
-
-  private readonly changePasswordDialog = viewChild.required(
-    ChangePasswordDialogComponent
-  );
 
   public ngOnInit(): void {
     this.items = [

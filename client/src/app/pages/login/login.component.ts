@@ -24,16 +24,16 @@ import { DataStore } from '../../store/data.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
+  private readonly dataStore = inject(DataStore);
+  private readonly navigationService = inject(NavigationService);
+  private readonly authService = inject(AuthService);
+  private readonly toastService = inject(ToastService);
+
   protected readonly translations = inject(TranslateService).translations;
   protected username = '';
   protected password = '';
 
   protected loading = signal(false);
-
-  private readonly dataStore = inject(DataStore);
-  private readonly navigationService = inject(NavigationService);
-  private readonly authService = inject(AuthService);
-  private readonly toastService = inject(ToastService);
 
   public ngOnInit(): void {
     if (this.dataStore.isTokenValid()) {

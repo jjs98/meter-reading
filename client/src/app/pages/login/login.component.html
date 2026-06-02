@@ -4,54 +4,47 @@
       <h2 class="card-title mb-6 justify-center">
         {{ translations.login_login() }}
       </h2>
-      <form (ngSubmit)="login()" autocomplete="off">
-        <div class="form-control mb-4">
-          <label class="label" for="username">
-            <span class="label-text font-semibold"
-              ><i class="fa-solid fa-user mr-2"></i
-              >{{ translations.login_username() }}</span
-            >
-          </label>
-          <input
-            id="username"
-            name="username"
-            type="text"
-            class="input input-bordered w-full"
-            [(ngModel)]="username"
-            (keypress)="onKeyPress($event)"
-            autocomplete="off"
-            required />
-        </div>
-        <div class="form-control mb-6">
-          <label class="label" for="password">
-            <span class="label-text font-semibold"
-              ><i class="fa-solid fa-key mr-2"></i
-              >{{ translations.login_password() }}</span
-            >
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            class="input input-bordered w-full"
-            [(ngModel)]="password"
-            (keypress)="onKeyPress($event)"
-            required />
-        </div>
-        <div class="card-actions justify-end">
-          <button
-            class="btn btn-primary flex w-full items-center justify-center gap-2"
-            [disabled]="!username || !password || loading()"
-            type="submit">
-            <i
-              class="fa-solid"
-              [ngClass]="
-                loading() ? 'fa-spinner fa-spin' : 'fa-right-to-bracket'
-              "></i>
-            {{ translations.login_login() }}
-          </button>
-        </div>
-      </form>
+      <fieldset class="fieldset text-lg">
+        <label class="label" for="username">
+          <span class="label-text font-semibold"
+            ><i class="fa-solid fa-user mr-2"></i
+            >{{ translations.login_username() }}</span
+          >
+        </label>
+        <input
+          id="username"
+          type="text"
+          class="input input-bordered w-full"
+          [(ngModel)]="username"
+          (keypress)="onKeyPress($event)"
+          required />
+        <label class="label" for="password">
+          <span class="label-text font-semibold"
+            ><i class="fa-solid fa-key mr-2"></i
+            >{{ translations.login_password() }}</span
+          >
+        </label>
+        <input
+          id="password"
+          type="password"
+          class="input input-bordered w-full"
+          [(ngModel)]="password"
+          (keypress)="onKeyPress($event)"
+          required />
+      </fieldset>
+      <div class="card-actions justify-end">
+        <button
+          class="btn btn-primary flex w-full items-center justify-center gap-2"
+          [disabled]="!username || !password || loading()"
+          (click)="login()">
+          <i
+            class="fa-solid"
+            [ngClass]="
+              loading() ? 'fa-spinner fa-spin' : 'fa-right-to-bracket'
+            "></i>
+          {{ translations.login_login() }}
+        </button>
+      </div>
     </div>
   </div>
 </div>

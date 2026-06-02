@@ -9,12 +9,12 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastService, ToastSeverity } from 'daisyui-toaster';
-import { ConfirmationService } from 'primeng/api';
 
 import { MeterType } from '../../api/models';
 import { TooltipDirective } from '../../directives/tooltip.directive';
 import { Meter } from '../../models/meter';
 import { MeterShare } from '../../models/meter-share';
+import { ConfirmationService } from '../../services/confirmation.service';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 
@@ -27,7 +27,9 @@ import { DataStore } from '../../store/data.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MeterDialogComponent {
-  public existingMeter: Meter | undefined = undefined;
+  private readonly toastService = inject(ToastService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private isEdit = false;
 
   protected readonly dataStore = inject(DataStore);
   protected readonly translations = inject(TranslateService).translations;
@@ -43,9 +45,7 @@ export class MeterDialogComponent {
   protected dialogVisible = signal(false);
   protected loading = signal(false);
 
-  private readonly toastService = inject(ToastService);
-  private readonly confirmationService = inject(ConfirmationService);
-  private isEdit = false;
+  public existingMeter: Meter | undefined = undefined;
 
   public constructor() {
     effect((): void => {
@@ -147,17 +147,8 @@ export class MeterDialogComponent {
     this.confirmationService.confirm({
       header: this.translations.meterShare_confirmDelete_header(),
       message: this.translations.meterShare_confirmDelete_message(),
-      icon: 'i-[mdi--alert-circle]',
-      acceptButtonStyleClass: 'p-button-danger p-button',
-      rejectButtonStyleClass: 'p-button',
-      acceptIcon: 'none',
-      rejectIcon: 'none',
-
-      accept: (): void => {
-        this.revokeShare(sharedMeter);
-      },
-      reject: (): void => {
-        // Do nothing on reject
+      confirmCallback: async (): Promise<void> => {
+        await this.revokeShare(sharedMeter);
       },
     });
   }
@@ -180,17 +171,8 @@ export class MeterDialogComponent {
     this.confirmationService.confirm({
       header: this.translations.meter_confirmDelete_header(),
       message: this.translations.meter_confirmDelete_message(),
-      icon: 'i-[mdi--alert-circle]',
-      acceptButtonStyleClass: 'p-button-danger p-button',
-      rejectButtonStyleClass: 'p-button',
-      acceptIcon: 'none',
-      rejectIcon: 'none',
-
-      accept: (): void => {
-        this.deleteMeter();
-      },
-      reject: (): void => {
-        // Do nothing on reject
+      confirmCallback: async (): Promise<void> => {
+        await this.deleteMeter();
       },
     });
   }

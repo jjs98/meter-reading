@@ -63,6 +63,12 @@ export interface ChartData {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReadingListComponent implements OnInit {
+  private readonly navigationService = inject(NavigationService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+
+  private readonly newDialog = viewChild.required(ReadingDialogComponent);
+  private readonly editDialog = viewChild.required(ReadingDialogComponent);
+
   protected readonly dataStore = inject(DataStore);
   protected readonly translations = inject(TranslateService).translations;
 
@@ -124,12 +130,6 @@ export class ReadingListComponent implements OnInit {
       },
     },
   };
-
-  private readonly navigationService = inject(NavigationService);
-  private readonly activatedRoute = inject(ActivatedRoute);
-
-  private readonly newDialog = viewChild.required(ReadingDialogComponent);
-  private readonly editDialog = viewChild.required(ReadingDialogComponent);
 
   public async ngOnInit(): Promise<void> {
     registerLocaleData(de);

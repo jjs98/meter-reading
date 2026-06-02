@@ -1,0 +1,30 @@
+<dialog class="modal" [open]="confirmationService.dialogVisible()">
+  <div class="modal-box w-md">
+    <p class="mb-4 text-xl font-bold">
+      {{ confirmationService.confirmation().header }}
+    </p>
+    <p class="text-xl">
+      {{ confirmationService.confirmation().message }}
+    </p>
+    <div class="modal-action">
+      <button
+        class="btn btn-circle btn-neutral lg:tooltip text-xl"
+        [tooltip]="
+          confirmationService.confirmation().cancelButtonText ||
+          translations.cancel()
+        "
+        (click)="cancel()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <button
+        class="btn btn-circle btn-success lg:tooltip text-xl"
+        [tooltip]="
+          confirmationService.confirmation().confirmButtonText ||
+          translations.confirm()
+        "
+        (click)="confirm()">
+        <i class="fa-solid fa-check"></i>
+      </button>
+    </div>
+  </div>
+</dialog>

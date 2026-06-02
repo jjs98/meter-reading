@@ -43,29 +43,4 @@
 </div>
 
 <app-change-password-dialog></app-change-password-dialog>
-<p-confirmDialog #cd>
-  <ng-template pTemplate="headless" let-message>
-    <p-card header="{{ message.header }}">
-      <div class="m-4 flex flex-row gap-3">
-        <i class="fa-solid fa-circle-exclamation"></i>
-        <p class="mb-0">{{ message.message }}</p>
-      </div>
-      <div class="flex justify-end gap-4">
-        <button
-          pButton
-          icon="fa-solid fa-xmark"
-          severity="secondary"
-          (click)="cd.onReject()"
-          [rounded]="true"
-          class="w-8rem justify-center"></button>
-        <button
-          pButton
-          icon="fa-solid fa-trash"
-          severity="danger"
-          (click)="cd.onAccept()"
-          [rounded]="true"
-          class="w-8rem justify-center"></button>
-      </div>
-    </p-card>
-  </ng-template>
-</p-confirmDialog>
+<app-confirmation-dialog></app-confirmation-dialog>

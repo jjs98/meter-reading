@@ -13,6 +13,9 @@ import {
   standalone: true,
 })
 export class TooltipDirective implements OnDestroy {
+  private showTooltip = signal(false);
+  private timeoutId?: ReturnType<typeof setTimeout>;
+
   public tooltip = input('');
   public tooltipDelay = input(500);
 
@@ -24,9 +27,6 @@ export class TooltipDirective implements OnDestroy {
 
     return this.tooltip();
   }
-
-  private showTooltip = signal(false);
-  private timeoutId?: ReturnType<typeof setTimeout>;
 
   @HostListener('mouseenter')
   public onMouseEnter(): void {

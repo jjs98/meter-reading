@@ -23,6 +23,9 @@ import { DataStore } from '../../store/data.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangePasswordDialogComponent {
+  private readonly toastService = inject(ToastService);
+  private readonly authService = inject(AuthService);
+
   protected readonly dataStore = inject(DataStore);
   protected readonly translations = inject(TranslateService).translations;
 
@@ -34,9 +37,6 @@ export class ChangePasswordDialogComponent {
 
   protected dialogVisible = signal(false);
   protected loading = signal(false);
-
-  private readonly toastService = inject(ToastService);
-  private readonly authService = inject(AuthService);
 
   public constructor() {
     effect((): void => {

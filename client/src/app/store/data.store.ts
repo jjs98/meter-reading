@@ -19,14 +19,11 @@ export const DataStore = signalStore(
   withHooks({
     onInit(store): void {
       store.loadToken();
-      effect(
-        (): void => {
-          const token = store.token();
-          const user = mapTokenToUser(token);
-          store.setUser(user);
-        },
-        { allowSignalWrites: true }
-      );
+      effect((): void => {
+        const token = store.token();
+        const user = mapTokenToUser(token);
+        store.setUser(user);
+      });
     },
   })
 );

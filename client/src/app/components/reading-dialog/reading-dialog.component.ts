@@ -11,45 +11,26 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastService, ToastSeverity } from 'daisyui-toaster';
-import { ConfirmationService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { DatePickerModule } from 'primeng/datepicker';
-import { DialogModule } from 'primeng/dialog';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputTextModule } from 'primeng/inputtext';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { TooltipModule } from 'primeng/tooltip';
 
 import { TooltipDirective } from '../../directives/tooltip.directive';
 import { Reading } from '../../models/reading';
+import { ConfirmationService } from '../../services/confirmation.service';
 import { TranslateService } from '../../services/translate.service';
 import { DataStore } from '../../store/data.store';
 
 @Component({
   selector: 'app-reading-dialog',
   standalone: true,
-  imports: [
-    ButtonModule,
-    CommonModule,
-    DatePickerModule,
-    DialogModule,
-    FloatLabelModule,
-    FormsModule,
-    InputNumberModule,
-    InputTextModule,
-    RadioButtonModule,
-    TooltipModule,
-    TooltipDirective,
-  ],
+  imports: [CommonModule, FormsModule, TooltipDirective],
   templateUrl: './reading-dialog.component.html',
   styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReadingDialogComponent {
-  public readonly meterId = input<number>();
-  public readonly currentDate = new Date();
-  public existingReading: Reading | undefined = undefined;
+  private readonly toastService = inject(ToastService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private isEdit = false;
+  private lastReadingDate: string | undefined = undefined;
 
   protected readonly dataStore = inject(DataStore);
   protected readonly translations = inject(TranslateService).translations;
@@ -75,20 +56,16 @@ export class ReadingDialogComponent {
     return hasReading;
   });
 
-  private readonly toastService = inject(ToastService);
-  private readonly confirmationService = inject(ConfirmationService);
-  private isEdit = false;
-  private lastReadingDate: string | undefined = undefined;
+  public readonly meterId = input<number>();
+  public readonly currentDate = new Date();
+  public existingReading: Reading | undefined = undefined;
 
   public constructor() {
-    effect(
-      (): void => {
-        if (!this.dialogVisible()) {
-          this.resetDialog();
-        }
-      },
-      { allowSignalWrites: true }
-    );
+    effect((): void => {
+      if (!this.dialogVisible()) {
+        this.resetDialog();
+      }
+    });
   }
 
   public showDialog(reading: Reading | undefined = undefined): void {
@@ -168,17 +145,8 @@ export class ReadingDialogComponent {
     this.confirmationService.confirm({
       header: this.translations.reading_confirmDelete_header(),
       message: this.translations.reading_confirmDelete_message(),
-      icon: 'i-[mdi--alert-circle]',
-      acceptButtonStyleClass: 'p-button-danger p-button',
-      rejectButtonStyleClass: 'p-button',
-      acceptIcon: 'none',
-      rejectIcon: 'none',
-
-      accept: (): void => {
+      confirmCallback: async (): Promise<void> => {
         this.deleteReading();
-      },
-      reject: (): void => {
-        // Do nothing on reject
       },
     });
   }
