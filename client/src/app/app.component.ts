@@ -2,24 +2,15 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
   inject,
   viewChild,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DaisyUiToasterComponent } from 'daisyui-toaster';
-import { MenuItem } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { DialogModule } from 'primeng/dialog';
-import { InputIconModule } from 'primeng/inputicon';
-import { MenubarModule } from 'primeng/menubar';
-import { TieredMenuModule } from 'primeng/tieredmenu';
-import { TooltipModule } from 'primeng/tooltip';
 
 import { ChangePasswordDialogComponent } from './components/change-password-dialog/change-password-dialog.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { TooltipDirective } from './directives/tooltip.directive';
 import { NavigationService } from './services/navigation.service';
 import { TranslateService } from './services/translate.service';
 import { DataStore } from './store/data.store';
@@ -27,49 +18,27 @@ import { DataStore } from './store/data.store';
 @Component({
   standalone: true,
   imports: [
-    ButtonModule,
-    CardModule,
     ChangePasswordDialogComponent,
     CommonModule,
-    DialogModule,
     ConfirmationDialogComponent,
-    FormsModule,
-    InputIconModule,
-    MenubarModule,
     RouterModule,
-    TieredMenuModule,
-    TooltipModule,
     DaisyUiToasterComponent,
+    TooltipDirective,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   private readonly navigationService = inject(NavigationService);
 
-  private readonly changePasswordDialog = viewChild.required(
+  protected readonly changePasswordDialog = viewChild.required(
     ChangePasswordDialogComponent
   );
 
   protected readonly dataStore = inject(DataStore);
-  protected readonly translationService = inject(TranslateService);
-  protected readonly translations = this.translationService.translations;
-  protected readingDate: Date | undefined = undefined;
-
-  protected items: MenuItem[] = [];
-
-  public ngOnInit(): void {
-    this.items = [
-      {
-        label: 'login_passwordChange',
-        command: (): void => {
-          this.changePasswordDialog().showDialog();
-        },
-      },
-    ];
-  }
+  protected readonly translations = inject(TranslateService).translations;
 
   protected logOff(): void {
     this.dataStore.deleteToken();

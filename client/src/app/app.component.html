@@ -1,46 +1,41 @@
-<daisyui-toaster></daisyui-toaster>
 <div class="flex h-full flex-col overflow-hidden">
   @if (dataStore.isTokenValid()) {
-    <p-menubar styleClass="ml-2 mr-2 mt-2 p-4">
-      <ng-template pTemplate="start">
-        <span class="ml-4"> {{ translations.meterReadings() }} </span>
-      </ng-template>
-      <ng-template pTemplate="end">
-        <div class="flex flex-row items-center">
-          <span class="mr-8" (click)="menu.toggle($event)">
-            {{ dataStore.getUserName() }}
-          </span>
-          <p-tieredMenu #menu [model]="items" [popup]="true">
-            <ng-template pTemplate="item" let-item let-hasSubmenu="hasSubmenu">
-              <ng-container>
-                <a class="p-menuitem-link">
-                  <i [class]="item.icon"></i>
-                  <span class="ml-2">{{
-                    translationService.translate(item.label)
-                  }}</span>
-                  <span
-                    *ngIf="hasSubmenu"
-                    class="i-[mdi--chevron-right]"></span>
-                </a>
-              </ng-container>
-            </ng-template>
-          </p-tieredMenu>
-          <p-button
-            icon="fa-solid fa-right-from-bracket"
-            styleClass="mr-4"
-            [pTooltip]="translations.logout()"
-            [tooltipPosition]="'bottom'"
-            [showDelay]="1000"
-            [rounded]="true"
-            (click)="logOff()" />
+    <div class="navbar bg-base-100 h-[64px]shadow-sm">
+      <div class="flex-1">
+        <p class="ml-4 text-xl">{{ translations.meterReadings() }}</p>
+      </div>
+      <div class="flex-none">
+        <div class="flex items-center gap-4">
+          <ul class="menu menu-horizontal text-xl">
+            <li>
+              <details>
+                <summary>{{ dataStore.getUserName() }}</summary>
+                <ul class="bg-base-100 rounded-t-none p-2">
+                  <li>
+                    <a (click)="changePasswordDialog().showDialog()">{{
+                      translations.login_passwordChange()
+                    }}</a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+          <button
+            class="btn btn-ghost lg:tooltip lg:tooltip-bottom mr-4 text-xl"
+            [tooltip]="translations.logout()"
+            (click)="logOff()">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </button>
         </div>
-      </ng-template>
-    </p-menubar>
+      </div>
+    </div>
   }
-  <div class="router-content m-2 overflow-auto">
+  <div class="h-[calc(100%-64px)] overflow-auto">
     <router-outlet></router-outlet>
   </div>
 </div>
 
 <app-change-password-dialog></app-change-password-dialog>
+
+<daisyui-toaster></daisyui-toaster>
 <app-confirmation-dialog></app-confirmation-dialog>
