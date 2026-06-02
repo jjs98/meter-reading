@@ -3,3 +3,7 @@ allowBuilds:
   esbuild: true
   lmdb: false
   msgpackr-extract: false
+minimumReleaseAgeExclude:
+  - daisyui-toaster@1.2.1
+  - '@goast/core@0.5.3'
+  - '@goast/typescript@0.7.6'

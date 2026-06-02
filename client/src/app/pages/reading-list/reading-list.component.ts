@@ -42,11 +42,11 @@ export interface ChartEventData {
   selector: 'app-reading-list',
   standalone: true,
   imports: [
+    BaseChartDirective,
     CommonModule,
     FormsModule,
     ReadingDialogComponent,
     TooltipDirective,
-    BaseChartDirective,
   ],
   templateUrl: './reading-list.component.html',
   styleUrls: [],

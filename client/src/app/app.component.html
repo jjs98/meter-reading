@@ -1,6 +1,6 @@
 <div class="flex h-full flex-col overflow-hidden">
   @if (dataStore.isTokenValid()) {
-    <div class="navbar bg-base-100 h-[64px]shadow-sm">
+    <div class="navbar bg-base-100 h-[64px] shadow-sm">
       <div class="flex-1">
         <p class="ml-4 text-xl">{{ translations.meterReadings() }}</p>
       </div>
@@ -30,7 +30,9 @@
       </div>
     </div>
   }
-  <div class="bg-base-300 h-[calc(100%-64px)] overflow-auto">
+  <div
+    class="bg-base-300 overflow-auto"
+    [ngClass]="dataStore.isTokenValid() ? 'h-[calc(100%-64px)]' : 'h-full'">
     <router-outlet></router-outlet>
   </div>
 </div>

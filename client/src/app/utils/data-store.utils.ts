@@ -1,5 +1,4 @@
-import { WritableStateSource, patchState } from '@ngrx/signals';
-import { Prettify } from '@ngrx/signals/src/ts-helpers';
+import { Prettify, WritableStateSource, patchState } from '@ngrx/signals';
 import { Draft, produce } from 'immer';
 
 export function patch<TState extends object>(

@@ -1,22 +1,33 @@
 // @ts-check
-const eslint = require('@eslint/js');
-const tseslint = require('typescript-eslint');
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import angular from 'angular-eslint';
+import importPlugin from 'eslint-plugin-import';
 
-const angular = require('angular-eslint');
-const importPlugin = require('eslint-plugin-import');
+import { sortAngularComponentImports } from './custom-rules/sort-angular-component-imports.js';
 
-module.exports = tseslint.config(
+export default [
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+  ...tseslint.configs.stylistic,
+  ...angular.configs.tsRecommended,
+
+  {
+    ignores: ['src/app/api/**'],
+  },
   {
     files: ['**/*.ts'],
-    extends: [
-      eslint.configs.recommended,
-      ...tseslint.configs.recommended,
-      ...tseslint.configs.stylistic,
-      ...angular.configs.tsRecommended,
-    ],
-    ignores: ['src/app/api/**'],
+
     processor: angular.processInlineTemplates,
-    plugins: { import: importPlugin },
+
+    plugins: {
+      import: importPlugin,
+      custom: {
+        rules: {
+          'sort-angular-component-imports': sortAngularComponentImports,
+        },
+      },
+    },
     rules: {
       'import/order': [
         'error',
@@ -86,11 +97,11 @@ module.exports = tseslint.config(
           ignoreReadBeforeAssign: false,
         },
       ],
+      'custom/sort-angular-component-imports': 'error',
     },
   },
   {
     files: ['**/*.html'],
-    extends: [...angular.configs.templateRecommended],
-    rules: {},
-  }
-);
+    ...angular.configs.templateRecommended[0],
+  },
+];

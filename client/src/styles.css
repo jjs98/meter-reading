@@ -1,6 +1,6 @@
 @import 'tailwindcss';
-@source "../node_modules/daisyui-toaster";
-@plugin "daisyui" {
+@source '../node_modules/daisyui-toaster';
+@plugin 'daisyui' {
   themes: business --default;
 }
 
