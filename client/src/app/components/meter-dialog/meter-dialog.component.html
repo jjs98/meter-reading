@@ -95,7 +95,7 @@
               <div class="flex items-center justify-end gap-4">
                 <div>{{ sharedMeter.username }}</div>
                 <button
-                  class="btn btn-circle btn-error lg:tooltip"
+                  class="btn btn-circle btn-error lg:tooltip lg:tooltip-left"
                   [tooltip]="translations.meterShare_revoke()"
                   (click)="confirmRevokeShare(sharedMeter)">
                   <i class="fa-solid fa-trash"></i>
