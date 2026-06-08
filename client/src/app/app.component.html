@@ -6,20 +6,22 @@
       </div>
       <div class="flex-none">
         <div class="flex items-center gap-4">
-          <ul class="menu menu-horizontal text-xl">
-            <li>
-              <details>
-                <summary>{{ dataStore.getUserName() }}</summary>
-                <ul class="bg-base-100 rounded-t-none p-2">
-                  <li>
-                    <a (click)="changePasswordDialog().showDialog()">{{
-                      translations.login_passwordChange()
-                    }}</a>
-                  </li>
-                </ul>
-              </details>
-            </li>
-          </ul>
+          <div class="dropdown dropdown-end text-xl">
+            <div tabindex="0" role="button" class="cursor-pointer">
+              {{ dataStore.getUserName() }}
+            </div>
+            <ul
+              tabindex="-1"
+              class="menu menu-sm dropdown-content bg-base-200 rounded-box z-1 mt-3 w-48 p-2 shadow">
+              <li>
+                <a
+                  class="text-lg"
+                  (click)="changePasswordDialog().showDialog()"
+                  >{{ translations.login_passwordChange() }}</a
+                >
+              </li>
+            </ul>
+          </div>
           <button
             class="btn btn-ghost lg:tooltip lg:tooltip-bottom mr-4 text-xl"
             [tooltip]="translations.logout()"

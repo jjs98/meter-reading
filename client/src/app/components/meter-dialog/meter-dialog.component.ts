@@ -69,8 +69,10 @@ export class MeterDialogComponent {
     this.dialogVisible.set(true);
   }
 
-  protected onCancel(): void {
+  protected async onCancel(): Promise<void> {
     this.dialogVisible.set(false);
+    await this.dataStore.refreshMeters();
+    await this.dataStore.refreshSharedMeters();
   }
 
   protected async refreshSharedMeter(): Promise<void> {
