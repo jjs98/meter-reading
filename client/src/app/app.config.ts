@@ -7,7 +7,6 @@ import {
   ApplicationConfig,
   provideZonelessChangeDetection,
 } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { provideToastService } from 'daisyui-toaster';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
@@ -20,7 +19,6 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimationsAsync(),
     provideCharts(withDefaultRegisterables()),
     provideZonelessChangeDetection(),
     provideRouter(appRoutes),
