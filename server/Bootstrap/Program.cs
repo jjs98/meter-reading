@@ -21,8 +21,11 @@ public class Program
 
         using (var scope = app.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            await db.Database.MigrateAsync();
+            var contextFactory = scope.ServiceProvider.GetRequiredService<
+                IDbContextFactory<AppDbContext>
+            >();
+            var context = await contextFactory.CreateDbContextAsync();
+            await context.Database.MigrateAsync();
         }
 
         app.Run();

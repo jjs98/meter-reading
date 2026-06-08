@@ -10,9 +10,9 @@ using TUnit.AspNetCore;
 
 namespace Presentation.Tests.Integration;
 
-public class WebApiFactory : TestWebApplicationFactory<Program>
+public class WebApiFactory : TestWebApplicationFactory<Program>, IAsyncDisposable
 {
-    [ClassDataSource<TestDatabase>(Shared = SharedType.PerTestSession)]
+    [ClassDataSource<TestDatabase>(Shared = SharedType.PerClass)]
     public required TestDatabase Database { get; init; } = null!;
 
     private readonly Faker<TestUser> _userGenerator = new Faker<TestUser>()
@@ -69,5 +69,12 @@ public class WebApiFactory : TestWebApplicationFactory<Program>
         public required string Password { get; set; }
         public required string HashedPassword { get; set; }
         public required string Role { get; set; }
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        Console.WriteLine("Factory disposed");
+        await base.DisposeAsync();
+        GC.SuppressFinalize(this);
     }
 }
