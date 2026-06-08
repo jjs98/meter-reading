@@ -29,7 +29,13 @@ public class WebApiFactory : TestWebApplicationFactory<Program>
 
             services.AddDbContextFactory<AppDbContext>(options =>
             {
-                options.UseNpgsql(Database.DbContainer.GetConnectionString());
+                options.UseNpgsql(
+                    Database.DbContainer.GetConnectionString(),
+                    options =>
+                    {
+                        options.EnableRetryOnFailure();
+                    }
+                );
             });
         });
     }
