@@ -1,7 +1,7 @@
 ﻿using Infrastructure;
 using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
-using static Presentation.Tests.Integration.WebApiFactory;
+using static Presentation.Tests.Integration.TestBase;
 
 namespace Presentation.Tests.Integration.Builder;
 

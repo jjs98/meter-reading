@@ -1,37 +1,26 @@
 using System.Net;
 using Domain.Enums;
 using FastEndpoints;
-using Presentation.Endpoints.Auth;
 using Presentation.Endpoints.Meters;
 using Presentation.Tests.Integration.Builder;
 
 namespace Presentation.Tests.Integration.Meters;
 
-[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
-public class DeleteMeterTests(WebApiFactory webApiFactory)
+public class DeleteMeterTests : TestBase
 {
     [Test]
     public async Task DeleteMeter_ReturnsNoContent_WhenUserIsOwner()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
-        var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(user).Build();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
 
         var meterBuilder = new MeterBuilder(dbContext);
         var meterData = meterBuilder
-            .WithMeter("Location to delete", userData.Users[0], MeterType.Gas)
+            .WithMeter("Location to delete", userEntity, MeterType.Gas)
             .Build();
         var meterId = meterData.Meters[0].Id;
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
 
         var request = new DeleteMeterEndpointRequest(meterId);
 
@@ -50,25 +39,19 @@ public class DeleteMeterTests(WebApiFactory webApiFactory)
     public async Task DeleteMeter_ReturnsUnauthorized_WhenUserIsNotOwner()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        var otherUser = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
+
         var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(user).WithUser(otherUser).Build();
+        var otherUser = GetTestUser();
+        var userData = userBuilder.WithUser(otherUser).Build();
 
         var meterBuilder = new MeterBuilder(dbContext);
         var meterData = meterBuilder
-            .WithMeter("Location to delete", userData.Users[1], MeterType.Gas)
+            .WithMeter("Location to delete", userData.Users[0], MeterType.Gas)
             .Build();
         var meterId = meterData.Meters[0].Id;
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
 
         var request = new DeleteMeterEndpointRequest(meterId);
 
@@ -87,18 +70,9 @@ public class DeleteMeterTests(WebApiFactory webApiFactory)
     public async Task DeleteMeter_ReturnsNotFound_WhenMeterDoesNotExist()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
-        var userBuilder = new UserBuilder(dbContext);
-        userBuilder.WithUser(user).Build();
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
 
         var request = new DeleteMeterEndpointRequest(999999);
 
@@ -117,7 +91,7 @@ public class DeleteMeterTests(WebApiFactory webApiFactory)
     public async Task DeleteMeter_ReturnsUnauthorized_WhenNoBearerToken()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
+        using var client = Factory.CreateClient();
         var request = new DeleteMeterEndpointRequest(1);
 
         // Act

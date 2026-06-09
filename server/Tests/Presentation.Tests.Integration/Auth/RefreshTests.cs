@@ -1,32 +1,18 @@
 ﻿using System.Net;
 using FastEndpoints;
 using Presentation.Endpoints.Auth;
-using Presentation.Tests.Integration.Builder;
 
 namespace Presentation.Tests.Integration.Auth;
 
-[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
-public class RefreshTests(WebApiFactory webApiFactory)
+public class RefreshTests : TestBase
 {
     [Test]
     public async Task Refresh_ReturnsToken_WhenUserExist()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        var dbContext = webApiFactory.CreateDbContext();
-        var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(user).Build();
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        ;
-        var loginToken = loginResponse.Result;
-
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
 
         // Act
         var response = await client.POSTAsync<
@@ -44,7 +30,7 @@ public class RefreshTests(WebApiFactory webApiFactory)
     public async Task Refresh_ReturnsUnauthorized_WhenNoBearerTokenExist()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
+        using var client = Factory.CreateClient();
 
         // Act
         var response = await client.POSTAsync<

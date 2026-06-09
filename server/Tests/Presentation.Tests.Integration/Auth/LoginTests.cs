@@ -5,16 +5,15 @@ using Presentation.Tests.Integration.Builder;
 
 namespace Presentation.Tests.Integration.Auth;
 
-[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
-public class LoginTests(WebApiFactory webApiFactory)
+public class LoginTests : TestBase
 {
     [Test]
     public async Task Login_ReturnsToken_WhenUserExist()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        var dbContext = webApiFactory.CreateDbContext();
+        using var client = Factory.CreateClient();
+        var user = GetTestUser();
+        var dbContext = CreateDbContext();
         var userBuilder = new UserBuilder(dbContext);
         var userData = userBuilder.WithUser(user).Build();
 
@@ -34,9 +33,9 @@ public class LoginTests(WebApiFactory webApiFactory)
     public async Task Login_ReturnsUnauthorized_WhenWrongPasswordIsUsed()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        var dbContext = webApiFactory.CreateDbContext();
+        using var client = Factory.CreateClient();
+        var user = GetTestUser();
+        var dbContext = CreateDbContext();
         var userBuilder = new UserBuilder(dbContext);
         var userData = userBuilder.WithUser(user).Build();
 
@@ -57,7 +56,7 @@ public class LoginTests(WebApiFactory webApiFactory)
     public async Task Login_ReturnsUnauthorized_WhenUserDoesNotExist()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
+        using var client = Factory.CreateClient();
 
         // Act
         var response = await client.POSTAsync<

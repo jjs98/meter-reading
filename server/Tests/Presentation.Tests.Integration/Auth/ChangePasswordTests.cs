@@ -2,31 +2,19 @@
 using Domain.Models;
 using FastEndpoints;
 using Presentation.Endpoints.Auth;
-using Presentation.Tests.Integration.Builder;
 
 namespace Presentation.Tests.Integration.Auth;
 
-[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
-public class ChangePasswordTests(WebApiFactory webApiFactory)
+public class ChangePasswordTests : TestBase
 {
     [Test]
     [NotInParallel]
     public async Task ChangePassword_ReturnsOk_WhenUserExistAndPasswordIsCorrect()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
-        var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(user).Build();
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        var loginToken = loginResponse.Result;
-
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
 
         var newPassword = "newPassword";
 
@@ -52,19 +40,9 @@ public class ChangePasswordTests(WebApiFactory webApiFactory)
     public async Task ChangePassword_ReturnsUnauthorized_WhenUserExistAndPasswordIsIncorrect()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
-        var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(user).Build();
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        var loginToken = loginResponse.Result;
-
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginToken!.Token}");
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
 
         // Act
         var response = await client.POSTAsync<
@@ -83,7 +61,7 @@ public class ChangePasswordTests(WebApiFactory webApiFactory)
     public async Task ChangePassword_ReturnsUnauthorized_WhenNoBearerTokenExist()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
+        using var client = Factory.CreateClient();
         var changePassword = new PasswordChange("wrongPassword", "newPassword");
 
         // Act

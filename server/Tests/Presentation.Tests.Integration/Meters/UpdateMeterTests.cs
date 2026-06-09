@@ -1,38 +1,27 @@
 using System.Net;
 using Domain.Enums;
 using FastEndpoints;
-using Presentation.Endpoints.Auth;
 using Presentation.Endpoints.Meters;
 using Presentation.Tests.Integration.Builder;
 
 namespace Presentation.Tests.Integration.Meters;
 
-[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
-public class UpdateMeterTests(WebApiFactory webApiFactory)
+public class UpdateMeterTests : TestBase
 {
     [Test]
     public async Task UpdateMeter_ReturnsNoContent_WhenUserIsOwner()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
-        var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(user).Build();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
 
         var meterBuilder = new MeterBuilder(dbContext);
         var meterData = meterBuilder
-            .WithMeter("Original Location", userData.Users[0], MeterType.Gas)
+            .WithMeter("Original Location", userEntity, MeterType.Gas)
             .Build();
         var meterId = meterData.Meters[0].Id;
-        var userId = userData.Users[0].Id;
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
+        var userId = userEntity.Id;
 
         var request = new UpdateMeterEndpointRequest(
             meterId,
@@ -58,26 +47,19 @@ public class UpdateMeterTests(WebApiFactory webApiFactory)
     public async Task UpdateMeter_ReturnsUnauthorized_WhenUserIsNotOwner()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        var otherUser = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
+        var otherUser = GetTestUser();
         var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(user).WithUser(otherUser).Build();
+        var userData = userBuilder.WithUser(otherUser).Build();
 
         var meterBuilder = new MeterBuilder(dbContext);
         var meterData = meterBuilder
-            .WithMeter("Original Location", userData.Users[1], MeterType.Gas)
+            .WithMeter("Original Location", userData.Users[0], MeterType.Gas)
             .Build();
         var meterId = meterData.Meters[0].Id;
-        var otherUserId = userData.Users[1].Id;
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
+        var otherUserId = userData.Users[0].Id;
 
         var request = new UpdateMeterEndpointRequest(
             meterId,
@@ -103,23 +85,13 @@ public class UpdateMeterTests(WebApiFactory webApiFactory)
     public async Task UpdateMeter_ReturnsNotFound_WhenMeterDoesNotExist()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
-        var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(user).Build();
-        var userId = userData.Users[0].Id;
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
 
         var request = new UpdateMeterEndpointRequest(
             999999,
-            userId,
+            userEntity.Id,
             "Updated Location",
             "99999",
             "Updated Addition",
@@ -141,7 +113,7 @@ public class UpdateMeterTests(WebApiFactory webApiFactory)
     public async Task UpdateMeter_ReturnsUnauthorized_WhenNoBearerToken()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
+        using var client = Factory.CreateClient();
         var request = new UpdateMeterEndpointRequest(
             1,
             1,

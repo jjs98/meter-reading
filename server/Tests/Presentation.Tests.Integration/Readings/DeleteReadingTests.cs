@@ -1,42 +1,29 @@
 using System.Net;
 using Domain.Enums;
 using FastEndpoints;
-using Presentation.Endpoints.Auth;
 using Presentation.Endpoints.Readings;
 using Presentation.Tests.Integration.Builder;
 
 namespace Presentation.Tests.Integration.Readings;
 
-[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
-public class DeleteReadingTests(WebApiFactory webApiFactory)
+public class DeleteReadingTests : TestBase
 {
     [Test]
     public async Task DeleteReading_ReturnsNoContent_WhenUserIsOwner()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
-        var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(user).Build();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
 
         var meterBuilder = new MeterBuilder(dbContext);
-        var meterData = meterBuilder
-            .WithMeter("Location", userData.Users[0], MeterType.Gas)
-            .Build();
+        var meterData = meterBuilder.WithMeter("Location", userEntity, MeterType.Gas).Build();
 
         var readingBuilder = new ReadingBuilder(dbContext);
         var readingData = readingBuilder
             .WithReading("100", DateTime.UtcNow, meterData.Meters[0])
             .Build();
         var readingId = readingData.Readings[0].Id;
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
 
         var request = new DeleteReadingEndpointRequest(readingId);
 
@@ -55,32 +42,25 @@ public class DeleteReadingTests(WebApiFactory webApiFactory)
     public async Task DeleteReading_ReturnsNoContent_WhenUserHasSharedAccess()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var owner = webApiFactory.GetTestUser();
-        var sharedUser = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
+        var owner = GetTestUser();
         var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(owner).WithUser(sharedUser).Build();
+        var userData = userBuilder.WithUser(owner).Build();
 
         var meterBuilder = new MeterBuilder(dbContext);
         var meterData = meterBuilder
             .WithMeter("Location", userData.Users[0], MeterType.Gas)
             .Build();
 
-        meterBuilder.WithSharedMeter(meterData.Meters[0], userData.Users[1]).Build();
+        meterBuilder.WithSharedMeter(meterData.Meters[0], userEntity).Build();
 
         var readingBuilder = new ReadingBuilder(dbContext);
         var readingData = readingBuilder
             .WithReading("100", DateTime.UtcNow, meterData.Meters[0])
             .Build();
         var readingId = readingData.Readings[0].Id;
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(sharedUser.Username, sharedUser.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
 
         var request = new DeleteReadingEndpointRequest(readingId);
 
@@ -99,12 +79,12 @@ public class DeleteReadingTests(WebApiFactory webApiFactory)
     public async Task DeleteReading_ReturnsUnauthorized_WhenUserIsNotOwnerOrShared()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var owner = webApiFactory.GetTestUser();
-        var otherUser = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
+        var owner = GetTestUser();
         var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(owner).WithUser(otherUser).Build();
+        var userData = userBuilder.WithUser(owner).Build();
 
         var meterBuilder = new MeterBuilder(dbContext);
         var meterData = meterBuilder
@@ -116,13 +96,6 @@ public class DeleteReadingTests(WebApiFactory webApiFactory)
             .WithReading("100", DateTime.UtcNow, meterData.Meters[0])
             .Build();
         var readingId = readingData.Readings[0].Id;
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(otherUser.Username, otherUser.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
 
         var request = new DeleteReadingEndpointRequest(readingId);
 
@@ -141,18 +114,9 @@ public class DeleteReadingTests(WebApiFactory webApiFactory)
     public async Task DeleteReading_ReturnsNotFound_WhenReadingDoesNotExist()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
-        var userBuilder = new UserBuilder(dbContext);
-        userBuilder.WithUser(user).Build();
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
 
         var request = new DeleteReadingEndpointRequest(999999);
 
@@ -171,7 +135,7 @@ public class DeleteReadingTests(WebApiFactory webApiFactory)
     public async Task DeleteReading_ReturnsUnauthorized_WhenNoBearerToken()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
+        using var client = Factory.CreateClient();
         var request = new DeleteReadingEndpointRequest(1);
 
         // Act

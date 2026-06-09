@@ -10,16 +10,10 @@ using TUnit.AspNetCore;
 
 namespace Presentation.Tests.Integration;
 
-public class WebApiFactory : TestWebApplicationFactory<Program>, IAsyncDisposable
+public class WebApiFactory : TestWebApplicationFactory<Program>
 {
-    [ClassDataSource<TestDatabase>(Shared = SharedType.PerClass)]
-    public required TestDatabase Database { get; init; } = null!;
-
-    private readonly Faker<TestUser> _userGenerator = new Faker<TestUser>()
-        .RuleFor(u => u.Username, f => f.Person.UserName)
-        .RuleFor(u => u.Password, f => "password")
-        .RuleFor(u => u.HashedPassword, BCrypt.Net.BCrypt.HashPassword("password"))
-        .RuleFor(u => u.Role, f => "User");
+    [ClassDataSource<TestDatabase>(Shared = SharedType.PerTestSession)]
+    public TestDatabase Database { get; init; } = null!;
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -38,43 +32,5 @@ public class WebApiFactory : TestWebApplicationFactory<Program>, IAsyncDisposabl
                 );
             });
         });
-    }
-
-    public static TestUser GetAdminUser() =>
-        new()
-        {
-            Username = "admin",
-            Password = "password",
-            HashedPassword = BCrypt.Net.BCrypt.HashPassword("password"),
-            Role = "Admin",
-        };
-
-    public TestUser GetTestUser()
-    {
-        return _userGenerator.Generate();
-    }
-
-    public AppDbContext CreateDbContext()
-    {
-        return new AppDbContext(
-            new DbContextOptionsBuilder<AppDbContext>()
-                .UseNpgsql(Database.DbContainer.GetConnectionString())
-                .Options
-        );
-    }
-
-    public class TestUser
-    {
-        public required string Username { get; set; }
-        public required string Password { get; set; }
-        public required string HashedPassword { get; set; }
-        public required string Role { get; set; }
-    }
-
-    public override async ValueTask DisposeAsync()
-    {
-        Console.WriteLine("Factory disposed");
-        await base.DisposeAsync();
-        GC.SuppressFinalize(this);
     }
 }

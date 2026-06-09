@@ -1,39 +1,30 @@
 using System.Net;
 using Domain.Enums;
 using FastEndpoints;
-using Presentation.Endpoints.Auth;
 using Presentation.Endpoints.Users;
 using Presentation.Tests.Integration.Builder;
 
 namespace Presentation.Tests.Integration.Users;
 
-[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
-public class GetUserNameTests(WebApiFactory webApiFactory)
+public class GetUserNameTests : TestBase
 {
     [Test]
     public async Task GetUserName_ReturnsUserName_WhenUserHasSharedMeterFromOwner()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var owner = webApiFactory.GetTestUser();
-        var sharedUser = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
+        var owner = GetTestUser();
         var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(owner).WithUser(sharedUser).Build();
+        var userData = userBuilder.WithUser(owner).Build();
 
         var meterBuilder = new MeterBuilder(dbContext);
         var meterData = meterBuilder
             .WithMeter("Location", userData.Users[0], MeterType.Gas)
             .Build();
 
-        meterBuilder.WithSharedMeter(meterData.Meters[0], userData.Users[1]).Build();
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(sharedUser.Username, sharedUser.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
+        meterBuilder.WithSharedMeter(meterData.Meters[0], userEntity).Build();
 
         var request = new GetUserNameRequest(userData.Users[0].Id);
 
@@ -51,22 +42,15 @@ public class GetUserNameTests(WebApiFactory webApiFactory)
     public async Task GetUserName_ReturnsUnauthorized_WhenUserDoesNotHaveSharedMeter()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var owner = webApiFactory.GetTestUser();
-        var otherUser = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
+        var owner = GetTestUser();
         var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(owner).WithUser(otherUser).Build();
+        var userData = userBuilder.WithUser(owner).Build();
 
         var meterBuilder = new MeterBuilder(dbContext);
         meterBuilder.WithMeter("Location", userData.Users[0], MeterType.Gas).Build();
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(otherUser.Username, otherUser.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
 
         var request = new GetUserNameRequest(userData.Users[0].Id);
 
@@ -83,26 +67,19 @@ public class GetUserNameTests(WebApiFactory webApiFactory)
     public async Task GetUserName_ReturnsNotFound_WhenUserDoesNotExist()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var owner = webApiFactory.GetTestUser();
-        var sharedUser = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
+        var owner = GetTestUser();
         var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(owner).WithUser(sharedUser).Build();
+        var userData = userBuilder.WithUser(owner).Build();
 
         var meterBuilder = new MeterBuilder(dbContext);
         var meterData = meterBuilder
             .WithMeter("Location", userData.Users[0], MeterType.Gas)
             .Build();
 
-        meterBuilder.WithSharedMeter(meterData.Meters[0], userData.Users[1]).Build();
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(sharedUser.Username, sharedUser.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
+        meterBuilder.WithSharedMeter(meterData.Meters[0], userEntity).Build();
 
         var request = new GetUserNameRequest(999999);
 
@@ -119,7 +96,7 @@ public class GetUserNameTests(WebApiFactory webApiFactory)
     public async Task GetUserName_ReturnsUnauthorized_WhenNoBearerToken()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
+        using var client = Factory.CreateClient();
         var request = new GetUserNameRequest(1);
 
         // Act

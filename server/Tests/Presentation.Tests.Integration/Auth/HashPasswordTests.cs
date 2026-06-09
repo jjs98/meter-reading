@@ -4,14 +4,13 @@ using Presentation.Endpoints.Auth;
 
 namespace Presentation.Tests.Integration.Auth;
 
-[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
-public class HashPasswordTests(WebApiFactory webApiFactory)
+public class HashPasswordTests : TestBase
 {
     [Test]
     public async Task HashPassword_ReturnsHashedPassword()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
+        using var client = Factory.CreateClient();
         var password = "password";
         var request = new HashEndpointRequest(password);
 

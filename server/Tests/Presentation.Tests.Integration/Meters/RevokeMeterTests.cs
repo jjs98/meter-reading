@@ -1,41 +1,32 @@
 using System.Net;
 using Domain.Enums;
 using FastEndpoints;
-using Presentation.Endpoints.Auth;
 using Presentation.Endpoints.Meters;
 using Presentation.Tests.Integration.Builder;
 
 namespace Presentation.Tests.Integration.Meters;
 
-[ClassDataSource<WebApiFactory>(Shared = SharedType.PerClass)]
-public class RevokeMeterTests(WebApiFactory webApiFactory)
+public class RevokeMeterTests : TestBase
 {
     [Test]
     public async Task RevokeMeter_ReturnsNoContent_WhenUserIsOwner()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        var otherUser = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
+        var otherUser = GetTestUser();
         var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(user).WithUser(otherUser).Build();
+        var userData = userBuilder.WithUser(otherUser).Build();
 
         var meterBuilder = new MeterBuilder(dbContext);
         var meterData = meterBuilder
-            .WithMeter("Location to revoke", userData.Users[0], MeterType.Gas)
+            .WithMeter("Location to revoke", userEntity, MeterType.Gas)
             .Build();
         var meterId = meterData.Meters[0].Id;
-        var otherUserId = userData.Users[1].Id;
+        var otherUserId = userData.Users[0].Id;
 
-        meterBuilder.WithSharedMeter(meterData.Meters[0], userData.Users[1]).Build();
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
+        meterBuilder.WithSharedMeter(meterData.Meters[0], userData.Users[0]).Build();
 
         var request = new RevokeMeterEndpointRequest(meterId, otherUserId);
 
@@ -54,28 +45,21 @@ public class RevokeMeterTests(WebApiFactory webApiFactory)
     public async Task RevokeMeter_ReturnsNoContent_WhenSharedUserRevokesOwnAccess()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var owner = webApiFactory.GetTestUser();
-        var sharedUser = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
+        var owner = GetTestUser();
         var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(owner).WithUser(sharedUser).Build();
+        var userData = userBuilder.WithUser(owner).Build();
 
         var meterBuilder = new MeterBuilder(dbContext);
         var meterData = meterBuilder
             .WithMeter("Location to revoke", userData.Users[0], MeterType.Gas)
             .Build();
         var meterId = meterData.Meters[0].Id;
-        var sharedUserId = userData.Users[1].Id;
+        var sharedUserId = userEntity.Id;
 
-        meterBuilder.WithSharedMeter(meterData.Meters[0], userData.Users[1]).Build();
-
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(sharedUser.Username, sharedUser.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
+        meterBuilder.WithSharedMeter(meterData.Meters[0], userEntity).Build();
 
         var request = new RevokeMeterEndpointRequest(meterId, sharedUserId);
 
@@ -94,20 +78,11 @@ public class RevokeMeterTests(WebApiFactory webApiFactory)
     public async Task RevokeMeter_ReturnsNotFound_WhenMeterDoesNotExist()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
-        var user = webApiFactory.GetTestUser();
-        using var dbContext = webApiFactory.CreateDbContext();
-        var userBuilder = new UserBuilder(dbContext);
-        var userData = userBuilder.WithUser(user).Build();
+        var user = GetTestUser();
+        using var dbContext = CreateDbContext();
+        (var client, var userEntity) = await CreateAuthenticatedClientAsync(user, dbContext);
 
-        var loginResponse = await client.POSTAsync<
-            LoginEndpoint,
-            LoginEndpointRequest,
-            LoginEndpointResponse
-        >(new LoginEndpointRequest(user.Username, user.Password));
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginResponse.Result.Token}");
-
-        var request = new RevokeMeterEndpointRequest(999999, userData.Users[0].Id);
+        var request = new RevokeMeterEndpointRequest(999999, userEntity.Id);
 
         // Act
         var response = await client.DELETEAsync<
@@ -124,7 +99,7 @@ public class RevokeMeterTests(WebApiFactory webApiFactory)
     public async Task RevokeMeter_ReturnsUnauthorized_WhenNoBearerToken()
     {
         // Arrange
-        using var client = webApiFactory.CreateClient();
+        using var client = Factory.CreateClient();
         var request = new RevokeMeterEndpointRequest(1, 1);
 
         // Act
