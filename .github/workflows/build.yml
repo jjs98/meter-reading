@@ -93,7 +93,7 @@ jobs:
           export Jwt__Key="ThisIsMySuperSecretKeyWhichNeedsToBeASpecificLengthForSomeReason"
           export Jwt__Issuer="test.de"
           export Jwt__Audience="test.de"
-          dotnet test --coverage --coverage-output-format xml --report-trx --results-directory ./TestResults
+          dotnet test --coverage --coverage-output-format cobertura --report-trx --results-directory ./TestResults
 
       - name: Upload test results to Codecov
         uses: codecov/codecov-action@v5
@@ -101,7 +101,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           report_type: test_results
-          files: ./TestResults/*.xml
+          files: ./TestResults/*.trx
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
