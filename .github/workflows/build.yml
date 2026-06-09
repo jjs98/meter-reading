@@ -95,13 +95,19 @@ jobs:
           export Jwt__Audience="test.de"
           dotnet test --coverage --coverage-output-format cobertura --report-trx --results-directory ./TestResults
 
+      - name: install trx2junit
+        run: dotnet tool install --global trx2junit
+
+      - name: run trx2junit
+        run: trx2junit --output TestResults/junit TestResults/*.trx
+
       - name: Upload test results to Codecov
         uses: codecov/codecov-action@v5
         if: ${{ !cancelled() }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           report_type: test_results
-          files: ./TestResults/*.trx
+          files: ./TestResults/junit/*.xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5

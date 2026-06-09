@@ -1,3 +1,5 @@
 /.vs
 docker-compose.*
 node_modules
+
+TestResults
